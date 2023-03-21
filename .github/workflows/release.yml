@@ -1,0 +1,46 @@
+name: Release Obsidian plugin
+
+on:
+    push:
+        tags:
+            - "*"
+
+permissions:
+    contents: write
+
+env:
+    PLUGIN_NAME: tor2e-random-table-plugin
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18.x"
+
+            - name: Build
+              id: build
+              run: |
+                  npm install
+                  npm run test
+                  npm run build
+                  mkdir ${{ env.PLUGIN_NAME }}
+                  cp main.js manifest.json styles.css ${{ env.PLUGIN_NAME }}
+                  zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
+                  ls                  
+
+            - name: Release
+              id: release
+              uses: "softprops/action-gh-release@v0.1.15"
+              with:
+                  prerelease: true
+                  fail_on_unmatched_files: true
+                  files: |
+                      *.zip
+                      main.js
+                      manifest.json
+                      styles.css           
