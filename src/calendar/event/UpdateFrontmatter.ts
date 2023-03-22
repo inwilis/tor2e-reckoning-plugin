@@ -1,6 +1,6 @@
 import {FileManager, MetadataCache, parseYaml, TAbstractFile, TFile} from "obsidian";
 import {CODE_BLOCK_EVENT} from "../../constants";
-import {StewardsReckoning, StewardsReckoningDate} from "../stewards/StewardsReckoning";
+import {StewardsReckoning, StewardsReckoningDate} from "../../reckoning/stewards/StewardsReckoning";
 
 export function updateFrontmatter(fileManager: FileManager, metadataCache: MetadataCache) {
 

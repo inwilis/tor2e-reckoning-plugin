@@ -2,7 +2,7 @@
  * "I" means intercalary period
  * "M" means regular month
  */
-export enum Month {
+export enum StewardsMonth {
     I1 = "I1",
     M1 = "M1", M2 = "M2", M3 = "M3",
     I2 = "I2",

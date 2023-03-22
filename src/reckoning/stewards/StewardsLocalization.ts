@@ -1,8 +1,8 @@
-import {Month} from "./Month";
-import {DayOfWeek} from "./DayOfWeek";
+import {StewardsMonth} from "./StewardsMonth";
+import {DayOfWeek} from "../DayOfWeek";
 
-export class Localization {
-    static forMonth(month: Month): LocalizationData {
+export class StewardsLocalization {
+    static forMonth(month: StewardsMonth): StewardsLocalizationData {
         return MONTH_NAMES[month]
     }
 
@@ -11,14 +11,14 @@ export class Localization {
     }
 }
 
-export interface LocalizationData {
+export interface StewardsLocalizationData {
     quenya: string;
     quenyaSimplified: string;
     sindarin: string;
     sindarinSimplified: string;
 }
 
-export const MONTH_NAMES: Record<Month, LocalizationData> = {
+export const MONTH_NAMES: Record<StewardsMonth, StewardsLocalizationData> = {
     I1: {quenya: "Yestarë", quenyaSimplified: "Yestare", sindarin: "Iestor", sindarinSimplified: "Iestor"},
     M1: {quenya: "Narvinyë", quenyaSimplified: "Narvinye", sindarin: "Narwain", sindarinSimplified: "Narwain"},
     M2: {quenya: "Nénimë", quenyaSimplified: "Nenime", sindarin: "Nínui", sindarinSimplified: "Ninui"},
@@ -39,7 +39,7 @@ export const MONTH_NAMES: Record<Month, LocalizationData> = {
     I5: {quenya: "Mettarë", quenyaSimplified: "Mettare", sindarin: "Methor", sindarinSimplified: "Methor"}
 }
 
-export const DAYS_OF_WEEK_NAMES: Record<DayOfWeek, LocalizationData> = {
+export const DAYS_OF_WEEK_NAMES: Record<DayOfWeek, StewardsLocalizationData> = {
     [DayOfWeek.D1]: {quenya: "Elenya", quenyaSimplified: "Elenya", sindarin: "Orgilion", sindarinSimplified: "Orgilion"},
     [DayOfWeek.D2]: {quenya: "Anarya", quenyaSimplified: "Anarya", sindarin: "Oranor", sindarinSimplified: "Oranor"},
     [DayOfWeek.D3]: {quenya: "Isilya", quenyaSimplified: "Isilya", sindarin: "Orithil", sindarinSimplified: "Orithil"},

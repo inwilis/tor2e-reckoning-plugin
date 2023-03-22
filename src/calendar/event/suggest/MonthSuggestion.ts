@@ -1,14 +1,14 @@
-import {LocalizationData, MONTH_NAMES} from "../../stewards/Localization";
-import {Month} from "../../stewards/Month";
+import {StewardsLocalizationData, MONTH_NAMES} from "../../../reckoning/stewards/StewardsLocalization";
+import {StewardsMonth} from "../../../reckoning/stewards/StewardsMonth";
 
 export class MonthSuggestion {
-    constructor(item: LocalizationData, quenya: boolean, sindarin: boolean) {
+    constructor(item: StewardsLocalizationData, quenya: boolean, sindarin: boolean) {
         this.item = item;
         this.quenya = quenya
         this.sindarin = sindarin
     }
 
-    item: LocalizationData
+    item: StewardsLocalizationData
 
     quenya: boolean
 
@@ -60,7 +60,7 @@ export const
     ALL_MONTHS: MonthSuggestion[] = (() => {
         const result: MonthSuggestion[] = [];
 
-        for (let m in Month) {
+        for (let m in StewardsMonth) {
             const monthLocalization = MONTH_NAMES[m as keyof typeof MONTH_NAMES];
             result.push(new MonthSuggestion(monthLocalization, true, true))
         }

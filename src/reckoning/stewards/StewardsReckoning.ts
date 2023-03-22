@@ -1,13 +1,13 @@
-import {YearType} from "./YearType";
-import {Month} from "./Month";
-import {DayOfWeek} from "./DayOfWeek";
-import {Localization, MONTH_NAMES} from "./Localization";
+import {YearType} from "../YearType";
+import {StewardsMonth} from "./StewardsMonth";
+import {DayOfWeek} from "../DayOfWeek";
+import {StewardsLocalization, MONTH_NAMES} from "./StewardsLocalization";
 
-const STEWARDS_RECKONING_START = 2060
-const HADORS_MILLENNIAL_YEAR = 2360
+export const STEWARDS_RECKONING_START = 2060
+export const HADORS_MILLENNIAL_YEAR = 2360
 
 class StewardsReckoningDate {
-    constructor(year: number, month: Month, day: number) {
+    constructor(year: number, month: StewardsMonth, day: number) {
         if (year < STEWARDS_RECKONING_START) {
             throw new RangeError(`Year ${year} is before the ${STEWARDS_RECKONING_START}, when Steward's Reckoning started`)
         }
@@ -33,7 +33,7 @@ class StewardsReckoningDate {
     }
 
     year: number
-    month: Month
+    month: StewardsMonth
     day: number
 
     getDayOfYear(): number {
@@ -49,32 +49,32 @@ class StewardsReckoningDate {
     }
 
     getDayOfWeek(): DayOfWeek {
-        const daysAfterReckoningStart = StewardsReckoning.getDaysBetween(new StewardsReckoningDate(2060, Month.I1, 1), this);
+        const daysAfterReckoningStart = StewardsReckoning.getDaysBetween(new StewardsReckoningDate(2060, StewardsMonth.I1, 1), this);
         return daysAfterReckoningStart % 7;
     }
 
     toQuenya(): string {
-        if (this.month.toString().startsWith("M") || this.month == Month.I3L) {
-            return `${this.day} ${Localization.forMonth(this.month).quenya} ${this.year}`
+        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
+            return `${this.day} ${StewardsLocalization.forMonth(this.month).quenya} ${this.year}`
         } else {
-            return `${Localization.forMonth(this.month).quenya} ${this.year}`
+            return `${StewardsLocalization.forMonth(this.month).quenya} ${this.year}`
         }
     }
 
     toSindarin(): string {
-        if (this.month.toString().startsWith("M") || this.month == Month.I3L) {
-            return `${this.day} ${Localization.forMonth(this.month).sindarin} ${this.year}`
+        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
+            return `${this.day} ${StewardsLocalization.forMonth(this.month).sindarin} ${this.year}`
         } else {
-            return `${Localization.forMonth(this.month).sindarin} ${this.year}`
+            return `${StewardsLocalization.forMonth(this.month).sindarin} ${this.year}`
         }
     }
 
     toQuenyaDayOfWeek(): string {
-        return Localization.forDayOfWeek(this.getDayOfWeek()).quenya
+        return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).quenya
     }
 
     toSindarinDayOfWeek(): string {
-        return Localization.forDayOfWeek(this.getDayOfWeek()).sindarin
+        return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).sindarin
     }
 }
 
@@ -93,7 +93,7 @@ const StewardsReckoning = {
         }
     },
 
-    getYearData(year: number): YearData {
+    getYearData(year: number): StewardsYearData {
         return YEAR_DATA[StewardsReckoning.getYearType(year)]
     },
 
@@ -101,9 +101,9 @@ const StewardsReckoning = {
         return StewardsReckoning.getYearData(year).length;
     },
 
-    nextMonth(month: Month, year: number): Month {
-        if (month == Month.I5) {
-            return Month.I1
+    nextMonth(month: StewardsMonth, year: number): StewardsMonth {
+        if (month == StewardsMonth.I5) {
+            return StewardsMonth.I1
         } else {
             const monthSequence = StewardsReckoning.getYearData(year).monthSequence;
             return monthSequence[monthSequence.indexOf(month) + 1]
@@ -171,9 +171,9 @@ const StewardsReckoning = {
         let year = parseInt(rawYear)
 
         if (year) {
-            let month: Month | undefined
+            let month: StewardsMonth | undefined
 
-            for (let m in Month) {
+            for (let m in StewardsMonth) {
                 const monthLocalization = MONTH_NAMES[m as keyof typeof MONTH_NAMES];
                 for (let k in monthLocalization) {
                     if (rawMonth == monthLocalization[k as keyof typeof monthLocalization]) {
@@ -206,27 +206,27 @@ const StewardsReckoning = {
     }
 }
 
-interface YearData {
+interface StewardsYearData {
     type: YearType
     length: number
-    monthSequence: Month[]
-    monthDays: Record<Month, [number, number]>
+    monthSequence: StewardsMonth[]
+    monthDays: Record<StewardsMonth, [number, number]>
 }
 
-const YEAR_DATA: Record<YearType, YearData> = {
+const YEAR_DATA: Record<YearType, StewardsYearData> = {
     [YearType.REGULAR]: {
         type: YearType.REGULAR,
         length: 365,
         monthSequence: [
-            Month.I1,
-            Month.M1, Month.M2, Month.M3,
-            Month.I2,
-            Month.M4, Month.M5, Month.M6,
-            Month.I3,
-            Month.M7, Month.M8, Month.M9,
-            Month.I4,
-            Month.M10, Month.M11, Month.M12,
-            Month.I5],
+            StewardsMonth.I1,
+            StewardsMonth.M1, StewardsMonth.M2, StewardsMonth.M3,
+            StewardsMonth.I2,
+            StewardsMonth.M4, StewardsMonth.M5, StewardsMonth.M6,
+            StewardsMonth.I3,
+            StewardsMonth.M7, StewardsMonth.M8, StewardsMonth.M9,
+            StewardsMonth.I4,
+            StewardsMonth.M10, StewardsMonth.M11, StewardsMonth.M12,
+            StewardsMonth.I5],
         monthDays: {
             I1: [1, 1],
             M1: [2, 31],
@@ -252,15 +252,15 @@ const YEAR_DATA: Record<YearType, YearData> = {
         type: YearType.LEAP,
         length: 366,
         monthSequence: [
-            Month.I1,
-            Month.M1, Month.M2, Month.M3,
-            Month.I2,
-            Month.M4, Month.M5, Month.M6,
-            Month.I3L,
-            Month.M7, Month.M8, Month.M9,
-            Month.I4,
-            Month.M10, Month.M11, Month.M12,
-            Month.I5],
+            StewardsMonth.I1,
+            StewardsMonth.M1, StewardsMonth.M2, StewardsMonth.M3,
+            StewardsMonth.I2,
+            StewardsMonth.M4, StewardsMonth.M5, StewardsMonth.M6,
+            StewardsMonth.I3L,
+            StewardsMonth.M7, StewardsMonth.M8, StewardsMonth.M9,
+            StewardsMonth.I4,
+            StewardsMonth.M10, StewardsMonth.M11, StewardsMonth.M12,
+            StewardsMonth.I5],
         monthDays: {
             I1: [1, 1],
             M1: [2, 31],
@@ -286,15 +286,15 @@ const YEAR_DATA: Record<YearType, YearData> = {
         type: YearType.MILLENNIAL,
         length: 367,
         monthSequence: [
-            Month.I1,
-            Month.M1, Month.M2, Month.M3,
-            Month.I2,
-            Month.M4, Month.M5, Month.M6,
-            Month.I3L,
-            Month.M7, Month.M8, Month.M9,
-            Month.I4,
-            Month.M10, Month.M11, Month.M12,
-            Month.I5],
+            StewardsMonth.I1,
+            StewardsMonth.M1, StewardsMonth.M2, StewardsMonth.M3,
+            StewardsMonth.I2,
+            StewardsMonth.M4, StewardsMonth.M5, StewardsMonth.M6,
+            StewardsMonth.I3L,
+            StewardsMonth.M7, StewardsMonth.M8, StewardsMonth.M9,
+            StewardsMonth.I4,
+            StewardsMonth.M10, StewardsMonth.M11, StewardsMonth.M12,
+            StewardsMonth.I5],
         monthDays: {
             I1: [1, 1],
             M1: [2, 31],
@@ -322,6 +322,6 @@ export {
     StewardsReckoning,
     StewardsReckoningDate,
     YearType,
-    Month,
+    StewardsMonth,
     DayOfWeek
 }

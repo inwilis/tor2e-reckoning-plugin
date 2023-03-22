@@ -1,5 +1,5 @@
 import {App, MarkdownRenderChild} from "obsidian";
-import {StewardsReckoning} from "../stewards/StewardsReckoning";
+import {StewardsReckoning} from "../../reckoning/stewards/StewardsReckoning";
 
 
 export class EventBlockRenderer extends MarkdownRenderChild {
