@@ -1,155 +1,47 @@
 import {YearType} from "../YearType";
 import {StewardsMonth} from "./StewardsMonth";
-import {DayOfWeek} from "../DayOfWeek";
-import {StewardsLocalization, MONTH_NAMES} from "./StewardsLocalization";
+import {MONTH_NAMES} from "./StewardsLocalization";
+import {YearData} from "../YearData";
+import {ReckoningDate} from "../ReckoningDate";
+import {Reckoning} from "../Reckoning";
+import {StewardsReckoningDate} from "./StewardsReckoningDate";
 
 export const STEWARDS_RECKONING_START = 2060
 export const HADORS_MILLENNIAL_YEAR = 2360
 
-export class StewardsReckoningDate {
-    constructor(year: number, month: StewardsMonth, day: number) {
-        if (year < STEWARDS_RECKONING_START) {
-            throw new RangeError(`Year ${year} is before the ${STEWARDS_RECKONING_START}, when Steward's Reckoning started`)
-        }
+class StewardsReckoning extends Reckoning<StewardsMonth>{
 
-        const yearData = StewardsReckoning.getYearData(year);
-
-        if (yearData.monthSequence.indexOf(month) < 0) {
-            throw new RangeError(`${yearData.type} year ${year} has no month ${month}`)
-        }
-
-        if (day < 1) {
-            throw new RangeError(`Incorrect day of month: ${day}`)
-        }
-
-        const daysInMonth = yearData.monthDays[month][1] - yearData.monthDays[month][0] + 1;
-        if (day > daysInMonth) {
-            throw new RangeError(`Incorrect day of month: ${day}. ${month} has only ${daysInMonth} days`)
-        }
-
-        this.year = year;
-        this.month = month;
-        this.day = day;
+    getName(): string {
+        return "stewards";
     }
-
-    year: number
-    month: StewardsMonth
-    day: number
-
-    getDayOfYear(): number {
-        return StewardsReckoning.getYearData(this.year).monthDays[this.month][0] + this.day - 1;
-    }
-
-    isBefore(other: StewardsReckoningDate) {
-        return (this.year < other.year) || (this.year == other.year && this.getDayOfYear() < other.getDayOfYear())
-    }
-
-    isEqual(other: StewardsReckoningDate) {
-        return this.year == other.year && this.month == other.month && this.day == other.day
-    }
-
-    getDayOfWeek(): DayOfWeek {
-        const daysAfterReckoningStart = StewardsReckoning.getDaysBetween(new StewardsReckoningDate(2060, StewardsMonth.I1, 1), this);
-        return daysAfterReckoningStart % 7;
-    }
-
-    toQuenya(): string {
-        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
-            return `${this.day} ${StewardsLocalization.forMonth(this.month).quenya} ${this.year}`
-        } else {
-            return `${StewardsLocalization.forMonth(this.month).quenya} ${this.year}`
-        }
-    }
-
-    toSindarin(): string {
-        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
-            return `${this.day} ${StewardsLocalization.forMonth(this.month).sindarin} ${this.year}`
-        } else {
-            return `${StewardsLocalization.forMonth(this.month).sindarin} ${this.year}`
-        }
-    }
-
-    toQuenyaDayOfWeek(): string {
-        return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).quenya
-    }
-
-    toSindarinDayOfWeek(): string {
-        return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).sindarin
-    }
-}
-
-export const StewardsReckoning = {
-    isLeapYear(year: number): boolean {
-        return !(year % 4 || !(year % 100))
-    },
 
     getYearType(year: number): YearType {
         if (year == HADORS_MILLENNIAL_YEAR) {
             return YearType.MILLENNIAL
-        } else if (StewardsReckoning.isLeapYear(year)) {
+        } else if (this.isLeapYear(year)) {
             return YearType.LEAP
         } else {
             return YearType.REGULAR
         }
-    },
+    }
 
-    getYearData(year: number): StewardsYearData {
-        return YEAR_DATA[StewardsReckoning.getYearType(year)]
-    },
+    getYearData(year: number): YearData<StewardsMonth> {
+        return YEAR_DATA[this.getYearType(year)]
+    }
 
-    daysInYear(year: number): number {
-        return StewardsReckoning.getYearData(year).length;
-    },
-
-    nextMonth(month: StewardsMonth, year: number): StewardsMonth {
-        if (month == StewardsMonth.I5) {
-            return StewardsMonth.I1
-        } else {
-            const monthSequence = StewardsReckoning.getYearData(year).monthSequence;
-            return monthSequence[monthSequence.indexOf(month) + 1]
-        }
-    },
-
-    getDate(year: number, dayOfYear: number): StewardsReckoningDate {
+    getDate(year: number, dayOfYear: number): ReckoningDate<StewardsMonth> {
         if (year < STEWARDS_RECKONING_START) {
             throw new RangeError(`Year ${year} is before the ${STEWARDS_RECKONING_START}, when Steward's Reckoning started`)
         }
 
-        if (dayOfYear < 0) {
-            throw new RangeError(`Day of year must start from 1, got ${dayOfYear} instead`)
-        }
+        return super.getDate(year, dayOfYear)
+    }
 
-        const yearType = StewardsReckoning.getYearType(year);
-        const yearDatum = YEAR_DATA[yearType];
-        const monthDays = yearDatum.monthDays;
+    newDate(year: number, month: StewardsMonth, day: number): ReckoningDate<StewardsMonth> {
+        return new StewardsReckoningDate(this, year, month, day)
+    }
 
-        for (let month of yearDatum.monthSequence) {
-            if (monthDays[month][0] <= dayOfYear && dayOfYear <= monthDays[month][1]) {
-                return new StewardsReckoningDate(year, month, dayOfYear - monthDays[month][0] + 1)
-            }
-        }
-
-        throw new RangeError(`Unable to find a correct month for day ${dayOfYear} of ${yearType} year ${year}`)
-    },
-
-    getDaysBetween(first: StewardsReckoningDate, second: StewardsReckoningDate): number {
-        if (first.isEqual(second)) {
-            return 0
-        } else if (second.isBefore(first)) {
-            return StewardsReckoning.getDaysBetween(second, first)
-        } else {
-            let days: number = 0
-            for (let year = first.year; year < second.year; year++) {
-                days += StewardsReckoning.getYearData(year).length
-            }
-            days -= first.getDayOfYear()
-            days += second.getDayOfYear()
-
-            return days
-        }
-    },
-
-    parseDate(date: string): StewardsReckoningDate {
+    parseDate(date: string): ReckoningDate<StewardsMonth> {
         const found = date.split(" ", 3)
 
         let rawDay
@@ -184,11 +76,11 @@ export const StewardsReckoning = {
 
             if (month) {
                 if (rawDay) {
-                    return new StewardsReckoningDate(year, month, parseInt(rawDay))
+                    return this.newDate(year, month, parseInt(rawDay))
                 } else {
-                    const monthDays = StewardsReckoning.getYearData(year).monthDays[month];
+                    const monthDays = this.getYearData(year).monthDays[month];
                     if (monthDays[0] == monthDays[1]) {
-                        return new StewardsReckoningDate(year, month, 1)
+                        return this.newDate(year, month, 1)
                     }
                 }
             }
@@ -198,15 +90,10 @@ export const StewardsReckoning = {
     }
 }
 
-export interface StewardsYearData {
-    type: YearType
-    length: number
-    monthSequence: StewardsMonth[]
-    monthDays: Record<StewardsMonth, [number, number]>
-}
+export const stewardsReckoning:Reckoning<StewardsMonth> = new StewardsReckoning()
 
-const YEAR_DATA: Record<YearType, StewardsYearData> = {
-    [YearType.REGULAR]: {
+const YEAR_DATA: Record<YearType, YearData<StewardsMonth>> = {
+    [YearType.REGULAR]: new YearData<StewardsMonth>({
         type: YearType.REGULAR,
         length: 365,
         monthSequence: [
@@ -239,8 +126,8 @@ const YEAR_DATA: Record<YearType, StewardsYearData> = {
             M12: [335, 364],
             I5: [365, 365]
         }
-    },
-    [YearType.LEAP]: {
+    }),
+    [YearType.LEAP]: new YearData<StewardsMonth>({
         type: YearType.LEAP,
         length: 366,
         monthSequence: [
@@ -273,8 +160,8 @@ const YEAR_DATA: Record<YearType, StewardsYearData> = {
             M12: [336, 365],
             I5: [366, 366]
         }
-    },
-    [YearType.MILLENNIAL]: {
+    }),
+    [YearType.MILLENNIAL]: new YearData<StewardsMonth>( {
         type: YearType.MILLENNIAL,
         length: 367,
         monthSequence: [
@@ -307,5 +194,5 @@ const YEAR_DATA: Record<YearType, StewardsYearData> = {
             M12: [337, 366],
             I5: [367, 367]
         }
-    }
+    })
 }
