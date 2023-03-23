@@ -6,7 +6,7 @@ import {StewardsLocalization, MONTH_NAMES} from "./StewardsLocalization";
 export const STEWARDS_RECKONING_START = 2060
 export const HADORS_MILLENNIAL_YEAR = 2360
 
-class StewardsReckoningDate {
+export class StewardsReckoningDate {
     constructor(year: number, month: StewardsMonth, day: number) {
         if (year < STEWARDS_RECKONING_START) {
             throw new RangeError(`Year ${year} is before the ${STEWARDS_RECKONING_START}, when Steward's Reckoning started`)
@@ -78,7 +78,7 @@ class StewardsReckoningDate {
     }
 }
 
-const StewardsReckoning = {
+export const StewardsReckoning = {
     isLeapYear(year: number): boolean {
         return !(year % 4 || !(year % 100))
     },
@@ -149,7 +149,7 @@ const StewardsReckoning = {
         }
     },
 
-    parseDate(date: string): StewardsReckoningDate | string {
+    parseDate(date: string): StewardsReckoningDate {
         const found = date.split(" ", 3)
 
         let rawDay
@@ -164,7 +164,7 @@ const StewardsReckoning = {
             rawMonth = found[1]
             rawYear = found[2]
         } else {
-            return `Unable to parse '${date}' as date`
+            throw new Error(`Unable to parse '${date}' as date`)
         }
 
 
@@ -184,29 +184,21 @@ const StewardsReckoning = {
 
             if (month) {
                 if (rawDay) {
-                    try {
-                        return new StewardsReckoningDate(year, month, parseInt(rawDay))
-                    } catch (e) {
-                        return e.toString()
-                    }
+                    return new StewardsReckoningDate(year, month, parseInt(rawDay))
                 } else {
                     const monthDays = StewardsReckoning.getYearData(year).monthDays[month];
                     if (monthDays[0] == monthDays[1]) {
-                        try {
-                            return new StewardsReckoningDate(year, month, 1)
-                        } catch (e) {
-                            return e.toString()
-                        }
+                        return new StewardsReckoningDate(year, month, 1)
                     }
                 }
             }
         }
 
-        return `Unable to parse '${date}' as date`
+        throw new Error(`Unable to parse '${date}' as date`)
     }
 }
 
-interface StewardsYearData {
+export interface StewardsYearData {
     type: YearType
     length: number
     monthSequence: StewardsMonth[]
@@ -316,12 +308,4 @@ const YEAR_DATA: Record<YearType, StewardsYearData> = {
             I5: [367, 367]
         }
     }
-}
-
-export {
-    StewardsReckoning,
-    StewardsReckoningDate,
-    YearType,
-    StewardsMonth,
-    DayOfWeek
 }

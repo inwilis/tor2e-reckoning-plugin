@@ -1,6 +1,7 @@
-import {StewardsMonth, StewardsReckoning, StewardsReckoningDate} from "../../src/reckoning/stewards/StewardsReckoning";
+import {StewardsReckoning, StewardsReckoningDate} from "../../src/reckoning/stewards/StewardsReckoning";
 import {describe, expect, test} from "@jest/globals";
 import {DayOfWeek} from "../../src/reckoning/DayOfWeek";
+import {StewardsMonth} from "../../src/reckoning/stewards/StewardsMonth";
 
 describe('testing StewardsReckoning.isLeapYear()', () => {
     test('year 2064 is a leap year', () => expect(StewardsReckoning.isLeapYear(2064)).toBeTruthy())
@@ -232,12 +233,12 @@ describe('testing StewardsReckoning.parseDate', () => {
     test("Should parse Yestarë 2100", () => expect(StewardsReckoning.parseDate("Yestarë 2100")).toMatchObject({year: 2100, month: StewardsMonth.I1, day: 1}))
     test("Should parse 1 Yestarë 2100", () => expect(StewardsReckoning.parseDate("Yestarë 2100")).toMatchObject({year: 2100, month: StewardsMonth.I1, day: 1}))
 
-    test("Should not parse Norui 2100", () => expect(StewardsReckoning.parseDate("Norui 2100")).toEqual("Unable to parse 'Norui 2100' as date"))
+    test("Should not parse Norui 2100", () => expect(() => StewardsReckoning.parseDate("Norui 2100")).toThrow(new Error("Unable to parse 'Norui 2100' as date")))
     test("Should parse 1 Norui 2100", () => expect(StewardsReckoning.parseDate("1 Norui 2100")).toMatchObject({year: 2100, month: StewardsMonth.M6, day: 1}))
 
     test("Should parse Loende 2100", () => expect(StewardsReckoning.parseDate("Loende 2100")).toMatchObject({year: 2100, month: StewardsMonth.I3, day: 1}))
     test("Should parse 1 Endere 2104", () => expect(StewardsReckoning.parseDate("1 Endere 2104")).toMatchObject({year: 2104, month: StewardsMonth.I3L, day: 1}))
-    test("Should not parse Loende 2104", () => expect(StewardsReckoning.parseDate("Loende 2104")).toEqual("RangeError: leap year 2104 has no month I3"))
+    test("Should not parse Loende 2104", () => expect(() => StewardsReckoning.parseDate("Loende 2104")).toThrow(new RangeError("leap year 2104 has no month I3")))
 
     test("Should parse representations for regular year", () => {
         for (let i = 1; i <=365; i++) {

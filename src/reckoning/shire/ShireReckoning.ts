@@ -2,12 +2,12 @@ import {ShireMonth} from "./ShireMonth";
 import {DayOfWeek} from "../DayOfWeek";
 import {YearType} from "../YearType";
 import {HADORS_MILLENNIAL_YEAR, STEWARDS_RECKONING_START} from "../stewards/StewardsReckoning";
-import {SHIRE_RECKONING_START_IN_STEWARDS} from "../Conversion";
+import {SHIRE_RECKONING_START_IN_STEWARDS} from "../ReckoningConversion";
 import {MONTH_NAMES, ShireLocalization} from "./ShireLocalization";
 
 export const SHIRE_REFORM_YEAR = 1103
 
-class ShireReckoningDate {
+export class ShireReckoningDate {
     constructor(year: number, month: ShireMonth, day: number) {
         if (year < 1) {
             throw new RangeError(`Year ${year} is before the Year 1, when Shire-Reckoning started`)
@@ -107,7 +107,7 @@ class ShireReckoningDate {
     }
 }
 
-const ShireReckoning = {
+export const ShireReckoning = {
     isLeapYear(year: number): boolean {
         return !(year % 4 || !(year % 100))
     },
@@ -178,7 +178,7 @@ const ShireReckoning = {
         }
     },
 
-    parseDate: function (date: string, breeDate: boolean = false): ShireReckoningDate | string {
+    parseDate: function (date: string, breeDate: boolean = false): ShireReckoningDate {
         const found = date.split(" ", 3)
 
         let rawDay
@@ -193,7 +193,7 @@ const ShireReckoning = {
             rawMonth = found[1]
             rawYear = found[2]
         } else {
-            return `Unable to parse '${date}' as date`
+            throw new Error(`Unable to parse '${date}' as date`)
         }
 
         let year = parseInt(rawYear)
@@ -217,20 +217,16 @@ const ShireReckoning = {
                 if (rawDay) {
 
                     if (breeDate && month == ShireMonth.LITHE1) {
-                        try {
-                            const summerday = parseInt(rawDay)
-                            const yearData = ShireReckoning.getYearData(year);
-                            const yearDay = yearData.monthDays[ShireMonth.LITHE1][0] + summerday - 1
-                            for (let m in ShireMonth) {
-                                if (yearData.monthDays[m as keyof typeof MONTH_NAMES][0] >= yearDay && yearDay <= yearData.monthDays[m as keyof typeof MONTH_NAMES][1]) {
-                                    month = m as keyof typeof MONTH_NAMES
-                                    break
-                                }
+                        const summerday = parseInt(rawDay)
+                        const yearData = ShireReckoning.getYearData(year);
+                        const yearDay = yearData.monthDays[ShireMonth.LITHE1][0] + summerday - 1
+                        for (let m in ShireMonth) {
+                            if (yearData.monthDays[m as keyof typeof MONTH_NAMES][0] >= yearDay && yearDay <= yearData.monthDays[m as keyof typeof MONTH_NAMES][1]) {
+                                month = m as keyof typeof MONTH_NAMES
+                                break
                             }
-                            return new ShireReckoningDate(year, month, 1)
-                        } catch (e) {
-                            return e.toString()
                         }
+                        return new ShireReckoningDate(year, month, 1)
                     }
 
                     try {
@@ -241,21 +237,17 @@ const ShireReckoning = {
                 } else {
                     const monthDays = ShireReckoning.getYearData(year).monthDays[month];
                     if (monthDays[0] == monthDays[1]) {
-                        try {
-                            return new ShireReckoningDate(year, month, 1)
-                        } catch (e) {
-                            return e.toString()
-                        }
+                        return new ShireReckoningDate(year, month, 1)
                     }
                 }
             }
         }
 
-        return `Unable to parse '${date}' as date`
+        throw new Error(`Unable to parse '${date}' as date`)
     }
 }
 
-interface ShireYearData {
+export interface ShireYearData {
     type: YearType
     length: number
     monthSequence: ShireMonth[]
@@ -371,12 +363,4 @@ const YEAR_DATA: Record<YearType, ShireYearData> = {
             YULE1: [367, 367]
         }
     }
-}
-
-export {
-    ShireReckoning,
-    ShireReckoningDate,
-    YearType,
-    ShireMonth,
-    DayOfWeek
 }
