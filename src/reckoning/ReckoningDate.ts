@@ -39,7 +39,7 @@ export abstract class ReckoningDate<M extends number | string> {
 
     abstract getDayOfWeek(): DayOfWeek
 
-    abstract toString(language: string): string
+    abstract toString(language?: string): string
 
-    abstract toDayOfWeekString(language: string): string
+    abstract toDayOfWeekString(language?: string): string
 }

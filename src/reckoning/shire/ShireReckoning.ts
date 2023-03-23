@@ -38,7 +38,7 @@ class ShireReckoning extends Reckoning<ShireMonth> {
         return super.getDate(year, dayOfYear)
     }
 
-    parseDate(date: string, breeDate: boolean = false): ReckoningDate<ShireMonth> {
+    parseDate(date: string, language?: string): ReckoningDate<ShireMonth> {
         const found = date.split(" ", 3)
 
         let rawDay
@@ -63,11 +63,11 @@ class ShireReckoning extends Reckoning<ShireMonth> {
 
             for (let m in ShireMonth) {
                 const monthLocalization = MONTH_NAMES[m as keyof typeof MONTH_NAMES];
-                if (`${rawDay} ${rawMonth}` == (breeDate ? monthLocalization.bree : monthLocalization.shire)) {
+                if (`${rawDay} ${rawMonth}` == (language?.toLowerCase() == "bree" ? monthLocalization.bree : monthLocalization.shire)) {
                     month = m as keyof typeof MONTH_NAMES
                     rawDay = null
                     break
-                } else if (rawMonth == (breeDate ? monthLocalization.bree : monthLocalization.shire)) {
+                } else if (rawMonth == (language?.toLowerCase() == "bree" ? monthLocalization.bree : monthLocalization.shire)) {
                     month = m as keyof typeof MONTH_NAMES
                     break
                 }
@@ -76,7 +76,7 @@ class ShireReckoning extends Reckoning<ShireMonth> {
             if (month) {
                 if (rawDay) {
 
-                    if (breeDate && month == ShireMonth.LITHE1) {
+                    if (language?.toLowerCase() == "bree" && month == ShireMonth.LITHE1) {
                         const summerday = parseInt(rawDay)
                         const yearData = this.getYearData(year);
                         const yearDay = yearData.monthDays[ShireMonth.LITHE1][0] + summerday - 1

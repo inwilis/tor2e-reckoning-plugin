@@ -41,7 +41,7 @@ class StewardsReckoning extends Reckoning<StewardsMonth>{
         return new StewardsReckoningDate(this, year, month, day)
     }
 
-    parseDate(date: string): ReckoningDate<StewardsMonth> {
+    parseDate(date: string, language?: string): ReckoningDate<StewardsMonth> {
         const found = date.split(" ", 3)
 
         let rawDay

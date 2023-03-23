@@ -66,7 +66,7 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
         }
     }
 
-    toString(language: string): string {
+    toString(language?: string): string {
         if (language?.toLowerCase() == "shire") {
             return this.toShire()
 
@@ -78,7 +78,7 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
         }
     }
 
-    toDayOfWeekString(language: string): string {
+    toDayOfWeekString(language?: string): string {
         if (language?.toLowerCase() == "shire") {
             return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).shire
 

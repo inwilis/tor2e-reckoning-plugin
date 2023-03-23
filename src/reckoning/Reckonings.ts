@@ -7,7 +7,7 @@ import {Reckoning} from "./Reckoning";
 
 export const SHIRE_RECKONING_START_IN_STEWARDS = 1600
 
-export const Reckonings = {
+export const reckonings = {
 
     getReckoning(reckoning: string): Reckoning<any> {
         if (reckoning.toLowerCase() == "stewards" || reckoning.toLowerCase() == "steward's" || reckoning.toLowerCase() == "steward") {

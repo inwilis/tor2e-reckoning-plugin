@@ -1,5 +1,5 @@
 import {App, MarkdownRenderChild} from "obsidian";
-import {stewardsReckoning} from "../../reckoning/stewards/StewardsReckoning";
+import {reckonings} from "../../reckoning/Reckonings";
 
 
 export class EventBlockRenderer extends MarkdownRenderChild {
@@ -15,27 +15,27 @@ export class EventBlockRenderer extends MarkdownRenderChild {
 
     render() {
 
-        if (this.params.date && this.params.text) {
+        if (this.params.reckoning && this.params.date) {
 
-            if (typeof this.params.date == "string") {
+            try {
+                let date = reckonings.getReckoning(this.params.reckoning).parseDate(this.params.date, this.params.language)
 
-                try {
-                    const parsedDate = stewardsReckoning.parseDate(this.params.date)
-
-                    const text = parsedDate.toString(this.params.lang)
-                    const tooltip = parsedDate.toDayOfWeekString(this.params.lang) + ` (${parsedDate.getDayOfWeek() + 1})`
-
-                    const span = this.containerEl.createSpan({cls: "tor2e-event"})
-                    span.createSpan({cls: "tor2e-date", text: text, title: tooltip})
-                    span.createSpan({cls: "tor2e-separator", text: ": "})
-                    span.createSpan({cls: "tor2e-text", text: this.params.text})
-
-                } catch (e) {
-                    this.containerEl.createSpan({cls: "tor2e-error", text: e})
+                if (this.params.display?.reckoning) {
+                    date = reckonings.toReckoning(this.params.display.reckoning, date)
                 }
-            } else {
-                this.containerEl.createSpan({cls: "tor2e-error", text: `Unable to parse '${this.params.date}' as date`})
+
+                const dateAsText = date.toString(this.params.display?.language || this.params.language)
+                const tooltip = date.toDayOfWeekString(this.params.display?.language || this.params.language) + ` (${date.getDayOfWeek() + 1})`
+
+                const span = this.containerEl.createSpan({cls: "tor2e-event"})
+                span.createSpan({cls: "tor2e-date", text: dateAsText, title: tooltip})
+                span.createSpan({cls: "tor2e-separator", text: ": "})
+                span.createSpan({cls: "tor2e-text", text: this.params.text})
+
+            } catch (e) {
+                this.containerEl.createSpan({cls: "tor2e-error", text: e})
             }
+
         }
     }
 

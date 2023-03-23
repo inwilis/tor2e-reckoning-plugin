@@ -36,7 +36,7 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
         }
     }
 
-    toString(language: string): string {
+    toString(language?: string): string {
         if (language?.toLowerCase() == "quenya") {
             return this.toQuenya()
 
@@ -48,7 +48,7 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
         }
     }
 
-    toDayOfWeekString(language: string): string {
+    toDayOfWeekString(language?: string): string {
         if (language?.toLowerCase() == "quenya") {
             return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).quenya
 
