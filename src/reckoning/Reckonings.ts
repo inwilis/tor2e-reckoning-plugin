@@ -8,8 +8,8 @@ import {Reckoning} from "./Reckoning";
 export const SHIRE_RECKONING_START_IN_STEWARDS = 1600
 
 export const allReckonings: ReadonlyMap<string, Reckoning<any>> = new Map<string, Reckoning<any>>([
-    [stewardsReckoning.getName(), stewardsReckoning],
-    [shireReckoning.getName(), shireReckoning]
+    ["stewards", stewardsReckoning],
+    ["shire", shireReckoning]
 ]) as ReadonlyMap<string, Reckoning<any>>
 
 const reckoningAliases: Map<string, string> = new Map<string, string>([
@@ -25,8 +25,7 @@ const conversions: Map<string, (date: ReckoningDate<any>) => ReckoningDate<any>>
 export const reckonings = {
 
     getReckoning(name: string): Reckoning<any> {
-        const exactName = reckoningAliases.has(name.toLowerCase()) ? reckoningAliases.get(name.toLowerCase()) : name.toLowerCase()
-        const reckoning = allReckonings.get(exactName || "")
+        const reckoning = getReckoning(name)
         if (reckoning) {
             return reckoning
         } else {
@@ -44,6 +43,31 @@ export const reckonings = {
             throw new Error(`Unknown conversion: "${date.reckoning.getName()}" to "${targetReckoning}"`)
         }
     },
+
+    detectReckoning(date: string, reckoning?: string, language?: string): string {
+        if (reckoning) {
+            return getReckoning(reckoning)?.getName() || "stewards"
+        }
+
+        if (language) {
+            for (let reckoning of allReckonings.values()) {
+                if (reckoning.getSupportedLanguages().includes(language)) {
+                    return reckoning.getName()
+                }
+            }
+        }
+
+        if (date && shireReckoning.hasKnownMonth(date)) {
+            return shireReckoning.getName()
+        }
+
+        return "stewards"
+    }
+}
+
+function getReckoning(name: string): Reckoning<any> | undefined {
+    const exactName = reckoningAliases.has(name.toLowerCase()) ? reckoningAliases.get(name.toLowerCase()) : name.toLowerCase()
+    return allReckonings.get(exactName || "")
 }
 
 function convertStewardsToShireReckoning(date: ReckoningDate<StewardsMonth>): ReckoningDate<ShireMonth> {

@@ -100,7 +100,7 @@ class StewardsReckoning extends Reckoning<StewardsMonth>{
             }
         }
 
-        throw new Error(`Unable to parse '${date}' as date`)
+        throw new Error(`Unable to parse '${date}' as date of Steward's reckoning`)
     }
 }
 

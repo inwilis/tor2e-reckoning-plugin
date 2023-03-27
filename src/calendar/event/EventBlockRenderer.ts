@@ -1,7 +1,6 @@
 import {App, MarkdownRenderChild} from "obsidian";
 import {reckonings} from "../../reckoning/Reckonings";
 import {DateInformationModal} from "./DateInformationModal";
-import {stewardsReckoning} from "../../reckoning/stewards/StewardsReckoning";
 
 
 export class EventBlockRenderer extends MarkdownRenderChild {
@@ -19,7 +18,7 @@ export class EventBlockRenderer extends MarkdownRenderChild {
 
         if (this.params.date) {
 
-            const reckoning = this.params.reckoning || stewardsReckoning.getName()
+            const reckoning = reckonings.detectReckoning(this.params.date, this.params.reckoning, this.params.language)
 
             try {
                 let date = reckonings.getReckoning(reckoning).parseDate(this.params.date, this.params.language)

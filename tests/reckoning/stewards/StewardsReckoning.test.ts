@@ -138,25 +138,29 @@ describe('testing stewardsReckoning.parseDate', () => {
     test("Should parse representations for regular year", () => {
         for (let i = 1; i <= 365; i++) {
             const date = stewardsReckoning.getDate(3200, i);
-            expect(stewardsReckoning.parseDate(date.toString("quenya"))).toEqual(date)
-            expect(stewardsReckoning.parseDate(date.toString("sindarin"))).toEqual(date)
+            expect(stewardsReckoning.parseDate(date.toString("quenya"))).toMatchObject({year: date.year, month: date.month, day: date.day})
+            expect(stewardsReckoning.parseDate(date.toString("sindarin"))).toMatchObject({year: date.year, month: date.month, day: date.day})
         }
     })
 
     test("Should parse representations for leap year", () => {
         for (let i = 1; i <= 366; i++) {
             const date = stewardsReckoning.getDate(2060, i);
-            expect(stewardsReckoning.parseDate(date.toString("quenya"))).toEqual(date)
-            expect(stewardsReckoning.parseDate(date.toString("sindarin"))).toEqual(date)
+            expect(stewardsReckoning.parseDate(date.toString("quenya"))).toMatchObject({year: date.year, month: date.month, day: date.day})
+            expect(stewardsReckoning.parseDate(date.toString("sindarin"))).toMatchObject({year: date.year, month: date.month, day: date.day})
         }
     })
 
     test("Should parse representations for millennial year", () => {
         for (let i = 1; i <= 367; i++) {
             const date = stewardsReckoning.getDate(2360, i);
-            expect(stewardsReckoning.parseDate(date.toString("quenya"))).toEqual(date)
-            expect(stewardsReckoning.parseDate(date.toString("sindarin"))).toEqual(date)
+            expect(stewardsReckoning.parseDate(date.toString("quenya"))).toMatchObject({year: date.year, month: date.month, day: date.day})
+            expect(stewardsReckoning.parseDate(date.toString("sindarin"))).toMatchObject({year: date.year, month: date.month, day: date.day})
         }
     })
 })
 
+describe("testing language detection", () => {
+    test("should auto-detect quenya language", () => expect(stewardsReckoning.parseDate("1 Viresse 2100").language).toBe("quenya"))
+    test("should auto-detect sindarin language", () => expect(stewardsReckoning.parseDate("1 Gwirith 2100").language).toBe("sindarin"))
+})

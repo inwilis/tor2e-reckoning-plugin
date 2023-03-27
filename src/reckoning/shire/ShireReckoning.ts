@@ -109,16 +109,26 @@ class ShireReckoning extends Reckoning<ShireMonth> {
                 }
             } else {
                 if (!language) {
-                    throw new Error(`Unable to parse '${date}' as date. If this is a Bree date, it must be explicitly marked as such.`)
+                    throw new Error(`Unable to parse '${date}' as date of Shire reckoning. If this is a Bree date, it must be explicitly marked as such.`)
                 }
             }
         }
 
-        throw new Error(`Unable to parse '${date}' as date`)
+        throw new Error(`Unable to parse '${date}' as date of Shire reckoning`)
     }
 
     newDate(year: number, month: ShireMonth, day: number, language?: string): ReckoningDate<ShireMonth> {
         return new ShireReckoningDate(this, year, month, day, language)
+    }
+
+    hasKnownMonth(date: string) {
+        for (let m in ShireMonth) {
+            const monthLocalization = MONTH_NAMES[m as keyof typeof MONTH_NAMES]
+            if (date.includes(monthLocalization.shire)) {
+                return true
+            }
+        }
+        return false
     }
 }
 
