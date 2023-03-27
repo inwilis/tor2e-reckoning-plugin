@@ -7,12 +7,12 @@ import {STEWARDS_RECKONING_START} from "./StewardsReckoning";
 
 export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
 
-    constructor(reckoning: Reckoning<StewardsMonth>, year: number, month: StewardsMonth, day: number) {
+    constructor(reckoning: Reckoning<StewardsMonth>, year: number, month: StewardsMonth, day: number, language?: string) {
         if (year < STEWARDS_RECKONING_START) {
             throw new RangeError(`Year ${year} is before the ${STEWARDS_RECKONING_START}, when Steward's Reckoning started`)
         }
 
-        super(reckoning, year, month, day)
+        super(reckoning, year, month, day, language)
     }
 
     getDayOfWeek(): DayOfWeek {
@@ -37,10 +37,12 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
     }
 
     toString(language?: string): string {
-        if (language?.toLowerCase() == "quenya") {
+        const targetLanguage = language || this.language
+
+        if (targetLanguage.toLowerCase() == "quenya") {
             return this.toQuenya()
 
-        } else if (language?.toLowerCase() == "sindarin") {
+        } else if (targetLanguage.toLowerCase() == "sindarin") {
             return this.toSindarin()
 
         } else {
@@ -49,10 +51,12 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
     }
 
     toDayOfWeekString(language?: string): string {
-        if (language?.toLowerCase() == "quenya") {
+        const targetLanguage = language || this.language
+
+        if (targetLanguage.toLowerCase() == "quenya") {
             return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).quenya
 
-        } else if (language?.toLowerCase() == "sindarin") {
+        } else if (targetLanguage.toLowerCase() == "sindarin") {
             return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).sindarin
 
         } else {

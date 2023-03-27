@@ -10,7 +10,7 @@ export abstract class Reckoning<M extends number | string> {
 
     abstract getYearData(year: number): YearData<M>
 
-    abstract newDate(year: number, month: M, day: number): ReckoningDate<M>
+    abstract newDate(year: number, month: M, day: number, language?: string): ReckoningDate<M>
 
     abstract getSupportedLanguages(): string[]
 

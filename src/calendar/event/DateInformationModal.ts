@@ -10,10 +10,9 @@ export class DateInformationModal extends Modal {
 
     onOpen() {
         let {contentEl} = this;
-        const displayLanguage = this.params.display?.language || this.params.language || this.date.reckoning.getDefaultLanguage();
-        contentEl.createEl("h1", {text: this.date.toString(displayLanguage)})
+        contentEl.createEl("h1", {text: this.date.toString()})
         this.date.reckoning.getSupportedLanguages().forEach((lang) => {
-            if (lang != displayLanguage) {
+            if (lang != this.date.language) {
                 contentEl.createEl("p", {text: this.date.toString(lang)})
             }
         })
@@ -22,7 +21,7 @@ export class DateInformationModal extends Modal {
             if (name != this.date.reckoning.getName()) {
                 const convertedDate = reckonings.toReckoning(reckoning.getName(), this.date);
                 reckoning.getSupportedLanguages().forEach((lang) => {
-                    if (lang != displayLanguage) {
+                    if (lang != this.date.language) {
                         contentEl.createEl("p", {text: convertedDate.toString(lang)})
                     }
                 })

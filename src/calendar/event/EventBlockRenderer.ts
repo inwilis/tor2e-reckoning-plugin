@@ -1,6 +1,7 @@
 import {App, MarkdownRenderChild} from "obsidian";
 import {reckonings} from "../../reckoning/Reckonings";
 import {DateInformationModal} from "./DateInformationModal";
+import {stewardsReckoning} from "../../reckoning/stewards/StewardsReckoning";
 
 
 export class EventBlockRenderer extends MarkdownRenderChild {
@@ -16,16 +17,18 @@ export class EventBlockRenderer extends MarkdownRenderChild {
 
     render() {
 
-        if (this.params.reckoning && this.params.date) {
+        if (this.params.date) {
+
+            const reckoning = this.params.reckoning || stewardsReckoning.getName()
 
             try {
-                let date = reckonings.getReckoning(this.params.reckoning).parseDate(this.params.date, this.params.language)
+                let date = reckonings.getReckoning(reckoning).parseDate(this.params.date, this.params.language)
 
                 if (this.params.display?.reckoning) {
                     date = reckonings.toReckoning(this.params.display.reckoning, date)
                 }
 
-                const dateAsText = date.toString(this.params.display?.language || this.params.language)
+                const dateAsText = date.toString(this.params.display?.language)
 
                 const span = this.containerEl.createSpan({cls: "tor2e-event"})
 

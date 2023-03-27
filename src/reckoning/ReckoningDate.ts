@@ -3,7 +3,9 @@ import {Reckoning} from "./Reckoning";
 
 export abstract class ReckoningDate<M extends number | string> {
 
-    protected constructor(readonly reckoning: Reckoning<M>, readonly year: number, readonly month: M, readonly day: number) {
+    readonly language: string
+
+    protected constructor(readonly reckoning: Reckoning<M>, readonly year: number, readonly month: M, readonly day: number, language?: string) {
         const yearData = reckoning.getYearData(year);
 
         if (!yearData.hasMonth(month)) {
@@ -22,6 +24,8 @@ export abstract class ReckoningDate<M extends number | string> {
         this.year = year;
         this.month = month;
         this.day = day;
+
+        this.language = language || reckoning.getDefaultLanguage()
     }
 
     isBefore(other: typeof this) {

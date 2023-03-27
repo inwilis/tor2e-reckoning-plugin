@@ -9,12 +9,12 @@ import {SHIRE_REFORM_YEAR, shireReckoning} from "./ShireReckoning";
 
 export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
 
-    constructor(reckoning: Reckoning<ShireMonth>, year: number, month: ShireMonth, day: number) {
+    constructor(reckoning: Reckoning<ShireMonth>, year: number, month: ShireMonth, day: number, language?: string) {
         if (year < 1) {
             throw new RangeError(`Year ${year} is before the Year 1, when Shire-Reckoning started`)
         }
 
-        super(reckoning, year, month, day)
+        super(reckoning, year, month, day, language)
     }
 
     getDayOfWeek(): DayOfWeek {
@@ -67,10 +67,12 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
     }
 
     toString(language?: string): string {
-        if (language?.toLowerCase() == "shire") {
+        const targetLanguage = language || this.language
+
+        if (targetLanguage.toLowerCase() == "shire") {
             return this.toShire()
 
-        } else if (language?.toLowerCase() == "bree") {
+        } else if (targetLanguage.toLowerCase() == "bree") {
             return this.toBree()
 
         } else {
@@ -79,10 +81,12 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
     }
 
     toDayOfWeekString(language?: string): string {
-        if (language?.toLowerCase() == "shire") {
+        const targetLanguage = language || this.language
+
+        if (targetLanguage.toLowerCase() == "shire") {
             return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).shire
 
-        } else if (language?.toLowerCase() == "bree") {
+        } else if (targetLanguage.toLowerCase() == "bree") {
             return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).bree
 
         } else {

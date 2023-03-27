@@ -96,16 +96,20 @@ class ShireReckoning extends Reckoning<ShireMonth> {
                                 break
                             }
                         }
-                        return this.newDate(year, month, 1)
+                        return this.newDate(year, month, 1, dateLanguage)
                     }
 
-                    return this.newDate(year, month, parseInt(rawDay))
+                    return this.newDate(year, month, parseInt(rawDay), dateLanguage)
 
                 } else {
                     const monthDays = this.getYearData(year).monthDays[month];
                     if (monthDays[0] == monthDays[1]) {
-                        return this.newDate(year, month, 1)
+                        return this.newDate(year, month, 1, dateLanguage)
                     }
+                }
+            } else {
+                if (!language) {
+                    throw new Error(`Unable to parse '${date}' as date. If this is a Bree date, it must be explicitly marked as such.`)
                 }
             }
         }
@@ -113,8 +117,8 @@ class ShireReckoning extends Reckoning<ShireMonth> {
         throw new Error(`Unable to parse '${date}' as date`)
     }
 
-    newDate(year: number, month: ShireMonth, day: number): ReckoningDate<ShireMonth> {
-        return new ShireReckoningDate(this, year, month, day)
+    newDate(year: number, month: ShireMonth, day: number, language?: string): ReckoningDate<ShireMonth> {
+        return new ShireReckoningDate(this, year, month, day, language)
     }
 }
 

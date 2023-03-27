@@ -37,8 +37,8 @@ class StewardsReckoning extends Reckoning<StewardsMonth>{
         return super.getDate(year, dayOfYear)
     }
 
-    newDate(year: number, month: StewardsMonth, day: number): ReckoningDate<StewardsMonth> {
-        return new StewardsReckoningDate(this, year, month, day)
+    newDate(year: number, month: StewardsMonth, day: number, language?: string): ReckoningDate<StewardsMonth> {
+        return new StewardsReckoningDate(this, year, month, day, language)
     }
 
     getSupportedLanguages(): string[] {
@@ -72,23 +72,29 @@ class StewardsReckoning extends Reckoning<StewardsMonth>{
 
         if (year) {
             let month: StewardsMonth | undefined
+            let detectedLanguage: string | undefined
 
             for (let m in StewardsMonth) {
                 const monthLocalization = MONTH_NAMES[m as keyof typeof MONTH_NAMES];
                 for (let k in monthLocalization) {
                     if (rawMonth == monthLocalization[k as keyof typeof monthLocalization]) {
                         month = m as keyof typeof MONTH_NAMES
+                        detectedLanguage = k
                     }
                 }
             }
 
+            if (detectedLanguage) {
+                detectedLanguage = detectedLanguage.replace("Simplified", "")
+            }
+
             if (month) {
                 if (rawDay) {
-                    return this.newDate(year, month, parseInt(rawDay))
+                    return this.newDate(year, month, parseInt(rawDay), detectedLanguage)
                 } else {
                     const monthDays = this.getYearData(year).monthDays[month];
                     if (monthDays[0] == monthDays[1]) {
-                        return this.newDate(year, month, 1)
+                        return this.newDate(year, month, 1, detectedLanguage)
                     }
                 }
             }
