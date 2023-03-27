@@ -1,5 +1,6 @@
 import {App, MarkdownRenderChild} from "obsidian";
 import {reckonings} from "../../reckoning/Reckonings";
+import {DateInformationModal} from "./DateInformationModal";
 
 
 export class EventBlockRenderer extends MarkdownRenderChild {
@@ -25,10 +26,12 @@ export class EventBlockRenderer extends MarkdownRenderChild {
                 }
 
                 const dateAsText = date.toString(this.params.display?.language || this.params.language)
-                const tooltip = date.toDayOfWeekString(this.params.display?.language || this.params.language) + ` (${date.getDayOfWeek() + 1})`
 
                 const span = this.containerEl.createSpan({cls: "tor2e-event"})
-                span.createSpan({cls: "tor2e-date", text: dateAsText, title: tooltip})
+
+                const dateSpan = span.createSpan({cls: "tor2e-date", text: dateAsText})
+                dateSpan.addEventListener("click", () => new DateInformationModal(this.app, date, this.params).open())
+
                 span.createSpan({cls: "tor2e-separator", text: ": "})
                 span.createSpan({cls: "tor2e-text", text: this.params.text})
 

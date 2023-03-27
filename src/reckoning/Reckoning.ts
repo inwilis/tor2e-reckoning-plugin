@@ -12,6 +12,10 @@ export abstract class Reckoning<M extends number | string> {
 
     abstract newDate(year: number, month: M, day: number): ReckoningDate<M>
 
+    abstract getSupportedLanguages(): string[]
+
+    abstract getDefaultLanguage(): string
+
     abstract parseDate(date: string, language?: string): ReckoningDate<M>
 
     isLeapYear(year: number): boolean {

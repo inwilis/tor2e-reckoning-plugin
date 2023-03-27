@@ -7,48 +7,53 @@ import {Reckoning} from "./Reckoning";
 
 export const SHIRE_RECKONING_START_IN_STEWARDS = 1600
 
+export const allReckonings: ReadonlyMap<string, Reckoning<any>> = new Map<string, Reckoning<any>>([
+    [stewardsReckoning.getName(), stewardsReckoning],
+    [shireReckoning.getName(), shireReckoning]
+]) as ReadonlyMap<string, Reckoning<any>>
+
+const reckoningAliases: Map<string, string> = new Map<string, string>([
+    ["steward", "stewards"],
+    ["steward's", "stewards"],
+])
+
+const conversions: Map<string, (date: ReckoningDate<any>) => ReckoningDate<any>> = new Map<string, (date: ReckoningDate<any>) => ReckoningDate<any>>([
+    ["stewards->shire", convertStewardsToShireReckoning],
+    ["shire->stewards", convertShireToStewardsReckoning],
+])
+
 export const reckonings = {
 
-    getReckoning(reckoning: string): Reckoning<any> {
-        if (reckoning.toLowerCase() == "stewards" || reckoning.toLowerCase() == "steward's" || reckoning.toLowerCase() == "steward") {
-            return stewardsReckoning
-        } else if (reckoning.toLowerCase() == "shire") {
-            return shireReckoning
+    getReckoning(name: string): Reckoning<any> {
+        const exactName = reckoningAliases.has(name.toLowerCase()) ? reckoningAliases.get(name.toLowerCase()) : name.toLowerCase()
+        const reckoning = allReckonings.get(exactName || "")
+        if (reckoning) {
+            return reckoning
         } else {
-            throw new Error(`Unknown reckoning: "${reckoning}"`)
+            throw new Error(`Unknown reckoning: "${name}"`)
         }
     },
 
-    toReckoning(reckoning: string, date: ReckoningDate<any>): ReckoningDate<any> {
-        if (reckoning.toLowerCase() == "stewards" || reckoning.toLowerCase() == "steward's" || reckoning.toLowerCase() == "steward") {
-            if (date.reckoning.getName() == "shire") {
-                return this.convertShireToStewardsReckoning(date)
-            }
+    toReckoning(targetReckoning: string, date: ReckoningDate<any>): ReckoningDate<any> {
+        const exactTargetName = reckoningAliases.has(targetReckoning.toLowerCase()) ? reckoningAliases.get(targetReckoning.toLowerCase()) : targetReckoning.toLowerCase()
 
-            throw new Error(`Unknown conversion: "${date.reckoning.getName()}" to "${reckoning}"`)
-
-        } else if (reckoning.toLowerCase() == "shire") {
-            if (date.reckoning.getName() == "stewards") {
-                return this.convertStewardsToShireReckoning(date)
-            }
-
-            throw new Error(`Unknown conversion: "${date.reckoning.getName()}" to "${reckoning}"`)
-
+        const conversion = conversions.get(`${date.reckoning.getName()}->${exactTargetName || ""}`);
+        if (conversion) {
+            return conversion(date)
         } else {
-            throw new Error(`Unknown reckoning: "${reckoning}"`)
+            throw new Error(`Unknown conversion: "${date.reckoning.getName()}" to "${targetReckoning}"`)
         }
     },
+}
 
-    convertStewardsToShireReckoning(date: ReckoningDate<StewardsMonth>): ReckoningDate<ShireMonth> {
-        const shireYear = date.year - SHIRE_RECKONING_START_IN_STEWARDS
+function convertStewardsToShireReckoning(date: ReckoningDate<StewardsMonth>): ReckoningDate<ShireMonth> {
+    const shireYear = date.year - SHIRE_RECKONING_START_IN_STEWARDS
 
-        return shireReckoning.getDate(shireYear, date.getDayOfYear())
-    },
+    return shireReckoning.getDate(shireYear, date.getDayOfYear())
+}
 
-    convertShireToStewardsReckoning(date: ReckoningDate<ShireMonth>): ReckoningDate<StewardsMonth> {
-        const stewardsYear = date.year + SHIRE_RECKONING_START_IN_STEWARDS
+function convertShireToStewardsReckoning(date: ReckoningDate<ShireMonth>): ReckoningDate<StewardsMonth> {
+    const stewardsYear = date.year + SHIRE_RECKONING_START_IN_STEWARDS
 
-        return stewardsReckoning.getDate(stewardsYear, date.getDayOfYear())
-    }
-
+    return stewardsReckoning.getDate(stewardsYear, date.getDayOfYear())
 }

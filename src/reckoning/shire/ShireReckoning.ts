@@ -38,6 +38,14 @@ class ShireReckoning extends Reckoning<ShireMonth> {
         return super.getDate(year, dayOfYear)
     }
 
+    getSupportedLanguages(): string[] {
+        return ["shire", "bree"]
+    }
+
+    getDefaultLanguage(): string {
+        return "shire"
+    }
+
     parseDate(date: string, language?: string): ReckoningDate<ShireMonth> {
         const found = date.split(" ", 3)
 
@@ -59,15 +67,17 @@ class ShireReckoning extends Reckoning<ShireMonth> {
         let year = parseInt(rawYear)
 
         if (year) {
+            const dateLanguage: string = language && this.getSupportedLanguages().includes(language) ? language : this.getDefaultLanguage()
+
             let month: ShireMonth | undefined
 
             for (let m in ShireMonth) {
                 const monthLocalization = MONTH_NAMES[m as keyof typeof MONTH_NAMES];
-                if (`${rawDay} ${rawMonth}` == (language?.toLowerCase() == "bree" ? monthLocalization.bree : monthLocalization.shire)) {
+                if (`${rawDay} ${rawMonth}` == (dateLanguage == "shire" ? monthLocalization.shire : monthLocalization.bree)) {
                     month = m as keyof typeof MONTH_NAMES
                     rawDay = null
                     break
-                } else if (rawMonth == (language?.toLowerCase() == "bree" ? monthLocalization.bree : monthLocalization.shire)) {
+                } else if (rawMonth == (dateLanguage == "shire" ? monthLocalization.shire : monthLocalization.bree)) {
                     month = m as keyof typeof MONTH_NAMES
                     break
                 }
@@ -76,7 +86,7 @@ class ShireReckoning extends Reckoning<ShireMonth> {
             if (month) {
                 if (rawDay) {
 
-                    if (language?.toLowerCase() == "bree" && month == ShireMonth.LITHE1) {
+                    if (dateLanguage == "bree" && month == ShireMonth.LITHE1) {
                         const summerday = parseInt(rawDay)
                         const yearData = this.getYearData(year);
                         const yearDay = yearData.monthDays[ShireMonth.LITHE1][0] + summerday - 1

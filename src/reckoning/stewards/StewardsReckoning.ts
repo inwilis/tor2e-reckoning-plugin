@@ -41,6 +41,14 @@ class StewardsReckoning extends Reckoning<StewardsMonth>{
         return new StewardsReckoningDate(this, year, month, day)
     }
 
+    getSupportedLanguages(): string[] {
+        return ["quenya", "sindarin"];
+    }
+
+    getDefaultLanguage(): string {
+        return "quenya";
+    }
+
     parseDate(date: string, language?: string): ReckoningDate<StewardsMonth> {
         const found = date.split(" ", 3)
 
