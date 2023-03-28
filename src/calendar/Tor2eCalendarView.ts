@@ -1,4 +1,4 @@
-import {ItemView, setIcon, ViewStateResult} from "obsidian";
+import {App, ItemView, setIcon, ViewStateResult} from "obsidian";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
 import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 import {CSS_CALENDAR_VIEW} from "../constants";
@@ -7,12 +7,55 @@ export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-cale
 
 export class Tor2eCalendarView extends ItemView {
 
+    private defaultView: boolean = false
+
     private selectedDate: ReckoningDate<any> = stewardsReckoning.getDate(2965, 1)
 
     private displayDate: ReckoningDate<any> = stewardsReckoning.getDate(2965, 1)
 
+    public static createDefaultView(app: App, selectedDate: ReckoningDate<any>) {
+        app.workspace.getRightLeaf(false).setViewState({
+            type: VIEW_TYPE_STEWARDS_CALENDAR,
+            active: true,
+            state: {
+                defaultView: true,
+                selectedDate: selectedDate
+            }
+        }).then(() =>
+            app.workspace.revealLeaf(
+                app.workspace.getLeavesOfType(VIEW_TYPE_STEWARDS_CALENDAR)[0]
+            ))
+    }
+
+    public static openDefaultView(app: App, selectedDate: ReckoningDate<any>) {
+        const views = app.workspace.getLeavesOfType(VIEW_TYPE_STEWARDS_CALENDAR)
+
+        if (views && views.length > 0) {
+            const defaultView = views.find(v => {
+                return v.getViewState().state.defaultView == true;
+            });
+            if (defaultView) {
+
+                defaultView.setViewState({
+                    type: VIEW_TYPE_STEWARDS_CALENDAR,
+                    active: true,
+                    state: {selectedDate: selectedDate}
+                }).then(() => app.workspace.revealLeaf(defaultView))
+
+            } else {
+                Tor2eCalendarView.createDefaultView(app, selectedDate)
+            }
+        } else {
+            Tor2eCalendarView.createDefaultView(app, selectedDate)
+        }
+    }
+
     getDisplayText(): string {
         return "TOR2e Calendar"
+    }
+
+    getIcon(): string {
+        return "calendar-range"
     }
 
     getViewType(): string {
@@ -28,25 +71,43 @@ export class Tor2eCalendarView extends ItemView {
     }
 
     setState(state: any, result: ViewStateResult): Promise<void> {
-        if (state instanceof ReckoningDate) {
-            this.selectDate(state)
+        if (state.defaultView) {
+            this.defaultView = true
         }
+
+        if (state.selectedDate instanceof ReckoningDate) {
+            this.selectedDate = state.selectedDate
+        }
+
+        if (state.displayDate instanceof ReckoningDate) {
+            this.displayDate = state.displayDate
+        } else {
+            this.displayDate = this.selectedDate
+        }
+
+        this.render()
+
+        this.app.workspace.requestSaveLayout()
+
         return super.setState(state, result);
     }
 
-    selectDate(date: ReckoningDate<any>) {
-        this.selectedDate = date
-        this.displayDate = date
-        this.render()
+    getState(): any {
+        const state = super.getState();
+        state.selectedDate = this.selectedDate
+        state.displayDate = this.displayDate
+        state.defaultView = this.defaultView
+
+        return state;
     }
 
     viewDate(date: ReckoningDate<any>) {
         this.displayDate = date
         this.render()
+        this.app.workspace.requestSaveLayout()
     }
 
     render() {
-
         const container = this.containerEl.children[1]
         container.empty()
 
@@ -59,8 +120,12 @@ export class Tor2eCalendarView extends ItemView {
 
         setIcon(previousYear, "chevron-left")
         setIcon(nextYear, "chevron-right")
-        previousYear.addEventListener("click", () => {this.viewDate(this.displayDate.plusYears(-1))})
-        nextYear.addEventListener("click", () => {this.viewDate(this.displayDate.plusYears(1))})
+        previousYear.addEventListener("click", () => {
+            this.viewDate(this.displayDate.plusYears(-1))
+        })
+        nextYear.addEventListener("click", () => {
+            this.viewDate(this.displayDate.plusYears(1))
+        })
 
         const monthPane = root.createEl("div", {cls: CSS_CALENDAR_VIEW.MONTH.ROOT})
         const previousMonth = monthPane.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.NAV_PREVIOUS});
@@ -69,8 +134,12 @@ export class Tor2eCalendarView extends ItemView {
 
         setIcon(previousMonth, "chevron-left")
         setIcon(nextMonth, "chevron-right")
-        previousMonth.addEventListener("click", () => {this.viewDate(this.displayDate.plusMonths(-1))})
-        nextMonth.addEventListener("click", () => {this.viewDate(this.displayDate.plusMonths(1))})
+        previousMonth.addEventListener("click", () => {
+            this.viewDate(this.displayDate.plusMonths(-1))
+        })
+        nextMonth.addEventListener("click", () => {
+            this.viewDate(this.displayDate.plusMonths(1))
+        })
 
         const monthContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.ROOT})
         this.renderMonth(monthContainer)

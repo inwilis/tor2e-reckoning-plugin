@@ -1,6 +1,6 @@
 import {App, MarkdownRenderChild, MarkdownRenderer} from "obsidian";
 import {reckonings} from "../reckoning/Reckonings";
-import {VIEW_TYPE_STEWARDS_CALENDAR} from "../calendar/Tor2eCalendarView";
+import {Tor2eCalendarView} from "../calendar/Tor2eCalendarView";
 import {CSS_CLASS_ERROR} from "../constants";
 
 
@@ -37,19 +37,7 @@ export class EventBlockRenderer extends MarkdownRenderChild {
                 const span = this.containerEl.createSpan({cls: "tor2e-event"})
 
                 const dateSpan = span.createSpan({cls: "tor2e-date", text: dateAsText})
-                // dateSpan.addEventListener("click", () => new DateInformationModal(this.app, date, this.params).open())
-                dateSpan.addEventListener("click", () => {
-                    this.app.workspace.detachLeavesOfType(VIEW_TYPE_STEWARDS_CALENDAR)
-
-                    this.app.workspace.getRightLeaf(false).setViewState({
-                        type: VIEW_TYPE_STEWARDS_CALENDAR,
-                        active: true,
-                        state: date
-                    }).then(() =>
-                        this.app.workspace.revealLeaf(
-                            this.app.workspace.getLeavesOfType(VIEW_TYPE_STEWARDS_CALENDAR)[0]
-                        ))
-                })
+                dateSpan.addEventListener("click", () => Tor2eCalendarView.openDefaultView(this.app, date))
 
                 span.createSpan({cls: "tor2e-separator", text: ": "})
                 const textSpan = span.createSpan({cls: "tor2e-text"})

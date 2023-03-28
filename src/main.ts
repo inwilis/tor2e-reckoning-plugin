@@ -18,29 +18,22 @@ export default class Tor2ePlugin extends Plugin {
             VIEW_TYPE_STEWARDS_CALENDAR,
             (leaf) => new Tor2eCalendarView(leaf)
         )
-    }
 
-    async processEventCodeBlock(source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
-        const params = {...parseYaml(source)}
-
-        ctx.addChild(new EventBlockRenderer(this.app, el, params, ctx.sourcePath))
+        this.addRibbonIcon("dice", "Print leaf types", () => {
+            this.app.workspace.iterateAllLeaves((leaf) => {
+                console.log(leaf.getViewState());
+            });
+        });
     }
 
     onunload() {
         this.app.workspace.detachLeavesOfType(VIEW_TYPE_STEWARDS_CALENDAR)
     }
 
-    async activateView() {
-        this.app.workspace.detachLeavesOfType(VIEW_TYPE_STEWARDS_CALENDAR)
+    async processEventCodeBlock(source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
+        const params = {...parseYaml(source)}
 
-        await this.app.workspace.getRightLeaf(false).setViewState({
-            type: VIEW_TYPE_STEWARDS_CALENDAR,
-            active: true,
-        })
-
-        this.app.workspace.revealLeaf(
-            this.app.workspace.getLeavesOfType(VIEW_TYPE_STEWARDS_CALENDAR)[0]
-        )
+        ctx.addChild(new EventBlockRenderer(this.app, el, params, ctx.sourcePath))
     }
 }
 
