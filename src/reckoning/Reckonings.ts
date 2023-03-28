@@ -18,6 +18,8 @@ const reckoningAliases: Map<string, string> = new Map<string, string>([
 ])
 
 const conversions: Map<string, (date: ReckoningDate<any>) => ReckoningDate<any>> = new Map<string, (date: ReckoningDate<any>) => ReckoningDate<any>>([
+    ["stewards->stewards", conversionNotRequired],
+    ["shire->shire", conversionNotRequired],
     ["stewards->shire", convertStewardsToShireReckoning],
     ["shire->stewards", convertShireToStewardsReckoning],
 ])
@@ -80,4 +82,8 @@ function convertShireToStewardsReckoning(date: ReckoningDate<ShireMonth>): Recko
     const stewardsYear = date.year + SHIRE_RECKONING_START_IN_STEWARDS
 
     return stewardsReckoning.getDate(stewardsYear, date.getDayOfYear())
+}
+
+function conversionNotRequired<M extends number | string>(date: ReckoningDate<M>): ReckoningDate<M> {
+    return date
 }
