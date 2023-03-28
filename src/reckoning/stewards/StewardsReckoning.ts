@@ -29,12 +29,12 @@ class StewardsReckoning extends Reckoning<StewardsMonth>{
         return YEAR_DATA[this.getYearType(year)]
     }
 
-    getDate(year: number, dayOfYear: number): ReckoningDate<StewardsMonth> {
+    getDate(year: number, dayOfYear: number, language?: string): ReckoningDate<StewardsMonth> {
         if (year < STEWARDS_RECKONING_START) {
             throw new RangeError(`Year ${year} is before the ${STEWARDS_RECKONING_START}, when Steward's Reckoning started`)
         }
 
-        return super.getDate(year, dayOfYear)
+        return super.getDate(year, dayOfYear, language)
     }
 
     newDate(year: number, month: StewardsMonth, day: number, language?: string): ReckoningDate<StewardsMonth> {

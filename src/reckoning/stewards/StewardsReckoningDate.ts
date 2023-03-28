@@ -6,7 +6,6 @@ import {StewardsLocalization} from "./StewardsLocalization";
 import {STEWARDS_RECKONING_START} from "./StewardsReckoning";
 
 export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
-
     constructor(reckoning: Reckoning<StewardsMonth>, year: number, month: StewardsMonth, day: number, language?: string) {
         if (year < STEWARDS_RECKONING_START) {
             throw new RangeError(`Year ${year} is before the ${STEWARDS_RECKONING_START}, when Steward's Reckoning started`)
@@ -61,6 +60,20 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
 
         } else {
             return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).quenya
+        }
+    }
+
+    toMonthString(language?: string | undefined): string {
+        const targetLanguage = language || this.language
+
+        if (targetLanguage.toLowerCase() == "quenya") {
+            return StewardsLocalization.forMonth(this.month).quenya
+
+        } else if (targetLanguage.toLowerCase() == "sindarin") {
+            return StewardsLocalization.forMonth(this.month).sindarin
+
+        } else {
+            return StewardsLocalization.forMonth(this.month).quenya
         }
     }
 }

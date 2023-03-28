@@ -1,0 +1,29 @@
+/*
+.tor2e-calendar-view-root .calendar-pane {
+    display:grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-content:center;
+    align-items:center;
+}
+
+.tor2e-calendar-view-root .calendar-pane > .day, .tor2e-calendar-view-root .calendar-pane > .not-day {
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    margin:2px;
+    aspect-ratio: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    transition-duration: var(--anim-duration-superfast);
+}
+
+.tor2e-calendar-view-root .calendar-pane > .day:hover:not(.not-day-of-month) {
+    background: var(--nav-item-background-hover);
+}
+
+.tor2e-calendar-view-root .calendar-pane > .day.highlight-day {
+    box-shadow:inset 0px 0px 0px 2px var(--nav-item-color);
+    font-weight: var(--bold-weight);
+}
+
+*/

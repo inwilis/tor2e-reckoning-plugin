@@ -1,6 +1,6 @@
 import {App, Modal} from "obsidian";
-import {ReckoningDate} from "../../reckoning/ReckoningDate";
-import {allReckonings, reckonings} from "../../reckoning/Reckonings";
+import {ReckoningDate} from "../reckoning/ReckoningDate";
+import {allReckonings, reckonings} from "../reckoning/Reckonings";
 
 export class DateInformationModal extends Modal {
 

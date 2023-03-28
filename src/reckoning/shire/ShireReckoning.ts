@@ -30,12 +30,12 @@ class ShireReckoning extends Reckoning<ShireMonth> {
         return YEAR_DATA[this.getYearType(year)]
     }
 
-    getDate(year: number, dayOfYear: number): ReckoningDate<ShireMonth> {
+    getDate(year: number, dayOfYear: number, language?: string): ReckoningDate<ShireMonth> {
         if (year < 1) {
             throw new RangeError(`Year ${year} is before the Year 1, when Shire-Reckoning started`)
         }
 
-        return super.getDate(year, dayOfYear)
+        return super.getDate(year, dayOfYear, language)
     }
 
     getSupportedLanguages(): string[] {

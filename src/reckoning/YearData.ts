@@ -25,12 +25,24 @@ export class YearData<M extends number | string> {
         return this.monthSequence.includes(month)
     }
 
+    getFirstMonth(): M {
+        return this.monthSequence[0]
+    }
+
+    getLastMonth(): M {
+        return this.monthSequence[this.monthSequence.length - 1]
+    }
+
     getDaysInMonth(month: M): number {
         return this.monthDays[month][1] - this.monthDays[month][0] + 1;
     }
 
     getFirstDay(month: M): number {
         return this.monthDays[month][0]
+    }
+
+    getLastDay(month: M): number {
+        return this.monthDays[month][1]
     }
 
     getNextMonth(month: M): M {

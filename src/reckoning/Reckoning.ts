@@ -30,7 +30,7 @@ export abstract class Reckoning<M extends number | string> {
         return this.getYearData(year).getNextMonth(month)
     }
 
-    getDate(year: number, dayOfYear: number): ReckoningDate<M> {
+    getDate(year: number, dayOfYear: number, language?: string): ReckoningDate<M> {
         if (dayOfYear < 0) {
             throw new RangeError(`Day of year must start from 1, got ${dayOfYear} instead`)
         }
@@ -38,7 +38,7 @@ export abstract class Reckoning<M extends number | string> {
         const yearDatum = this.getYearData(year);
         const month = yearDatum.getMonthForDayOfYear(dayOfYear);
 
-        return this.newDate(year, month, dayOfYear - yearDatum.getFirstDay(month) + 1)
+        return this.newDate(year, month, dayOfYear - yearDatum.getFirstDay(month) + 1, language)
     }
 
     getDaysBetween(first: ReckoningDate<M>, second: ReckoningDate<M>): number {

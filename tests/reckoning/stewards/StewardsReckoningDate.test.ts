@@ -111,6 +111,84 @@ describe('testing StewardsReckoningDate.getDayOwWeek', () => {
     testDayOfWeek(stewardsReckoning.newDate(3019, StewardsMonth.M3, 15), DayOfWeek.D6)
 })
 
+describe('testing StewardsReckoningDate.plusDays', () => {
+    test("should add a zero to date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1).plusDays(0)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1)))
+
+    test("should add a day to date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1).plusDays(1)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M2, 2)))
+
+    test("should roll a month", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1).plusDays(30)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M3, 1)))
+
+    test("should roll a year", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1).plusDays(365)).toEqual(stewardsReckoning.newDate(2444, StewardsMonth.M2, 1)))
+
+    test("should roll a year and a leap year", () =>
+        expect(stewardsReckoning.newDate(2103, StewardsMonth.M2, 1).plusDays(365+366)).toEqual(stewardsReckoning.newDate(2105, StewardsMonth.M2, 1)))
+
+    test("should add a -zero to date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1).plusDays(-0)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1)))
+
+    test("should subtract a day from date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1).plusDays(-1)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M1, 30)))
+
+    test("should roll a month when subtracting", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1).plusDays(-30)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M1, 1)))
+
+    test("should roll a year when subtracting", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1).plusDays(-365)).toEqual(stewardsReckoning.newDate(2442, StewardsMonth.M2, 1)))
+
+    test("should roll a year and a leap year when subtracting", () =>
+        expect(stewardsReckoning.newDate(2105, StewardsMonth.M2, 1).plusDays(-365-366)).toEqual(stewardsReckoning.newDate(2103, StewardsMonth.M2, 1)))
+})
+
+describe('testing StewardsReckoningDate.plusMonths', () => {
+    test("should add a zero months to date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10).plusMonths(0)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10)))
+
+    test("should add 1 month to date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10, "sindarin").plusMonths(1)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M3, 10, "sindarin")))
+
+    test("should add 2 months to date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10).plusMonths(2)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.I2, 1)))
+
+    test("should add 1 month to intercalary date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.I2, 1).plusMonths(1)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M4, 1)))
+
+    test("should roll forward over the year", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.I2, 1).plusMonths(13)).toEqual(stewardsReckoning.newDate(2444, StewardsMonth.I1, 1)))
+
+    test("should subtract 1 month from date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10).plusMonths(-1)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M1, 10)))
+
+    test("should subtract 2 months from date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10).plusMonths(-2)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.I1, 1)))
+
+    test("should subtract 1 month, ending in intercalary date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M4, 10).plusMonths(-1)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.I2, 1)))
+
+    test("should roll backwards over the year", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10).plusMonths(-4)).toEqual(stewardsReckoning.newDate(2442, StewardsMonth.M12, 10)))
+})
+
+describe('testing StewardsReckoningDate.plusYears', () => {
+    test("should add a zero years to date", () =>
+        expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10).plusYears(0)).toEqual(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10)))
+
+    test("should add 1 year to date", () =>
+        expect(stewardsReckoning.getDate(2443, 105, "sindarin").plusYears(1)).toEqual(stewardsReckoning.getDate(2444, 105, "sindarin")))
+
+    test("should add 2 years to date", () =>
+        expect(stewardsReckoning.getDate(2444, 366).plusYears(2)).toEqual(stewardsReckoning.getDate(2446, 365)))
+
+    test("should subtract 1 year from date", () =>
+        expect(stewardsReckoning.getDate(2443, 105).plusYears(-1)).toEqual(stewardsReckoning.getDate(2442, 105)))
+
+    test("should subtract 2 years from date", () =>
+        expect(stewardsReckoning.getDate(2444, 366).plusYears(-2)).toEqual(stewardsReckoning.getDate(2442, 365)))
+})
+
 function testDayOfWeek(date: ReckoningDate<StewardsMonth>, expected: number) {
     test(`${date.toString("quenya")} is ${expected}`, () => expect(date.getDayOfWeek()).toBe(expected))
 }

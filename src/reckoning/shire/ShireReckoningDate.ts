@@ -93,4 +93,26 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
             return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).shire
         }
     }
+
+    toMonthString(language?: string | undefined): string {
+        const targetLanguage = language || this.language
+
+        if (targetLanguage.toLowerCase() == "shire") {
+            return ShireLocalization.forMonth(this.month).shire
+
+        } else if (targetLanguage.toLowerCase() == "bree") {
+            if (this.month == ShireMonth.LITHE1 || this.month == ShireMonth.OVERLITHE_MILLENNIAL || this.month == ShireMonth.MIDYEAR || this.month == ShireMonth.OVERLITHE || this.month == ShireMonth.LITHE2) {
+
+                const lithe1Day = this.getYearData().monthDays[ShireMonth.LITHE1][0]
+                const summerday = this.getDayOfYear() - lithe1Day + 1
+
+                return `${summerday} ${ShireLocalization.forMonth(this.month).bree}`
+            } else {
+                return ShireLocalization.forMonth(this.month).bree
+            }
+
+        } else {
+            return ShireLocalization.forMonth(this.month).shire
+        }
+    }
 }

@@ -1,5 +1,5 @@
 import {ALL_MONTHS, MonthSuggestion, MULTI_DAY_MONTHS, SINGLE_DAY_INTERCALARIES} from "./MonthSuggestion";
-import {CODE_BLOCK_EVENT} from "../../../constants";
+import {CODE_BLOCK_EVENT} from "../../constants";
 
 export interface LineProvider {
     getLine(line: number): string

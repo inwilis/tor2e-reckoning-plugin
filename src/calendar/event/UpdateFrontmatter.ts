@@ -1,6 +1,7 @@
 import {FileManager, MetadataCache, parseYaml, TAbstractFile, TFile} from "obsidian";
 import {CODE_BLOCK_EVENT} from "../../constants";
-import {StewardsReckoning, StewardsReckoningDate} from "../../reckoning/stewards/StewardsReckoning";
+import {stewardsReckoning} from "../../reckoning/stewards/StewardsReckoning";
+import {ReckoningDate} from "../../reckoning/ReckoningDate";
 
 export function updateFrontmatter(fileManager: FileManager, metadataCache: MetadataCache) {
 
@@ -28,10 +29,8 @@ export function parseEventData(content: string): EventData[] {
         if (match && match[1]) {
             const parsed = parseYaml(match[1]);
             if (typeof parsed.date == "string" && typeof parsed.text == "string") {
-                const parsedDate = StewardsReckoning.parseDate(parsed.date);
-                if (parsedDate instanceof StewardsReckoningDate) {
-                    result.push({date: parsedDate, text: parsed.text})
-                }
+                const parsedDate = stewardsReckoning.parseDate(parsed.date);
+                result.push({date: parsedDate, text: parsed.text})
             }
         }
     }
@@ -39,7 +38,7 @@ export function parseEventData(content: string): EventData[] {
 }
 
 export interface EventData {
-    date: StewardsReckoningDate
+    date: ReckoningDate<any>
     text: string
 }
 
@@ -59,7 +58,7 @@ function processFrontmatter(eventData: EventData[], frontmatter: any) {
             frontmatter.tor2events.inline = []
         }
 
-        eventData.forEach(e => frontmatter.tor2events.inline.push({date: e.date.toQuenya(), text: e.text}))
+        // eventData.forEach(e => frontmatter.tor2events.inline.push({date: e.date.toQuenya(), text: e.text}))
     }
 }
 

@@ -1,5 +1,5 @@
-import {StewardsLocalizationData, MONTH_NAMES} from "../../../reckoning/stewards/StewardsLocalization";
-import {StewardsMonth} from "../../../reckoning/stewards/StewardsMonth";
+import {MONTH_NAMES, StewardsLocalizationData} from "../../reckoning/stewards/StewardsLocalization";
+import {StewardsMonth} from "../../reckoning/stewards/StewardsMonth";
 
 export class MonthSuggestion {
     constructor(item: StewardsLocalizationData, quenya: boolean, sindarin: boolean) {

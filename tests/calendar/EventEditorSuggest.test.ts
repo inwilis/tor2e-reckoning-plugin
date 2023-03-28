@@ -1,6 +1,6 @@
 import {describe, expect, test} from "@jest/globals";
-import {ALL_MONTHS, MULTI_DAY_MONTHS, SINGLE_DAY_INTERCALARIES} from "../../src/calendar/event/suggest/MonthSuggestion";
-import {CursorPosition, EventSuggester, LineProvider, TriggerInfo} from "../../src/calendar/event/suggest/EventSuggester";
+import {ALL_MONTHS, MULTI_DAY_MONTHS, SINGLE_DAY_INTERCALARIES} from "../../src/event/suggest/MonthSuggestion";
+import {CursorPosition, EventSuggester, LineProvider, TriggerInfo} from "../../src/event/suggest/EventSuggester";
 import {CODE_BLOCK_EVENT} from "../../src/constants";
 
 describe('testing EventEditorSuggest.onTrigger', () => {
