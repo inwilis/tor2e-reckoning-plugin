@@ -2,6 +2,7 @@ import {App, ItemView, setIcon, ViewStateResult} from "obsidian";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
 import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 import {CSS_CALENDAR_VIEW} from "../constants";
+import {allReckonings, reckonings, reckoningTitles} from "../reckoning/Reckonings";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
 
@@ -63,33 +64,51 @@ export class Tor2eCalendarView extends ItemView {
     }
 
     async onOpen() {
-        this.render()
+        return this.render()
     }
 
     async onClose() {
         // Nothing to clean up.
     }
 
-    setState(state: any, result: ViewStateResult): Promise<void> {
+    async setState(state: any, result: ViewStateResult): Promise<void> {
         if (state.defaultView) {
             this.defaultView = true
         }
 
-        if (state.selectedDate instanceof ReckoningDate) {
-            this.selectedDate = state.selectedDate
-        }
+        this.setSelectedDate(state.selectedDate)
+        this.setDisplayDate(state.displayDate)
 
-        if (state.displayDate instanceof ReckoningDate) {
-            this.displayDate = state.displayDate
-        } else {
-            this.displayDate = this.selectedDate
-        }
-
-        this.render()
+        await this.render()
 
         this.app.workspace.requestSaveLayout()
 
         return super.setState(state, result);
+    }
+
+    private setSelectedDate(value: any): boolean {
+        if (value instanceof ReckoningDate) {
+            if (!this.selectedDate.isEqual(value)) {
+                this.selectedDate = value
+                return true
+            }
+        }
+        return false
+    }
+
+    private setDisplayDate(value: any): boolean {
+        let result = false
+        let newDisplayDate: ReckoningDate<any> = this.selectedDate
+        if (value instanceof ReckoningDate) {
+            newDisplayDate = value
+        }
+
+        if (this.displayDate.month != newDisplayDate.month || this.displayDate.year != newDisplayDate.year) {
+            result = true
+        }
+        this.displayDate = newDisplayDate
+
+        return result
     }
 
     getState(): any {
@@ -101,13 +120,15 @@ export class Tor2eCalendarView extends ItemView {
         return state;
     }
 
-    viewDate(date: ReckoningDate<any>) {
-        this.displayDate = date
-        this.render()
-        this.app.workspace.requestSaveLayout()
+    async viewDate(date: ReckoningDate<any>) {
+        await this.setState({displayDate: date}, {})
     }
 
-    render() {
+    async selectDate(date: ReckoningDate<any>) {
+        await this.setState({selectedDate: date}, {})
+    }
+
+    async render() {
         const container = this.containerEl.children[1]
         container.empty()
 
@@ -134,19 +155,22 @@ export class Tor2eCalendarView extends ItemView {
 
         setIcon(previousMonth, "chevron-left")
         setIcon(nextMonth, "chevron-right")
-        previousMonth.addEventListener("click", () => {
-            this.viewDate(this.displayDate.plusMonths(-1))
+        previousMonth.addEventListener("click", async () => {
+            await this.viewDate(this.displayDate.plusMonths(-1))
         })
-        nextMonth.addEventListener("click", () => {
-            this.viewDate(this.displayDate.plusMonths(1))
+        nextMonth.addEventListener("click", async () => {
+            await this.viewDate(this.displayDate.plusMonths(1))
         })
 
         const monthContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.ROOT})
         this.renderMonth(monthContainer)
 
+        const dayContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.ROOT})
+        await this.renderDayDetails(dayContainer)
+
     }
 
-    private renderMonth<M extends number | string>(root: HTMLElement) {
+    private renderMonth(root: HTMLElement) {
         const yearData = this.displayDate.getYearData()
         const firstDay = yearData.getFirstDay(this.displayDate.month)
         const lastDay = yearData.getLastDay(this.displayDate.month)
@@ -163,6 +187,23 @@ export class Tor2eCalendarView extends ItemView {
             const day = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.DAY})
             day.createEl("span", {text: dateForCell.day.toString()})
             day.toggleClass(CSS_CALENDAR_VIEW.CALENDAR.SELECTED_DAY, dateForCell.isEqual(this.selectedDate))
+            day.addEventListener("click", async () => {
+                await this.selectDate(dateForCell)
+            })
         }
+    }
+
+    private async renderDayDetails(root: HTMLElement) {
+        const dayReckoningsContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.RECKONINGS})
+        allReckonings.forEach(reckoning => {
+            const reckoningDate = reckonings.toReckoning(reckoning.getName(), this.selectedDate)
+            dayReckoningsContainer.createEl("div", {text: `${reckoningTitles.get(reckoning.getName())}`, cls: CSS_CALENDAR_VIEW.DAY.RECKONING_TITLE})
+            reckoning.getSupportedLanguages().forEach(language => {
+                const dateString = reckoningDate.toString(language)
+                const dateBlock = dayReckoningsContainer.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.DATE_BLOCK});
+                dateBlock.createEl("span", {text: `${language.charAt(0).toUpperCase() + language.slice(1)}: `, cls: CSS_CALENDAR_VIEW.DAY.LANGUAGE_TITLE})
+                dateBlock.createEl("span", {text: `${dateString}`, cls: CSS_CALENDAR_VIEW.DAY.DATE_STRING})
+            })
+        })
     }
 }

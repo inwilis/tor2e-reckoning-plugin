@@ -25,6 +25,15 @@ export const CSS_CALENDAR_VIEW = {
         DAY: "day",
         NOT_DAY: "not-day",
         SELECTED_DAY: "highlight-day"
+    },
+
+    DAY: {
+        ROOT: "day-pane",
+        RECKONINGS: "day-reckonings",
+        RECKONING_TITLE: "reckoning-title",
+        DATE_BLOCK: "date-block",
+        LANGUAGE_TITLE: "language-title",
+        DATE_STRING: "date"
     }
 }
 

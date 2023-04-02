@@ -12,6 +12,11 @@ export const allReckonings: ReadonlyMap<string, Reckoning<any>> = new Map<string
     ["shire", shireReckoning]
 ]) as ReadonlyMap<string, Reckoning<any>>
 
+export const reckoningTitles: ReadonlyMap<string, string> = new Map<string, string>([
+    ["stewards", "Steward's Reckoning"],
+    ["shire", "Shire Reckoning"],
+])
+
 const reckoningAliases: Map<string, string> = new Map<string, string>([
     ["steward", "stewards"],
     ["steward's", "stewards"],
