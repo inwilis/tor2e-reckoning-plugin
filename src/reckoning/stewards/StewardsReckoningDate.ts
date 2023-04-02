@@ -76,4 +76,12 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
             return StewardsLocalization.forMonth(this.month).quenya
         }
     }
+
+    toDayOfWeekIcon(): string {
+        return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).icon
+    }
+
+    toMonthIcon(): string {
+        return StewardsLocalization.forMonth(this.month).icon
+    }
 }

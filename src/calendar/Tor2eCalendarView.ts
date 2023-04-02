@@ -8,6 +8,7 @@ export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-cale
 
 export class Tor2eCalendarView extends ItemView {
 
+
     private defaultView: boolean = false
 
     private selectedDate: ReckoningDate<any> = stewardsReckoning.getDate(2965, 1)
@@ -150,7 +151,12 @@ export class Tor2eCalendarView extends ItemView {
 
         const monthPane = root.createEl("div", {cls: CSS_CALENDAR_VIEW.MONTH.ROOT})
         const previousMonth = monthPane.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.NAV_PREVIOUS});
-        monthPane.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.TEXT, text: this.displayDate.toMonthString()})
+
+        const monthBlock = monthPane.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.BLOCK})
+         setIcon(monthBlock.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.ICON}), this.displayDate.toMonthIcon())
+        monthBlock.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.TEXT, text: this.displayDate.toMonthString()})
+
+
         const nextMonth = monthPane.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.NAV_NEXT});
 
         setIcon(previousMonth, "chevron-left")
@@ -174,6 +180,12 @@ export class Tor2eCalendarView extends ItemView {
         const yearData = this.displayDate.getYearData()
         const firstDay = yearData.getFirstDay(this.displayDate.month)
         const lastDay = yearData.getLastDay(this.displayDate.month)
+
+        this.selectedDate.reckoning.getDaysOfWeekIcons().forEach(icon => {
+            const dayOfWeek = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.DAY_OF_WEEK})
+            const span = dayOfWeek.createEl("span")
+            setIcon(span, icon)
+        })
 
         for (let i = firstDay; i <= lastDay; i++) {
             const dateForCell = this.displayDate.reckoning.getDate(this.displayDate.year, i);

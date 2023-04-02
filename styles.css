@@ -18,6 +18,12 @@
     font-size: var(--font-ui-large)
 }
 
+.tor2e-calendar-view-root .month-block {
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+
 .tor2e-calendar-view-root .month-text {
     font-size: var(--font-ui-medium)
 }
@@ -44,6 +50,15 @@
     cursor: pointer;
     border-radius: 50%;
     transition-duration: var(--anim-duration-superfast);
+}
+
+.tor2e-calendar-view-root .calendar-pane > .day-of-week {
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    margin:2px;
+    aspect-ratio: 1;
+    border-radius: 50%;
 }
 
 .tor2e-calendar-view-root .calendar-pane > .day:hover,

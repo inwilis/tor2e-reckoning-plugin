@@ -2,11 +2,12 @@ import {ShireMonth} from "./ShireMonth";
 import {YearType} from "../YearType";
 import {HADORS_MILLENNIAL_YEAR, STEWARDS_RECKONING_START} from "../stewards/StewardsReckoning";
 import {SHIRE_RECKONING_START_IN_STEWARDS} from "../Reckonings";
-import {MONTH_NAMES} from "./ShireLocalization";
+import {DAYS_OF_WEEK_NAMES, MONTH_NAMES} from "./ShireLocalization";
 import {YearData} from "../YearData";
 import {ReckoningDate} from "../ReckoningDate";
 import {Reckoning} from "../Reckoning";
 import {ShireReckoningDate} from "./ShireReckoningDate";
+import {DayOfWeek} from "../DayOfWeek";
 
 export const SHIRE_REFORM_YEAR = 1103
 
@@ -115,6 +116,14 @@ class ShireReckoning extends Reckoning<ShireMonth> {
         }
 
         throw new Error(`Unable to parse '${date}' as date of Shire reckoning`)
+    }
+
+    getDaysOfWeekIcons(): string[] {
+        const result: string[] = [];
+        for (let i = DayOfWeek.D1; i < DayOfWeek.D7; i++) {
+            result.push(DAYS_OF_WEEK_NAMES[i].icon)
+        }
+        return result;
     }
 
     newDate(year: number, month: ShireMonth, day: number, language?: string): ReckoningDate<ShireMonth> {

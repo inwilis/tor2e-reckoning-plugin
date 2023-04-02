@@ -18,6 +18,8 @@ export abstract class Reckoning<M extends number | string> {
 
     abstract parseDate(date: string, language?: string): ReckoningDate<M>
 
+    abstract getDaysOfWeekIcons(): string[]
+
     isLeapYear(year: number): boolean {
         return !(year % 4 || !(year % 100))
     }

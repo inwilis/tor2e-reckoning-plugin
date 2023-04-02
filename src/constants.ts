@@ -14,7 +14,9 @@ export const CSS_CALENDAR_VIEW = {
 
     MONTH: {
         ROOT: "month-pane",
+        BLOCK: "month-block",
         TEXT: "month-text",
+        ICON: "month-icon",
         NAV_PREVIOUS: "nav",
         NAV_NEXT: "nav",
     },
@@ -23,6 +25,7 @@ export const CSS_CALENDAR_VIEW = {
         ROOT: "calendar-pane",
 
         DAY: "day",
+        DAY_OF_WEEK: "day-of-week",
         NOT_DAY: "not-day",
         SELECTED_DAY: "highlight-day"
     },
