@@ -115,12 +115,4 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
             return ShireLocalization.forMonth(this.month).shire
         }
     }
-
-    toDayOfWeekIcon(): string {
-        return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).icon
-    }
-
-    toMonthIcon(): string {
-        return ShireLocalization.forMonth(this.month).icon
-    }
 }

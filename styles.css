@@ -28,9 +28,26 @@
     font-size: var(--font-ui-medium)
 }
 
+.tor2e-calendar-view-root .month-icon.winter {
+    color: blue;
+}
+
+.tor2e-calendar-view-root .month-icon.spring {
+    color: green;
+}
+
+.tor2e-calendar-view-root .month-icon.summer {
+    color: gold;
+}
+
+.tor2e-calendar-view-root .month-icon.autumn {
+    color: darkgoldenrod;
+}
+
 .tor2e-calendar-view-root .nav {
     height: var(--input-height);
 }
+
 
 .tor2e-calendar-view-root .calendar-pane {
     display:grid;

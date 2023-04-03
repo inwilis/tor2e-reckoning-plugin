@@ -1,11 +1,10 @@
 import {YearType} from "../YearType";
 import {StewardsMonth} from "./StewardsMonth";
-import {DAYS_OF_WEEK_NAMES, MONTH_NAMES} from "./StewardsLocalization";
+import {MONTH_NAMES} from "./StewardsLocalization";
 import {YearData} from "../YearData";
 import {ReckoningDate} from "../ReckoningDate";
 import {Reckoning} from "../Reckoning";
 import {StewardsReckoningDate} from "./StewardsReckoningDate";
-import {DayOfWeek} from "../DayOfWeek";
 
 export const STEWARDS_RECKONING_START = 2060
 export const HADORS_MILLENNIAL_YEAR = 2360
@@ -103,14 +102,6 @@ class StewardsReckoning extends Reckoning<StewardsMonth> {
 
         throw new Error(`Unable to parse '${date}' as date of Steward's reckoning`)
     }
-
-    getDaysOfWeekIcons(): string[] {
-        const result: string[] = [];
-        for (let i = DayOfWeek.D1; i < DayOfWeek.D7; i++) {
-            result.push(DAYS_OF_WEEK_NAMES[i].icon)
-        }
-        return result;
-    }
 }
 
 export const stewardsReckoning: Reckoning<StewardsMonth> = new StewardsReckoning()
@@ -161,7 +152,8 @@ const YEAR_DATA: Record<YearType, YearData<StewardsMonth>> = {
             StewardsMonth.I3L,
             StewardsMonth.M7, StewardsMonth.M8, StewardsMonth.M9,
             StewardsMonth.I4,
-            StewardsMonth.M10, StewardsMonth.M11, StewardsMonth.M12,
+            StewardsMonth.M10,
+            StewardsMonth.M11, StewardsMonth.M12,
             StewardsMonth.I5],
         monthDays: {
             I1: [1, 1],

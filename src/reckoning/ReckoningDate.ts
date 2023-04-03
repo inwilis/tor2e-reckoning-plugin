@@ -118,7 +118,4 @@ export abstract class ReckoningDate<M extends number | string> {
 
     abstract toDayOfWeekString(language?: string): string
 
-    abstract toMonthIcon(): string
-
-    abstract toDayOfWeekIcon(): string
 }
