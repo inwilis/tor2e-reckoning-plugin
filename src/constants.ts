@@ -5,6 +5,11 @@ export const CSS_CALENDAR_VIEW = {
 
     ROOT: "tor2e-calendar-view-root",
 
+    VIEW_CONTROLS: {
+        ROOT: "view-controls-pane",
+        SELECT: "dropdown"
+    },
+
     YEAR: {
         ROOT: "year-pane",
         TEXT: "year-text",

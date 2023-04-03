@@ -24,7 +24,7 @@ export abstract class ReckoningDate<M extends number | string> {
         this.year = year;
         this.month = month;
         this.day = day;
-        this.language = language || reckoning.getDefaultLanguage()
+        this.language = language && reckoning.getSupportedLanguages().includes(language) ? language : reckoning.getDefaultLanguage()
     }
 
     isBefore(other: typeof this) {
@@ -108,6 +108,10 @@ export abstract class ReckoningDate<M extends number | string> {
 
         const newYear = this.year + years;
         return this.reckoning.getDate(newYear, Math.min(Math.max(this.getDayOfYear(), 1), this.reckoning.daysInYear(newYear)), this.language)
+    }
+
+    withLanguage(language: string) {
+        return this.reckoning.newDate(this.year, this.month, this.day, language)
     }
 
     abstract getDayOfWeek(): DayOfWeek
