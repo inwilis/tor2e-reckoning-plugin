@@ -6,6 +6,11 @@ import {breeReckoning} from "../../src/reckoning/bree/BreeReckoning";
 
 describe("testing conversion from Steward's to Shire-reckoning", () => {
 
+    test("Start of Shire-reckoning", () => {
+        const shireDate = shireReckoning.parseDate("2 Yule 1");
+        expect(reckonings.toReckoning("shire", stewardsReckoning.parseDate("Yestare 1601"))).toMatchObject({year: shireDate.year, month: shireDate.month, day: shireDate.day})
+    })
+
     test("battle of the Pellenor", () => {
         const shireDate = shireReckoning.parseDate("15 Rethe 1419");
         expect(reckonings.toReckoning("shire", stewardsReckoning.parseDate("15 Gwaeron 3019"))).toMatchObject({year: shireDate.year, month: shireDate.month, day: shireDate.day})
@@ -39,6 +44,11 @@ describe("testing conversion from Steward's to Shire-reckoning", () => {
 
 describe("testing conversion from Shire-reckoning to Steward's", () => {
 
+    test("Start of Shire-reckoning", () => {
+        const stewardsDate = stewardsReckoning.parseDate("Yestare 1601");
+        expect(reckonings.toReckoning("stewards", shireReckoning.parseDate("2 Yule 1"))).toMatchObject({year: stewardsDate.year, month: stewardsDate.month, day: stewardsDate.day})
+    })
+
     test("battle of the Pellenor", () => {
         const stewardsDate = stewardsReckoning.parseDate("15 Gwaeron 3019");
         expect(reckonings.toReckoning("stewards", shireReckoning.parseDate("15 Rethe 1419"))).toMatchObject({year: stewardsDate.year, month: stewardsDate.month, day: stewardsDate.day})
@@ -71,6 +81,13 @@ describe("testing conversion from Shire-reckoning to Steward's", () => {
 })
 
 describe("testing conversion from Steward's to Bree-reckoning", () => {
+
+    test("Start of Bree-reckoning", () => {
+        const breeDate = breeReckoning.parseDate("2 Yule 1");
+        expect(reckonings.toReckoning("bree", stewardsReckoning.parseDate("Yestare 1300"))).toMatchObject({year: breeDate.year, month: breeDate.month, day: breeDate.day})
+    })
+
+
     test("battle of the Pellenor", () => {
         const breeDate = breeReckoning.parseDate("15 Rethe 1720");
         expect(reckonings.toReckoning("bree", stewardsReckoning.parseDate("15 Gwaeron 3019"))).toMatchObject({year: breeDate.year, month: breeDate.month, day: breeDate.day})
@@ -78,6 +95,13 @@ describe("testing conversion from Steward's to Bree-reckoning", () => {
 })
 
 describe("testing conversion from Shire-reckoning to Bree-reckoning", () => {
+
+    test("Start of Shire-reckoning", () => {
+        const breeDate = breeReckoning.parseDate("2 Yule 302");
+        expect(reckonings.toReckoning("bree", shireReckoning.parseDate("2 Yule 1"))).toMatchObject({year: breeDate.year, month: breeDate.month, day: breeDate.day})
+    })
+
+
     test("battle of the Pellenor", () => {
         const breeDate = breeReckoning.parseDate("15 Rethe 1720");
         expect(reckonings.toReckoning("bree", shireReckoning.parseDate("15 Rethe 1419"))).toMatchObject({year: breeDate.year, month: breeDate.month, day: breeDate.day})
@@ -85,6 +109,12 @@ describe("testing conversion from Shire-reckoning to Bree-reckoning", () => {
 })
 
 describe("testing conversion from Bree-reckoning to Shire-reckoning", () => {
+
+    test("Start of Shire-reckoning", () => {
+        const shireDate = shireReckoning.parseDate("2 Yule 1");
+        expect(reckonings.toReckoning("shire", breeReckoning.parseDate("2 Yule 302"))).toMatchObject({year: shireDate.year, month: shireDate.month, day: shireDate.day})
+    })
+
     test("battle of the Pellenor", () => {
         const shireDate = shireReckoning.parseDate("15 Rethe 1419");
         expect(reckonings.toReckoning("shire", breeReckoning.parseDate("15 Rethe 1720"))).toMatchObject({year: shireDate.year, month: shireDate.month, day: shireDate.day})
@@ -92,6 +122,12 @@ describe("testing conversion from Bree-reckoning to Shire-reckoning", () => {
 })
 
 describe("testing conversion from Bree-reckoning to Steward's reckoning", () => {
+
+    test("Start of Bree-reckoning", () => {
+        const stewardsDate = stewardsReckoning.parseDate("Yestare 1300");
+        expect(reckonings.toReckoning("stewards", breeReckoning.parseDate("2 Yule 1"))).toMatchObject({year: stewardsDate.year, month: stewardsDate.month, day: stewardsDate.day})
+    })
+
     test("battle of the Pellenor", () => {
         const stewardsDate = stewardsReckoning.parseDate("15 Gwaeron 3019");
         expect(reckonings.toReckoning("stewards", breeReckoning.parseDate("15 Rethe 1720"))).toMatchObject({year: stewardsDate.year, month: stewardsDate.month, day: stewardsDate.day})

@@ -2,16 +2,15 @@ import {ReckoningDate} from "../ReckoningDate";
 import {BreeMonth} from "./BreeMonth";
 import {Reckoning} from "../Reckoning";
 import {DayOfWeek} from "../DayOfWeek";
-import {STEWARDS_RECKONING_START} from "../stewards/StewardsReckoning";
-import {BREE_RECKONING_START_IN_STEWARDS} from "../Reckonings";
 import {BreeLocalization} from "./BreeLocalization";
 import {breeReckoning, SHIRE_REFORM_YEAR_IN_BREE} from "./BreeReckoning";
+import {BREE_RECKONING_START_IN_STEWARDS, STEWARDS_RECKONING_START} from "../stewards/StewardsReckoning";
 
 export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
 
     constructor(reckoning: Reckoning<BreeMonth>, year: number, month: BreeMonth, day: number, language?: string) {
         if (year < 1) {
-            throw new RangeError(`Year ${year} is before the Year 1, when Shire-Reckoning started`)
+            throw new RangeError(`Year ${year} is before the Year 1, when Bree-reckoning started`)
         }
 
         super(reckoning, year, month, day, language)

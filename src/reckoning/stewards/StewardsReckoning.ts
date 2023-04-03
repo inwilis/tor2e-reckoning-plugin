@@ -6,8 +6,13 @@ import {ReckoningDate} from "../ReckoningDate";
 import {Reckoning} from "../Reckoning";
 import {StewardsReckoningDate} from "./StewardsReckoningDate";
 
-export const STEWARDS_RECKONING_START = 2060
+export const MARDILS_MILLENNIAL_YEAR = 2059
 export const HADORS_MILLENNIAL_YEAR = 2360
+export const SHIRE_RECKONING_START_IN_STEWARDS = 1600
+export const BREE_RECKONING_START_IN_STEWARDS = 1299
+export const STEWARDS_RECKONING_START = 2060
+
+const MILLENNIAL_YEARS: ReadonlySet<number> = new Set<number>([1000, 2000, MARDILS_MILLENNIAL_YEAR, HADORS_MILLENNIAL_YEAR])
 
 class StewardsReckoning extends Reckoning<StewardsMonth> {
 
@@ -16,7 +21,7 @@ class StewardsReckoning extends Reckoning<StewardsMonth> {
     }
 
     getYearType(year: number): YearType {
-        if (year == HADORS_MILLENNIAL_YEAR) {
+        if (MILLENNIAL_YEARS.has(year)) {
             return YearType.MILLENNIAL
         } else if (this.isLeapYear(year)) {
             return YearType.LEAP
@@ -25,13 +30,21 @@ class StewardsReckoning extends Reckoning<StewardsMonth> {
         }
     }
 
+    isLeapYear(year: number): boolean {
+        return (year % 4 == 0) && (year % 100 != 0)
+    }
+
     getYearData(year: number): YearData<StewardsMonth> {
-        return YEAR_DATA[this.getYearType(year)]
+        if (year < STEWARDS_RECKONING_START) {
+            return KINGS_YEAR_DATA[this.getYearType(year)]
+        } else {
+            return STEWARDS_YEAR_DATA[this.getYearType(year)]
+        }
     }
 
     getDate(year: number, dayOfYear: number, language?: string): ReckoningDate<StewardsMonth> {
-        if (year < STEWARDS_RECKONING_START) {
-            throw new RangeError(`Year ${year} is before the ${STEWARDS_RECKONING_START}, when Steward's Reckoning started`)
+        if (year < 1) {
+            throw new RangeError(`Year ${year} is before the Year 1 of the Third Age`)
         }
 
         return super.getDate(year, dayOfYear, language)
@@ -106,7 +119,105 @@ class StewardsReckoning extends Reckoning<StewardsMonth> {
 
 export const stewardsReckoning: Reckoning<StewardsMonth> = new StewardsReckoning()
 
-const YEAR_DATA: Record<YearType, YearData<StewardsMonth>> = {
+const KINGS_YEAR_DATA: Record<YearType, YearData<StewardsMonth>> = {
+    [YearType.REGULAR]: new YearData<StewardsMonth>({
+        type: YearType.REGULAR,
+        length: 365,
+        monthSequence: [
+            StewardsMonth.I1,
+            StewardsMonth.M1, StewardsMonth.M2, StewardsMonth.M3,
+            StewardsMonth.M4, StewardsMonth.M5, StewardsMonth.M6,
+            StewardsMonth.I3,
+            StewardsMonth.M7, StewardsMonth.M8, StewardsMonth.M9,
+            StewardsMonth.M10, StewardsMonth.M11, StewardsMonth.M12,
+            StewardsMonth.I5],
+        monthDays: {
+            I1: [1, 1],
+            M1: [2, 31],
+            M2: [32, 61],
+            M3: [62, 91],
+            I2: [-1, -1],
+            M4: [92, 121],
+            M5: [122, 151],
+            M6: [152, 182],
+            I3: [183, 183],
+            I3L: [-1, -1],
+            M7: [184, 214],
+            M8: [215, 244],
+            M9: [245, 274],
+            I4: [-1, -1],
+            M10: [275, 304],
+            M11: [305, 334],
+            M12: [335, 364],
+            I5: [365, 365]
+        }
+    }),
+    [YearType.LEAP]: new YearData<StewardsMonth>({
+        type: YearType.LEAP,
+        length: 366,
+        monthSequence: [
+            StewardsMonth.I1,
+            StewardsMonth.M1, StewardsMonth.M2, StewardsMonth.M3,
+            StewardsMonth.M4, StewardsMonth.M5, StewardsMonth.M6,
+            StewardsMonth.I3L,
+            StewardsMonth.M7, StewardsMonth.M8, StewardsMonth.M9,
+            StewardsMonth.M10, StewardsMonth.M11, StewardsMonth.M12,
+            StewardsMonth.I5],
+        monthDays: {
+            I1: [1, 1],
+            M1: [2, 31],
+            M2: [32, 61],
+            M3: [62, 91],
+            I2: [-1, -1],
+            M4: [92, 121],
+            M5: [122, 151],
+            M6: [152, 182],
+            I3: [-1, -1],
+            I3L: [183, 184],
+            M7: [185, 215],
+            M8: [216, 245],
+            M9: [246, 275],
+            I4: [-1, -1],
+            M10: [276, 305],
+            M11: [306, 335],
+            M12: [336, 365],
+            I5: [366, 366]
+        }
+    }),
+    [YearType.MILLENNIAL]: new YearData<StewardsMonth>({
+        type: YearType.MILLENNIAL,
+        length: 367,
+        monthSequence: [
+            StewardsMonth.I1,
+            StewardsMonth.M1, StewardsMonth.M2, StewardsMonth.M3,
+            StewardsMonth.M4, StewardsMonth.M5, StewardsMonth.M6,
+            StewardsMonth.I3L,
+            StewardsMonth.M7, StewardsMonth.M8, StewardsMonth.M9,
+            StewardsMonth.M10, StewardsMonth.M11, StewardsMonth.M12,
+            StewardsMonth.I5],
+        monthDays: {
+            I1: [1, 1],
+            M1: [2, 31],
+            M2: [32, 61],
+            M3: [62, 91],
+            I2: [-1, -1],
+            M4: [92, 121],
+            M5: [122, 151],
+            M6: [152, 182],
+            I3: [-1, -1],
+            I3L: [183, 185],
+            M7: [186, 216],
+            M8: [217, 246],
+            M9: [247, 276],
+            I4: [-1, -1],
+            M10: [277, 306],
+            M11: [307, 336],
+            M12: [337, 366],
+            I5: [367, 367]
+        }
+    })
+}
+const STEWARDS_YEAR_DATA: Record<YearType, YearData<StewardsMonth>> = {
     [YearType.REGULAR]: new YearData<StewardsMonth>({
         type: YearType.REGULAR,
         length: 365,
@@ -152,8 +263,7 @@ const YEAR_DATA: Record<YearType, YearData<StewardsMonth>> = {
             StewardsMonth.I3L,
             StewardsMonth.M7, StewardsMonth.M8, StewardsMonth.M9,
             StewardsMonth.I4,
-            StewardsMonth.M10,
-            StewardsMonth.M11, StewardsMonth.M12,
+            StewardsMonth.M10, StewardsMonth.M11, StewardsMonth.M12,
             StewardsMonth.I5],
         monthDays: {
             I1: [1, 1],

@@ -2,7 +2,7 @@ import {App, ItemView, setIcon, ViewStateResult} from "obsidian";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
 import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 import {CSS_CALENDAR_VIEW} from "../constants";
-import {allReckonings, reckonings, reckoningTitles} from "../reckoning/Reckonings";
+import {allReckonings, reckonings} from "../reckoning/Reckonings";
 import {calendarDecorations} from "./CalendarDecorations";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
@@ -141,7 +141,12 @@ export class Tor2eCalendarView extends ItemView {
                 if (this.displayDate.reckoning.getName() == name) {
                     attr.selected = true
                 }
-                s.createEl("option", {text: reckoningTitles.get(name), attr: attr})
+                if (reckonings.isConversionPossible(this.displayDate.reckoning.getName(), reckoning.getName(), this.displayDate.year)) {
+                    s.createEl("option", {
+                        text: calendarDecorations.getReckoningTitle(reckonings.toReckoning(reckoning.getName(), this.displayDate)),
+                        attr: attr
+                    })
+                }
             })
 
             s.addEventListener("change", async (event) => {
@@ -247,14 +252,19 @@ export class Tor2eCalendarView extends ItemView {
     private async renderDayDetails(root: HTMLElement) {
         const dayReckoningsContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.RECKONINGS})
         allReckonings.forEach(reckoning => {
-            const reckoningDate = reckonings.toReckoning(reckoning.getName(), this.selectedDate)
-            dayReckoningsContainer.createEl("div", {text: `${reckoningTitles.get(reckoning.getName())}`, cls: CSS_CALENDAR_VIEW.DAY.RECKONING_TITLE})
-            reckoning.getSupportedLanguages().forEach(language => {
-                const dateString = reckoningDate.toString(language)
-                const dateBlock = dayReckoningsContainer.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.DATE_BLOCK});
-                dateBlock.createEl("span", {text: `${(capitalize(language))}: `, cls: CSS_CALENDAR_VIEW.DAY.LANGUAGE_TITLE})
-                dateBlock.createEl("span", {text: `${dateString}`, cls: CSS_CALENDAR_VIEW.DAY.DATE_STRING})
-            })
+            if (reckonings.isConversionPossible(this.selectedDate.reckoning.getName(), reckoning.getName(), this.selectedDate.year)) {
+                const reckoningDate = reckonings.toReckoning(reckoning.getName(), this.selectedDate)
+                dayReckoningsContainer.createEl("div", {
+                    text: `${calendarDecorations.getReckoningTitle(reckoningDate)}`,
+                    cls: CSS_CALENDAR_VIEW.DAY.RECKONING_TITLE
+                })
+                reckoning.getSupportedLanguages().forEach(language => {
+                    const dateString = reckoningDate.toString(language)
+                    const dateBlock = dayReckoningsContainer.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.DATE_BLOCK});
+                    dateBlock.createEl("span", {text: `${(capitalize(language))}: `, cls: CSS_CALENDAR_VIEW.DAY.LANGUAGE_TITLE})
+                    dateBlock.createEl("span", {text: `${dateString}`, cls: CSS_CALENDAR_VIEW.DAY.DATE_STRING})
+                })
+            }
         })
     }
 

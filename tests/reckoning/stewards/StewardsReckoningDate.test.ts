@@ -44,14 +44,13 @@ describe('testing StewardsReckoningDate.isBefore and isEqual', () => {
 })
 
 describe('testing StewardsReckoningDate.constructor', () => {
-    test("Should not allow year before 2060", () => expect(() => stewardsReckoning.newDate(2059,StewardsMonth.I1, 1)).toThrow(RangeError))
     test("Should not allow leap intercalary I3L in non-leap year", () => expect(() => stewardsReckoning.newDate(2061,StewardsMonth.I3L, 1)).toThrow(RangeError))
     test("Should not allow common intercalary I3 in leap year", () => expect(() => stewardsReckoning.newDate(2064,StewardsMonth.I3, 1)).toThrow(RangeError))
     test("Should not allow common intercalary I3 in millennial year", () => expect(() => stewardsReckoning.newDate(2360,StewardsMonth.I3, 1)).toThrow(RangeError))
 
     test("Should not allow day 0", () => expect(() => stewardsReckoning.newDate(2360,StewardsMonth.M1, 0)).toThrow(RangeError))
     test("Should not allow negative day", () => expect(() => stewardsReckoning.newDate(2360,StewardsMonth.M1, -1)).toThrow(RangeError))
-    test("Should not allow day 31 in a month", () => expect(() => stewardsReckoning.newDate(2360,StewardsMonth.M1, 31)).toThrow(RangeError))
+    test("Should not allow day 31 in a month of Steward's year", () => expect(() => stewardsReckoning.newDate(2360,StewardsMonth.M1, 31)).toThrow(RangeError))
 
     test("Should not allow day 2 in I3 in regular year", () => expect(() => stewardsReckoning.newDate(2063,StewardsMonth.I3, 2)).toThrow(RangeError))
 
@@ -63,6 +62,23 @@ describe('testing StewardsReckoningDate.constructor', () => {
 })
 
 describe('testing StewardsReckoningDate.getDayOwWeek', () => {
+    testDayOfWeek(stewardsReckoning.newDate(1, StewardsMonth.I1, 1), DayOfWeek.D4)
+
+    testDayOfWeek(stewardsReckoning.newDate(999, StewardsMonth.I1, 1), DayOfWeek.D3)
+    testDayOfWeek(stewardsReckoning.newDate(999, StewardsMonth.I5, 1), DayOfWeek.D3)
+
+    testDayOfWeek(stewardsReckoning.newDate(1000, StewardsMonth.I1, 1), DayOfWeek.D4)
+    testDayOfWeek(stewardsReckoning.newDate(1000, StewardsMonth.M6, 31), DayOfWeek.D3)
+    testDayOfWeek(stewardsReckoning.newDate(1000, StewardsMonth.I3L, 1), DayOfWeek.D4)
+    testDayOfWeek(stewardsReckoning.newDate(1000, StewardsMonth.M7, 31), DayOfWeek.D2)
+    testDayOfWeek(stewardsReckoning.newDate(1000, StewardsMonth.I5, 1), DayOfWeek.D6)
+
+    testDayOfWeek(stewardsReckoning.newDate(1999, StewardsMonth.I1, 1), DayOfWeek.D6)
+    testDayOfWeek(stewardsReckoning.newDate(1999, StewardsMonth.I5, 1), DayOfWeek.D6)
+
+    testDayOfWeek(stewardsReckoning.newDate(2000, StewardsMonth.I1, 1), DayOfWeek.D7)
+    testDayOfWeek(stewardsReckoning.newDate(2000, StewardsMonth.I5, 1), DayOfWeek.D2)
+
     testDayOfWeek(stewardsReckoning.newDate(2060, StewardsMonth.I1, 1), DayOfWeek.D1)
     testDayOfWeek(stewardsReckoning.newDate(2060, StewardsMonth.M1, 1), DayOfWeek.D2)
     testDayOfWeek(stewardsReckoning.newDate(2060, StewardsMonth.M1, 2), DayOfWeek.D3)
@@ -141,6 +157,9 @@ describe('testing StewardsReckoningDate.plusDays', () => {
 
     test("should roll a year and a leap year when subtracting", () =>
         expect(stewardsReckoning.newDate(2105, StewardsMonth.M2, 1).plusDays(-365-366)).toEqual(stewardsReckoning.newDate(2103, StewardsMonth.M2, 1)))
+
+    test("should not roll a year lower then 1 when subtracting", () =>
+        expect(stewardsReckoning.newDate(1, StewardsMonth.M1, 1).plusDays(-31)).toEqual(stewardsReckoning.newDate(1, StewardsMonth.M1, 1)))
 })
 
 describe('testing StewardsReckoningDate.plusMonths', () => {
@@ -170,6 +189,9 @@ describe('testing StewardsReckoningDate.plusMonths', () => {
 
     test("should roll backwards over the year", () =>
         expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 10).plusMonths(-4)).toEqual(stewardsReckoning.newDate(2442, StewardsMonth.M12, 10)))
+
+    test("should not roll a year lower then 1 when subtracting", () =>
+        expect(stewardsReckoning.newDate(1, StewardsMonth.I1, 1).plusMonths(-1)).toEqual(stewardsReckoning.newDate(1, StewardsMonth.I1, 1)))
 })
 
 describe('testing StewardsReckoningDate.plusYears', () => {
@@ -187,6 +209,9 @@ describe('testing StewardsReckoningDate.plusYears', () => {
 
     test("should subtract 2 years from date", () =>
         expect(stewardsReckoning.getDate(2444, 366).plusYears(-2)).toEqual(stewardsReckoning.getDate(2442, 365)))
+
+    test("should not roll a year lower then 1 when subtracting", () =>
+        expect(stewardsReckoning.newDate(1, StewardsMonth.M1, 1).plusYears(-1)).toEqual(stewardsReckoning.newDate(1, StewardsMonth.M1, 1)))
 })
 
 function testDayOfWeek(date: ReckoningDate<StewardsMonth>, expected: number) {

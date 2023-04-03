@@ -48,6 +48,10 @@ describe('testing ShireReckoningDate.getDayOwWeek', () => {
     testDayOfWeek(shireReckoning.newDate(1, ShireMonth.MIDYEAR, 1), DayOfWeek.D2)
     testDayOfWeek(shireReckoning.newDate(1, ShireMonth.YULE1, 1), DayOfWeek.D2)
 
+    testDayOfWeek(shireReckoning.newDate(400, ShireMonth.YULE2, 1), DayOfWeek.D7)
+    testDayOfWeek(shireReckoning.newDate(400, ShireMonth.MIDYEAR, 1), DayOfWeek.D1)
+    testDayOfWeek(shireReckoning.newDate(400, ShireMonth.YULE1, 1), DayOfWeek.D2)
+
     testDayOfWeek(shireReckoning.newDate(460, ShireMonth.YULE2, 1), DayOfWeek.D1)
     testDayOfWeek(shireReckoning.newDate(460, ShireMonth.MIDYEAR, 1), DayOfWeek.D1)
     testDayOfWeek(shireReckoning.newDate(460, ShireMonth.YULE1, 1), DayOfWeek.D2)

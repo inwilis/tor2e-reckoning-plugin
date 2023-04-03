@@ -4,9 +4,27 @@ import {ReckoningDate} from "../reckoning/ReckoningDate";
 import {Season} from "./Season";
 import {BreeMonth} from "../reckoning/bree/BreeMonth";
 
+
+import {STEWARDS_RECKONING_START} from "../reckoning/stewards/StewardsReckoning";
+
 const WEEKDAY_ICONS = ["star", "sun", "moon", "tree-deciduous", "cloudy", "waves", "mountain"]
 
+const reckoningTitles: ReadonlyMap<string, string> = new Map<string, string>([
+    ["stewards", "Steward's Reckoning"],
+    ["shire", "Shire Reckoning"],
+    ["bree", "Bree Reckoning"]
+])
+
 export const calendarDecorations = {
+
+    getReckoningTitle(date: ReckoningDate<any>): string {
+        if (date.reckoning.getName() == "stewards" && date.year < STEWARDS_RECKONING_START) {
+            return "King's Reckoning"
+
+        } else {
+            return reckoningTitles.get(date.reckoning.getName()) || date.reckoning.getName()
+        }
+    },
 
     getWeekDayIcons(): string[] {
         return WEEKDAY_ICONS

@@ -7,13 +7,15 @@ describe('testing shireReckoning.isLeapYear()', () => {
     test('year 1 is not a leap year', () => expect(shireReckoning.isLeapYear(1)).toBeFalsy())
     test('year 760 (2360 StR) is a leap year', () => expect(shireReckoning.isLeapYear(760)).toBeTruthy())
     test('year 400 is not a leap year', () => expect(shireReckoning.isLeapYear(400)).toBeFalsy())
+    test('year 500 is not a leap year', () => expect(shireReckoning.isLeapYear(500)).toBeFalsy())
     test('year 2000 is not a leap year)', () => expect(shireReckoning.isLeapYear(2000)).toBeFalsy())
 })
 
 describe('testing shireReckoning.daysInYear', () => {
     test('year 4 is a leap year', () => expect(shireReckoning.daysInYear(4)).toBe(366))
     test('year 1 is not a leap year', () => expect(shireReckoning.daysInYear(1)).toBe(365))
-    test('year 400 is not leap year', () => expect(shireReckoning.daysInYear(400)).toBe(365))
+    test('year 400 (2000 StR) is a leap year  with extra day', () => expect(shireReckoning.daysInYear(400)).toBe(367))
+    test('year 500 is not a leap year ', () => expect(shireReckoning.daysInYear(500)).toBe(365))
     test('year 760 (2360 StR) is a leap year with extra day', () => expect(shireReckoning.daysInYear(760)).toBe(367))
     test('year 2000 is not a leap year', () => expect(shireReckoning.daysInYear(2000)).toBe(365))
 })

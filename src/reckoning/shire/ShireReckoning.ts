@@ -1,12 +1,12 @@
 import {ShireMonth} from "./ShireMonth";
 import {YearType} from "../YearType";
-import {HADORS_MILLENNIAL_YEAR, STEWARDS_RECKONING_START} from "../stewards/StewardsReckoning";
-import {SHIRE_RECKONING_START_IN_STEWARDS} from "../Reckonings";
+import {reckonings} from "../Reckonings";
 import {MONTH_NAMES} from "./ShireLocalization";
 import {YearData} from "../YearData";
 import {ReckoningDate} from "../ReckoningDate";
 import {Reckoning} from "../Reckoning";
 import {ShireReckoningDate} from "./ShireReckoningDate";
+import {stewardsReckoning} from "../stewards/StewardsReckoning";
 
 export const SHIRE_REFORM_YEAR = 1103
 
@@ -17,13 +17,13 @@ class ShireReckoning extends Reckoning<ShireMonth> {
     }
 
     getYearType(year: number): YearType {
-        if (year == HADORS_MILLENNIAL_YEAR - SHIRE_RECKONING_START_IN_STEWARDS || year == STEWARDS_RECKONING_START - SHIRE_RECKONING_START_IN_STEWARDS - 1) {
-            return YearType.MILLENNIAL
-        } else if (this.isLeapYear(year)) {
-            return YearType.LEAP
-        } else {
-            return YearType.REGULAR
-        }
+        const stewardsYear = reckonings.yearToReckoning(this.getName(), "stewards", year)
+        return stewardsReckoning.getYearType(stewardsYear)
+    }
+
+    isLeapYear(year: number): boolean {
+        const stewardsYear = reckonings.yearToReckoning(this.getName(), "stewards", year)
+        return stewardsReckoning.isLeapYear(stewardsYear)
     }
 
     getYearData(year: number): YearData<ShireMonth> {
@@ -36,14 +36,6 @@ class ShireReckoning extends Reckoning<ShireMonth> {
         }
 
         return super.getDate(year, dayOfYear, language)
-    }
-
-    getSupportedLanguages(): string[] {
-        return ["shire"]
-    }
-
-    getDefaultLanguage(): string {
-        return "shire"
     }
 
     parseDate(date: string, language?: string): ReckoningDate<ShireMonth> {

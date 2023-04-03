@@ -3,20 +3,19 @@ import {StewardsMonth} from "./StewardsMonth";
 import {Reckoning} from "../Reckoning";
 import {DayOfWeek} from "../DayOfWeek";
 import {StewardsLocalization} from "./StewardsLocalization";
-import {STEWARDS_RECKONING_START} from "./StewardsReckoning";
 
 export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
     constructor(reckoning: Reckoning<StewardsMonth>, year: number, month: StewardsMonth, day: number, language?: string) {
-        if (year < STEWARDS_RECKONING_START) {
-            throw new RangeError(`Year ${year} is before the ${STEWARDS_RECKONING_START}, when Steward's Reckoning started`)
+        if (year < 1) {
+            throw new RangeError(`Year ${year} is before the Year 1 of the Third Age`)
         }
 
         super(reckoning, year, month, day, language)
     }
 
     getDayOfWeek(): DayOfWeek {
-        const daysAfterReckoningStart = this.reckoning.getDaysBetween(this.reckoning.newDate(2060, StewardsMonth.I1, 1), this);
-        return daysAfterReckoningStart % 7;
+        const daysAfterReckoningStart = this.reckoning.getDaysBetween(this.reckoning.newDate(1, StewardsMonth.I1, 1), this);
+        return (daysAfterReckoningStart +3) % 7;
     }
 
     toQuenya(): string {

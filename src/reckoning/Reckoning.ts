@@ -12,15 +12,17 @@ export abstract class Reckoning<M extends number | string> {
 
     abstract newDate(year: number, month: M, day: number, language?: string): ReckoningDate<M>
 
-    abstract getSupportedLanguages(): string[]
+    getSupportedLanguages(): string[] {
+        return [this.getName()]
+    }
 
-    abstract getDefaultLanguage(): string
+    getDefaultLanguage(): string {
+        return this.getName()
+    }
 
     abstract parseDate(date: string, language?: string): ReckoningDate<M>
 
-    isLeapYear(year: number): boolean {
-        return !(year % 4 || !(year % 100))
-    }
+    abstract isLeapYear(year: number): boolean
 
     daysInYear(year: number): number {
         return this.getYearData(year).length;

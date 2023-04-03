@@ -1,4 +1,4 @@
-import {stewardsReckoning} from "./stewards/StewardsReckoning";
+import {BREE_RECKONING_START_IN_STEWARDS, SHIRE_RECKONING_START_IN_STEWARDS, stewardsReckoning} from "./stewards/StewardsReckoning";
 import {shireReckoning} from "./shire/ShireReckoning";
 import {ReckoningDate} from "./ReckoningDate";
 import {StewardsMonth} from "./stewards/StewardsMonth";
@@ -7,25 +7,42 @@ import {Reckoning} from "./Reckoning";
 import {breeReckoning} from "./bree/BreeReckoning";
 import {BreeMonth} from "./bree/BreeMonth";
 
-export const SHIRE_RECKONING_START_IN_STEWARDS = 1600
-
-export const BREE_RECKONING_START_IN_STEWARDS = 1299
-
 export const allReckonings: ReadonlyMap<string, Reckoning<any>> = new Map<string, Reckoning<any>>([
     ["stewards", stewardsReckoning],
     ["shire", shireReckoning],
     ["bree", breeReckoning]
 ]) as ReadonlyMap<string, Reckoning<any>>
 
-export const reckoningTitles: ReadonlyMap<string, string> = new Map<string, string>([
-    ["stewards", "Steward's Reckoning"],
-    ["shire", "Shire Reckoning"],
-    ["bree", "Bree Reckoning"]
-])
-
 const reckoningAliases: Map<string, string> = new Map<string, string>([
     ["steward", "stewards"],
     ["steward's", "stewards"],
+    ["king's", "stewards"],
+    ["kings", "stewards"],
+    ["king", "stewards"],
+])
+
+const conversionPossible: Map<string, (year: number) => boolean> = new Map<string, (year: number) => boolean>([
+    ["stewards->stewards", () => true],
+    ["shire->shire", (y) => true],
+    ["bree->bree", () => true],
+    ["stewards->shire", (year) => convertStewardsToShireYear(year) > 0],
+    ["shire->stewards", () => true],
+    ["stewards->bree", year => convertStewardsToBreeYear(year) > 0],
+    ["bree->stewards", () => true],
+    ["shire->bree", year => convertStewardsToBreeYear(convertShireToStewardsYear(year)) > 0],
+    ["bree->shire", year => convertStewardsToShireYear(convertBreeToStewardsYear(year)) > 0],
+])
+
+const yearConversions: Map<string, (year: number) => number> = new Map<string, (year: number) => number>([
+    ["stewards->stewards", conversionNotRequired],
+    ["shire->shire", conversionNotRequired],
+    ["bree->bree", conversionNotRequired],
+    ["stewards->shire", convertStewardsToShireYear],
+    ["shire->stewards", convertShireToStewardsYear],
+    ["stewards->bree", convertStewardsToBreeYear],
+    ["bree->stewards", convertBreeToStewardsYear],
+    ["shire->bree", d => convertStewardsToBreeYear(convertShireToStewardsYear(d))],
+    ["bree->shire", d => convertStewardsToShireYear(convertBreeToStewardsYear(d))],
 ])
 
 const conversions: Map<string, (date: ReckoningDate<any>) => ReckoningDate<any>> = new Map<string, (date: ReckoningDate<any>) => ReckoningDate<any>>([
@@ -33,11 +50,11 @@ const conversions: Map<string, (date: ReckoningDate<any>) => ReckoningDate<any>>
     ["shire->shire", conversionNotRequired],
     ["bree->bree", conversionNotRequired],
     ["stewards->shire", convertStewardsToShireReckoning],
-    ["stewards->bree", convertStewardsToBreeReckoning],
     ["shire->stewards", convertShireToStewardsReckoning],
-    ["shire->bree", convertShireToBreeReckoning],
+    ["stewards->bree", convertStewardsToBreeReckoning],
     ["bree->stewards", convertBreeToStewardsReckoning],
-    ["bree->shire", convertBreeToShireReckoning],
+    ["shire->bree", d => convertStewardsToBreeReckoning(convertShireToStewardsReckoning(d))],
+    ["bree->shire", d => convertStewardsToShireReckoning(convertBreeToStewardsReckoning(d))],
 ])
 
 export const reckonings = {
@@ -62,6 +79,28 @@ export const reckonings = {
         }
     },
 
+    isConversionPossible(fromReckoning: string, targetReckoning: string, year: number): boolean {
+        const exactTargetName = reckoningAliases.has(targetReckoning.toLowerCase()) ? reckoningAliases.get(targetReckoning.toLowerCase()) : targetReckoning.toLowerCase()
+
+        const conversion = conversionPossible.get(`${fromReckoning}->${exactTargetName || ""}`);
+        if (conversion) {
+            return conversion(year)
+        } else {
+            return false
+        }
+    },
+
+    yearToReckoning(fromReckoning: string, targetReckoning: string, year: number): number {
+        const exactTargetName = reckoningAliases.has(targetReckoning.toLowerCase()) ? reckoningAliases.get(targetReckoning.toLowerCase()) : targetReckoning.toLowerCase()
+
+        const conversion = yearConversions.get(`${fromReckoning}->${exactTargetName || ""}`);
+        if (conversion) {
+            return conversion(year)
+        } else {
+            throw new Error(`Unknown conversion: "${fromReckoning}" to "${targetReckoning}"`)
+        }
+    },
+
     detectReckoning(date: string, reckoning?: string, language?: string): string {
         if (reckoning) {
             return getReckoning(reckoning)?.getName() || "stewards"
@@ -82,44 +121,56 @@ export const reckonings = {
 function getReckoning(name: string): Reckoning<any> | undefined {
     const exactName = reckoningAliases.has(name.toLowerCase()) ? reckoningAliases.get(name.toLowerCase()) : name.toLowerCase()
     return allReckonings.get(exactName || "")
+
+}
+
+function convertShireToStewardsYear(year: number): number {
+    return year + SHIRE_RECKONING_START_IN_STEWARDS
+
+}
+
+function convertStewardsToShireYear(year: number): number {
+    return year - SHIRE_RECKONING_START_IN_STEWARDS
+
+}
+
+function convertBreeToStewardsYear(year: number): number {
+    return year + BREE_RECKONING_START_IN_STEWARDS
+
+}
+
+function convertStewardsToBreeYear(year: number): number {
+    return year - BREE_RECKONING_START_IN_STEWARDS
+
 }
 
 function convertStewardsToShireReckoning(date: ReckoningDate<StewardsMonth>): ReckoningDate<ShireMonth> {
-    const shireYear = date.year - SHIRE_RECKONING_START_IN_STEWARDS
+    return shireReckoning.getDate(convertStewardsToShireYear(date.year), date.getDayOfYear())
 
-    return shireReckoning.getDate(shireYear, date.getDayOfYear())
 }
 
 function convertStewardsToBreeReckoning(date: ReckoningDate<StewardsMonth>): ReckoningDate<BreeMonth> {
-    const shireYear = date.year - BREE_RECKONING_START_IN_STEWARDS
+    return breeReckoning.getDate(convertStewardsToBreeYear(date.year), date.getDayOfYear())
 
-    return breeReckoning.getDate(shireYear, date.getDayOfYear())
 }
 
 function convertShireToStewardsReckoning(date: ReckoningDate<ShireMonth>): ReckoningDate<StewardsMonth> {
-    const stewardsYear = date.year + SHIRE_RECKONING_START_IN_STEWARDS
+    return stewardsReckoning.getDate(convertShireToStewardsYear(date.year), date.getDayOfYear())
 
-    return stewardsReckoning.getDate(stewardsYear, date.getDayOfYear())
-}
 
-function convertShireToBreeReckoning(date: ReckoningDate<ShireMonth>): ReckoningDate<BreeMonth> {
-    const stewardsYear = date.year + SHIRE_RECKONING_START_IN_STEWARDS - BREE_RECKONING_START_IN_STEWARDS
-
-    return breeReckoning.getDate(stewardsYear, date.getDayOfYear())
 }
 
 function convertBreeToStewardsReckoning(date: ReckoningDate<BreeMonth>): ReckoningDate<StewardsMonth> {
-    const shireYear = date.year + BREE_RECKONING_START_IN_STEWARDS
+    return stewardsReckoning.getDate(convertBreeToStewardsYear(date.year), date.getDayOfYear())
 
-    return stewardsReckoning.getDate(shireYear, date.getDayOfYear())
+
 }
 
-function convertBreeToShireReckoning(date: ReckoningDate<BreeMonth>): ReckoningDate<ShireMonth> {
-    const shireYear = date.year - SHIRE_RECKONING_START_IN_STEWARDS + BREE_RECKONING_START_IN_STEWARDS
+// function yearConversionNotRequired<M extends number | string>(date: ReckoningDate<M>): ReckoningDate<M> {
+//     return date
 
-    return shireReckoning.getDate(shireYear, date.getDayOfYear())
-}
-
-function conversionNotRequired<M extends number | string>(date: ReckoningDate<M>): ReckoningDate<M> {
+// }
+function conversionNotRequired<T>(date: T): T {
     return date
+
 }

@@ -58,6 +58,9 @@ export abstract class ReckoningDate<M extends number | string> {
         while (newDayOfYear > yearData.length || newDayOfYear < 1) {
             newDayOfYear -= yearData.length * sign
             newYear += sign
+            if (newYear < 1) {
+                return this
+            }
             yearData = this.reckoning.getYearData(newYear);
         }
 
@@ -93,6 +96,10 @@ export abstract class ReckoningDate<M extends number | string> {
             }
         }
 
+        if (newYear < 1) {
+            return this
+        }
+
         let newDay = this.day
         if (newDay > yearData.getDaysInMonth(newMonth)) {
             newDay = yearData.getDaysInMonth(newMonth)
@@ -107,7 +114,12 @@ export abstract class ReckoningDate<M extends number | string> {
         }
 
         const newYear = this.year + years;
-        return this.reckoning.getDate(newYear, Math.min(Math.max(this.getDayOfYear(), 1), this.reckoning.daysInYear(newYear)), this.language)
+
+        if (newYear > 0) {
+            return this.reckoning.getDate(newYear, Math.min(Math.max(this.getDayOfYear(), 1), this.reckoning.daysInYear(newYear)), this.language)
+        } else {
+            return this
+        }
     }
 
     withLanguage(language: string) {
