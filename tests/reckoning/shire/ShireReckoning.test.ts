@@ -135,40 +135,6 @@ describe('testing shireReckoning.getDate.toShire', () => {
     test("Day 367 of millennial year", () => expect(shireReckoning.getDate(760, 367).toString("shire")).toBe("1 Yule 760"))
 })
 
-describe('testing shireReckoning.getDate.toBree', () => {
-
-    test("Day 1 of regular year", () => expect(shireReckoning.getDate(2100, 1).toString("bree")).toBe("2 Yule 2100"))
-    test("Day 2 of regular year", () => expect(shireReckoning.getDate(2100, 2).toString("bree")).toBe("1 Frery 2100"))
-    test("Day 31 of regular year", () => expect(shireReckoning.getDate(2100, 31).toString("bree")).toBe("30 Frery 2100"))
-    test("Day 182 of regular year", () => expect(shireReckoning.getDate(2100, 182).toString("bree")).toBe("1 Summerday 2100"))
-    test("Day 183 of regular year", () => expect(shireReckoning.getDate(2100, 183).toString("bree")).toBe("2 Summerday 2100"))
-    test("Day 184 of regular year", () => expect(shireReckoning.getDate(2100, 184).toString("bree")).toBe("3 Summerday 2100"))
-    test("Day 320 of regular year", () => expect(shireReckoning.getDate(2100, 320).toString("bree")).toBe("16 Blooting 2100"))
-    test("Day 365 of regular year", () => expect(shireReckoning.getDate(2100, 365).toString("bree")).toBe("1 Yule 2100"))
-
-
-    test("Day 1 of leap year", () => expect(shireReckoning.getDate(2104, 1).toString("bree")).toBe("2 Yule 2104"))
-    test("Day 2 of leap year", () => expect(shireReckoning.getDate(2104, 2).toString("bree")).toBe("1 Frery 2104"))
-    test("Day 31 of leap year", () => expect(shireReckoning.getDate(2104, 31).toString("bree")).toBe("30 Frery 2104"))
-    test("Day 182 of leap year", () => expect(shireReckoning.getDate(2104, 182).toString("bree")).toBe("1 Summerday 2104"))
-    test("Day 183 of leap year", () => expect(shireReckoning.getDate(2104, 183).toString("bree")).toBe("2 Summerday 2104"))
-    test("Day 184 of leap year", () => expect(shireReckoning.getDate(2104, 184).toString("bree")).toBe("3 Summerday 2104"))
-    test("Day 185 of leap year", () => expect(shireReckoning.getDate(2104, 185).toString("bree")).toBe("4 Summerday 2104"))
-    test("Day 320 of leap year", () => expect(shireReckoning.getDate(2104, 320).toString("bree")).toBe("15 Blooting 2104"))
-    test("Day 366 of leap year", () => expect(shireReckoning.getDate(2104, 366).toString("bree")).toBe("1 Yule 2104"))
-
-    test("Day 1 of millennial year", () => expect(shireReckoning.getDate(760, 1).toString("bree")).toBe("2 Yule 760"))
-    test("Day 2 of millennial year", () => expect(shireReckoning.getDate(760, 2).toString("bree")).toBe("1 Frery 760"))
-    test("Day 31 of millennial year", () => expect(shireReckoning.getDate(760, 31).toString("bree")).toBe("30 Frery 760"))
-    test("Day 182 of millennial year", () => expect(shireReckoning.getDate(760, 182).toString("bree")).toBe("1 Summerday 760"))
-    test("Day 183 of millennial year", () => expect(shireReckoning.getDate(760, 183).toString("bree")).toBe("2 Summerday 760"))
-    test("Day 184 of millennial year", () => expect(shireReckoning.getDate(760, 184).toString("bree")).toBe("3 Summerday 760"))
-    test("Day 185 of millennial year", () => expect(shireReckoning.getDate(760, 185).toString("bree")).toBe("4 Summerday 760"))
-    test("Day 186 of millennial year", () => expect(shireReckoning.getDate(760, 186).toString("bree")).toBe("5 Summerday 760"))
-    test("Day 320 of millennial year", () => expect(shireReckoning.getDate(760, 320).toString("bree")).toBe("14 Blooting 760"))
-    test("Day 367 of millennial year", () => expect(shireReckoning.getDate(760, 367).toString("bree")).toBe("1 Yule 760"))
-})
-
 describe('testing shireReckoning.getDaysBetween', () => {
 
     test("Days between 3M1 2365 and 15M2 3265", () => expect(shireReckoning.getDaysBetween(
@@ -191,15 +157,15 @@ describe('testing shireReckoning.getDaysBetween', () => {
 
 
 describe('testing shireReckoning.parseShireDate', () => {
-    test("Should not parse Yule 2100", () => expect(() => shireReckoning.parseDate("Yule 2100")).toThrow(new Error("Unable to parse 'Yule 2100' as date. If this is a Bree date, it must be explicitly marked as such.")))
+    test("Should not parse Yule 2100", () => expect(() => shireReckoning.parseDate("Yule 2100")).toThrow(new Error("Unable to parse 'Yule 2100' as date of Shire reckoning")))
     test("Should parse 1 Yule 2100", () => expect(shireReckoning.parseDate("1 Yule 2100")).toMatchObject({year: 2100, month: ShireMonth.YULE1, day: 1}))
     test("Should parse 2 Yule 2100", () => expect(shireReckoning.parseDate("2 Yule 2100")).toMatchObject({year: 2100, month: ShireMonth.YULE2, day: 1}))
 
-    test("Should not parse Lithe 2100", () => expect(() =>shireReckoning.parseDate("Lithe 2100")).toThrow(new Error("Unable to parse 'Lithe 2100' as date. If this is a Bree date, it must be explicitly marked as such.")))
+    test("Should not parse Lithe 2100", () => expect(() =>shireReckoning.parseDate("Lithe 2100")).toThrow(new Error("Unable to parse 'Lithe 2100' as date of Shire reckoning")))
     test("Should parse 1 Lithe 2100", () => expect(shireReckoning.parseDate("1 Lithe 2100")).toMatchObject({year: 2100, month: ShireMonth.LITHE1, day: 1}))
     test("Should parse 2 Lithe 2100", () => expect(shireReckoning.parseDate("2 Lithe 2100")).toMatchObject({year: 2100, month: ShireMonth.LITHE2, day: 1}))
 
-    test("Should not parse Rethe 2100", () => expect(()=>shireReckoning.parseDate("Rethe 2100")).toThrow(new Error("Unable to parse 'Rethe 2100' as date")))
+    test("Should not parse Rethe 2100", () => expect(()=>shireReckoning.parseDate("Rethe 2100")).toThrow(new Error("Unable to parse 'Rethe 2100' as date of Shire reckoning")))
     test("Should parse 1 Rethe 2100", () => expect(shireReckoning.parseDate("1 Rethe 2100")).toMatchObject({year: 2100, month: ShireMonth.M3, day: 1}))
 
     test("Should parse Mid-Year's Day 2100", () => expect(shireReckoning.parseDate("Mid-Year's Day 2100")).toMatchObject({year: 2100, month: ShireMonth.MIDYEAR, day: 1}))
@@ -226,56 +192,6 @@ describe('testing shireReckoning.parseShireDate', () => {
         for (let i = 1; i <= 367; i++) {
             const date = shireReckoning.getDate(760, i);
             expect(shireReckoning.parseDate(date.toString("shire"))).toEqual(date)
-        }
-    })
-})
-
-describe('testing shireReckoning.parseBreeDate', () => {
-    test("Should not parse Yule 2100", () => expect(()=>shireReckoning.parseDate("Yule 2100", "bree")).toThrow(new Error("Unable to parse 'Yule 2100' as date")))
-    test("Should parse 1 Yule 2100", () => expect(shireReckoning.parseDate("1 Yule 2100", "bree")).toMatchObject({year: 2100, month: ShireMonth.YULE1, day: 1}))
-    test("Should parse 2 Yule 2100", () => expect(shireReckoning.parseDate("2 Yule 2100", "bree")).toMatchObject({year: 2100, month: ShireMonth.YULE2, day: 1}))
-
-    test("Should not parse Lithe 2100", () => expect(()=>shireReckoning.parseDate("Lithe 2100", "bree")).toThrow(new Error("Unable to parse 'Lithe 2100' as date")))
-    test("Should parse 1 Lithe 2100", () => expect(shireReckoning.parseDate("1 Lithe 2100", "bree")).toMatchObject({year: 2100, month: ShireMonth.M6, day: 1}))
-    test("Should parse 2 Lithe 2100", () => expect(shireReckoning.parseDate("2 Lithe 2100", "bree")).toMatchObject({year: 2100, month: ShireMonth.M6, day: 2}))
-    test("Should parse 5 Lithe 2100", () => expect(shireReckoning.parseDate("5 Lithe 2100", "bree")).toMatchObject({year: 2100, month: ShireMonth.M6, day: 5}))
-
-    test("Should not parse Rethe 2100", () => expect(()=>shireReckoning.parseDate("Rethe 2100", "bree")).toThrow(new Error("Unable to parse 'Rethe 2100' as date")))
-    test("Should parse 1 Rethe 2100", () => expect(shireReckoning.parseDate("1 Rethe 2100", "bree")).toMatchObject({year: 2100, month: ShireMonth.M3, day: 1}))
-
-    test("Should parse 1 Summerday 2100", () => expect(shireReckoning.parseDate("1 Summerday 2100", "bree")).toMatchObject({year: 2100, month: ShireMonth.LITHE1, day: 1}))
-    test("Should parse 2 Summerday 2100", () => expect(shireReckoning.parseDate("2 Summerday 2100", "bree")).toMatchObject({year: 2100, month: ShireMonth.MIDYEAR, day: 1}))
-    test("Should parse 3 Summerday 2100", () => expect(shireReckoning.parseDate("3 Summerday 2100", "bree")).toMatchObject({year: 2100, month: ShireMonth.LITHE2, day: 1}))
-
-    test("Should parse 1 Summerday 2104", () => expect(shireReckoning.parseDate("1 Summerday 2104", "bree")).toMatchObject({year: 2104, month: ShireMonth.LITHE1, day: 1}))
-    test("Should parse 2 Summerday 2104", () => expect(shireReckoning.parseDate("2 Summerday 2104", "bree")).toMatchObject({year: 2104, month: ShireMonth.MIDYEAR, day: 1}))
-    test("Should parse 3 Summerday 2104", () => expect(shireReckoning.parseDate("3 Summerday 2104", "bree")).toMatchObject({year: 2104, month: ShireMonth.OVERLITHE, day: 1}))
-    test("Should parse 4 Summerday 2104", () => expect(shireReckoning.parseDate("4 Summerday 2104", "bree")).toMatchObject({year: 2104, month: ShireMonth.LITHE2, day: 1}))
-
-    test("Should parse 1 Summerday 760", () => expect(shireReckoning.parseDate("1 Summerday 760", "bree")).toMatchObject({year: 760, month: ShireMonth.LITHE1, day: 1}))
-    test("Should parse 2 Summerday 760", () => expect(shireReckoning.parseDate("2 Summerday 760", "bree")).toMatchObject({year: 760, month: ShireMonth.OVERLITHE_MILLENNIAL, day: 1}))
-    test("Should parse 3 Summerday 760", () => expect(shireReckoning.parseDate("3 Summerday 760", "bree")).toMatchObject({year: 760, month: ShireMonth.MIDYEAR, day: 1}))
-    test("Should parse 4 Summerday 760", () => expect(shireReckoning.parseDate("4 Summerday 760", "bree")).toMatchObject({year: 760, month: ShireMonth.OVERLITHE, day: 1}))
-    test("Should parse 5 Summerday 760", () => expect(shireReckoning.parseDate("5 Summerday 760", "bree")).toMatchObject({year: 760, month: ShireMonth.LITHE2, day: 1}))
-
-    test("Should parse representations for regular year", () => {
-        for (let i = 1; i <= 365; i++) {
-            const date = shireReckoning.getDate(3200, i);
-            expect(shireReckoning.parseDate(date.toString("bree"), "bree")).toMatchObject({year: date.year, month: date.month, day: date.day})
-        }
-    })
-
-    test("Should parse representations for leap year", () => {
-        for (let i = 1; i <= 366; i++) {
-            const date = shireReckoning.getDate(2060, i);
-            expect(shireReckoning.parseDate(date.toString("bree"), "bree")).toMatchObject({year: date.year, month: date.month, day: date.day})
-        }
-    })
-
-    test("Should parse representations for millennial year", () => {
-        for (let i = 1; i <= 367; i++) {
-            const date = shireReckoning.getDate(760, i);
-            expect(shireReckoning.parseDate(date.toString("bree"), "bree")).toMatchObject({year: date.year, month: date.month, day: date.day})
         }
     })
 })

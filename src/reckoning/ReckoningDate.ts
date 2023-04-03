@@ -3,7 +3,7 @@ import {Reckoning} from "./Reckoning";
 import {YearData} from "./YearData";
 
 export abstract class ReckoningDate<M extends number | string> {
-    language: string
+    readonly language: string
 
     protected constructor(readonly reckoning: Reckoning<M>, readonly year: number, readonly month: M, readonly day: number, language?: string) {
         const yearData = reckoning.getYearData(year);

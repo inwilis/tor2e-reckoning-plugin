@@ -29,7 +29,7 @@ export class EventBlockRenderer extends MarkdownRenderChild {
                 }
 
                 if (this.params.display?.language) {
-                    date.language = this.params.display?.language
+                    date = date.withLanguage(this.params.display.language)
                 }
 
                 const dateAsText = date.toString()

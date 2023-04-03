@@ -39,7 +39,7 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
         }
     }
 
-    toShire(): string {
+    toString(language?: string): string {
         const yearData = shireReckoning.getYearData(this.year);
 
         if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
@@ -49,70 +49,11 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
         }
     }
 
-    toBree(): string {
-        const yearData = shireReckoning.getYearData(this.year);
-
-        if (this.month == ShireMonth.LITHE1 || this.month == ShireMonth.OVERLITHE_MILLENNIAL || this.month == ShireMonth.MIDYEAR || this.month == ShireMonth.OVERLITHE || this.month == ShireMonth.LITHE2) {
-
-            const lithe1Day = yearData.monthDays[ShireMonth.LITHE1][0]
-            const summerday = this.getDayOfYear() - lithe1Day + 1
-
-            return `${summerday} ${ShireLocalization.forMonth(this.month).bree} ${this.year}`
-
-        } else if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
-            return `${this.day} ${ShireLocalization.forMonth(this.month).bree} ${this.year}`
-        } else {
-            return `${ShireLocalization.forMonth(this.month).bree} ${this.year}`
-        }
-    }
-
-    toString(language?: string): string {
-        const targetLanguage = language || this.language
-
-        if (targetLanguage.toLowerCase() == "shire") {
-            return this.toShire()
-
-        } else if (targetLanguage.toLowerCase() == "bree") {
-            return this.toBree()
-
-        } else {
-            return this.toShire()
-        }
-    }
-
     toDayOfWeekString(language?: string): string {
-        const targetLanguage = language || this.language
-
-        if (targetLanguage.toLowerCase() == "shire") {
-            return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).shire
-
-        } else if (targetLanguage.toLowerCase() == "bree") {
-            return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).bree
-
-        } else {
-            return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).shire
-        }
+        return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).shire
     }
 
     toMonthString(language?: string | undefined): string {
-        const targetLanguage = language || this.language
-
-        if (targetLanguage.toLowerCase() == "shire") {
-            return ShireLocalization.forMonth(this.month).shire
-
-        } else if (targetLanguage.toLowerCase() == "bree") {
-            if (this.month == ShireMonth.LITHE1 || this.month == ShireMonth.OVERLITHE_MILLENNIAL || this.month == ShireMonth.MIDYEAR || this.month == ShireMonth.OVERLITHE || this.month == ShireMonth.LITHE2) {
-
-                const lithe1Day = this.getYearData().monthDays[ShireMonth.LITHE1][0]
-                const summerday = this.getDayOfYear() - lithe1Day + 1
-
-                return `${summerday} ${ShireLocalization.forMonth(this.month).bree}`
-            } else {
-                return ShireLocalization.forMonth(this.month).bree
-            }
-
-        } else {
-            return ShireLocalization.forMonth(this.month).shire
-        }
+        return ShireLocalization.forMonth(this.month).shire
     }
 }

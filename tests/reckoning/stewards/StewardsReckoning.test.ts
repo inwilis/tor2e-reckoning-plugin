@@ -128,7 +128,7 @@ describe('testing stewardsReckoning.parseDate', () => {
     test("Should parse Yestarë 2100", () => expect(stewardsReckoning.parseDate("Yestarë 2100")).toMatchObject({year: 2100, month: StewardsMonth.I1, day: 1}))
     test("Should parse 1 Yestarë 2100", () => expect(stewardsReckoning.parseDate("Yestarë 2100")).toMatchObject({year: 2100, month: StewardsMonth.I1, day: 1}))
 
-    test("Should not parse Norui 2100", () => expect(() => stewardsReckoning.parseDate("Norui 2100")).toThrow(new Error("Unable to parse 'Norui 2100' as date")))
+    test("Should not parse Norui 2100", () => expect(() => stewardsReckoning.parseDate("Norui 2100")).toThrow(new Error("Unable to parse 'Norui 2100' as date of Steward's reckoning")))
     test("Should parse 1 Norui 2100", () => expect(stewardsReckoning.parseDate("1 Norui 2100")).toMatchObject({year: 2100, month: StewardsMonth.M6, day: 1}))
 
     test("Should parse Loende 2100", () => expect(stewardsReckoning.parseDate("Loende 2100")).toMatchObject({year: 2100, month: StewardsMonth.I3, day: 1}))

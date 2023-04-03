@@ -2,6 +2,7 @@ import {describe, expect, test} from "@jest/globals";
 import {reckonings} from "../../src/reckoning/Reckonings";
 import {stewardsReckoning} from "../../src/reckoning/stewards/StewardsReckoning";
 import {shireReckoning} from "../../src/reckoning/shire/ShireReckoning";
+import {breeReckoning} from "../../src/reckoning/bree/BreeReckoning";
 
 describe("testing conversion from Steward's to Shire-reckoning", () => {
 
@@ -69,6 +70,34 @@ describe("testing conversion from Shire-reckoning to Steward's", () => {
     })
 })
 
+describe("testing conversion from Steward's to Bree-reckoning", () => {
+    test("battle of the Pellenor", () => {
+        const breeDate = breeReckoning.parseDate("15 Rethe 1720");
+        expect(reckonings.toReckoning("bree", stewardsReckoning.parseDate("15 Gwaeron 3019"))).toMatchObject({year: breeDate.year, month: breeDate.month, day: breeDate.day})
+    })
+})
+
+describe("testing conversion from Shire-reckoning to Bree-reckoning", () => {
+    test("battle of the Pellenor", () => {
+        const breeDate = breeReckoning.parseDate("15 Rethe 1720");
+        expect(reckonings.toReckoning("bree", shireReckoning.parseDate("15 Rethe 1419"))).toMatchObject({year: breeDate.year, month: breeDate.month, day: breeDate.day})
+    })
+})
+
+describe("testing conversion from Bree-reckoning to Shire-reckoning", () => {
+    test("battle of the Pellenor", () => {
+        const shireDate = shireReckoning.parseDate("15 Rethe 1419");
+        expect(reckonings.toReckoning("shire", breeReckoning.parseDate("15 Rethe 1720"))).toMatchObject({year: shireDate.year, month: shireDate.month, day: shireDate.day})
+    })
+})
+
+describe("testing conversion from Bree-reckoning to Steward's reckoning", () => {
+    test("battle of the Pellenor", () => {
+        const stewardsDate = stewardsReckoning.parseDate("15 Gwaeron 3019");
+        expect(reckonings.toReckoning("stewards", breeReckoning.parseDate("15 Rethe 1720"))).toMatchObject({year: stewardsDate.year, month: stewardsDate.month, day: stewardsDate.day})
+    })
+})
+
 describe("testing reckoning detection", () => {
     test("should return Steward's reckoning by unknown name", () => expect(reckonings.detectReckoning("","unknown")).toBe("stewards"))
     test("should return Steward's reckoning by missing name", () => expect(reckonings.detectReckoning("",undefined)).toBe("stewards"))
@@ -80,12 +109,5 @@ describe("testing reckoning detection", () => {
 
     test("should detect Steward's reckoning by quenya language", () => expect(reckonings.detectReckoning("",undefined, "quenya")).toBe("stewards"))
     test("should detect Steward's reckoning by sindarin language", () => expect(reckonings.detectReckoning("",undefined, "sindarin")).toBe("stewards"))
-
-    test("should detect Shire reckoning by shire language", () => expect(reckonings.detectReckoning("",undefined, "shire")).toBe("shire"))
-    test("should detect Shire reckoning by bree language", () => expect(reckonings.detectReckoning("",undefined, "bree")).toBe("shire"))
-
-    test("should detect Shire reckoning by date content", () => expect(reckonings.detectReckoning("25 Winterfilth 1418",undefined, undefined)).toBe("shire"))
-
-    test("should detect Shire reckoning by name and date", () => expect(reckonings.detectReckoning("25 Winterfilth 1418","shire")).toBe("shire"))
 })
 
