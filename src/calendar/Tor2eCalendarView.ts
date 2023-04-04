@@ -5,6 +5,7 @@ import {CSS_CALENDAR_VIEW} from "../constants";
 import {allReckonings, reckonings} from "../reckoning/Reckonings";
 import {calendarDecorations} from "./CalendarDecorations";
 import {Reckoning} from "../reckoning/Reckoning";
+import {HorizontalNavigationPane} from "../components/HorizontalNavigationPane";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
 
@@ -128,11 +129,20 @@ export class Tor2eCalendarView extends ItemView {
         const controlsPane = root.createEl("div", {cls: CSS_CALENDAR_VIEW.VIEW_CONTROLS.ROOT})
         this.renderControlsPane(controlsPane)
 
-        const yearPane = root.createEl("div", {cls: CSS_CALENDAR_VIEW.YEAR.ROOT})
-        this.renderYearPane(yearPane)
+        new HorizontalNavigationPane({
+            classes: ["year"],
+            text: this.displayDate.year.toString(),
+            onPrevious: async () => await this.viewDate(this.displayDate.plusYears(-1)),
+            onNext: async () => await this.viewDate(this.displayDate.plusYears(1))
+        }).render(root)
 
-        const monthPane = root.createEl("div", {cls: CSS_CALENDAR_VIEW.MONTH.ROOT})
-        this.renderMonthPane(monthPane)
+        new HorizontalNavigationPane({
+            classes: ["month", calendarDecorations.getSeason(this.displayDate).toLowerCase()],
+            text: this.displayDate.toMonthString(),
+            icon: calendarDecorations.getMonthIcon(this.displayDate),
+            onPrevious: async () => await this.viewDate(this.displayDate.plusMonths(-1)),
+            onNext: async () => await this.viewDate(this.displayDate.plusMonths(1))
+        }).render(root)
 
         const monthContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.ROOT})
         this.renderMonth(monthContainer)
@@ -188,43 +198,6 @@ export class Tor2eCalendarView extends ItemView {
                     }, {})
                 }
             })
-        })
-    }
-
-    private renderYearPane(yearPane: any) {
-        const previousYear = yearPane.createEl("span", {cls: CSS_CALENDAR_VIEW.YEAR.NAV_PREVIOUS});
-        yearPane.createEl("span", {cls: CSS_CALENDAR_VIEW.YEAR.TEXT, text: this.displayDate.year.toString()})
-        const nextYear = yearPane.createEl("span", {cls: CSS_CALENDAR_VIEW.YEAR.NAV_NEXT});
-
-        setIcon(previousYear, "chevron-left")
-        setIcon(nextYear, "chevron-right")
-
-        previousYear.addEventListener("click", async () => {
-            await this.viewDate(this.displayDate.plusYears(-1))
-        })
-        nextYear.addEventListener("click", async () => {
-            await this.viewDate(this.displayDate.plusYears(1))
-        })
-    }
-
-    private renderMonthPane(monthPane: any) {
-        const previousMonth = monthPane.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.NAV_PREVIOUS});
-
-        const monthBlock = monthPane.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.BLOCK})
-        const monthIcon = monthBlock.createEl("span", {cls: [CSS_CALENDAR_VIEW.MONTH.ICON, calendarDecorations.getSeason(this.displayDate).toLowerCase()]})
-        monthBlock.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.TEXT, text: this.displayDate.toMonthString()})
-
-        const nextMonth = monthPane.createEl("span", {cls: CSS_CALENDAR_VIEW.MONTH.NAV_NEXT});
-
-        setIcon(monthIcon, calendarDecorations.getMonthIcon(this.displayDate))
-        setIcon(previousMonth, "chevron-left")
-        setIcon(nextMonth, "chevron-right")
-
-        previousMonth.addEventListener("click", async () => {
-            await this.viewDate(this.displayDate.plusMonths(-1))
-        })
-        nextMonth.addEventListener("click", async () => {
-            await this.viewDate(this.displayDate.plusMonths(1))
         })
     }
 

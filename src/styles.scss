@@ -1,0 +1,104 @@
+.tor2e-calendar-view-root {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-content: center;
+    row-gap: var(--size-2-1);
+
+    .hor-nav-pane {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+            height: var(--input-height);
+            aspect-ratio: 1;
+            cursor: pointer;
+            border-radius: 50%;
+            transition-duration: var(--anim-duration-superfast);
+        }
+
+        .nav-button:hover {
+            background: var(--nav-item-background-hover);
+        }
+    }
+
+    .hor-nav-pane.year .text {
+        font-size: var(--font-ui-large)
+    }
+
+    .hor-nav-pane.month .text {
+        font-size: var(--font-ui-medium)
+    }
+
+    .hor-nav-pane.month.winter .icon {
+        color: blue;
+    }
+
+    .hor-nav-pane.month.spring .icon {
+        color: green;
+    }
+
+    .hor-nav-pane.month.summer .icon {
+        color: gold;
+    }
+
+    .hor-nav-pane.month.autumn .icon {
+        color: darkgoldenrod;
+    }
+}
+
+/* old*/
+
+
+.tor2e-calendar-view-root .calendar-pane {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-content: center;
+    align-items: center;
+}
+
+.tor2e-calendar-view-root .calendar-pane > .day,
+.tor2e-calendar-view-root .calendar-pane > .not-day,
+.tor2e-calendar-view-root .nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    aspect-ratio: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    transition-duration: var(--anim-duration-superfast);
+}
+
+.tor2e-calendar-view-root .calendar-pane > .day-of-week {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+
+.tor2e-calendar-view-root .calendar-pane > .day:hover,
+.tor2e-calendar-view-root .nav:hover {
+    background: var(--nav-item-background-hover);
+}
+
+.tor2e-calendar-view-root .calendar-pane > .day.highlight-day {
+    box-shadow: inset 0 0 0 2px var(--nav-item-color);
+    font-weight: var(--bold-weight);
+}
+
+
