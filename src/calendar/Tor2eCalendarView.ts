@@ -4,6 +4,7 @@ import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 import {CSS_CALENDAR_VIEW} from "../constants";
 import {allReckonings, reckonings} from "../reckoning/Reckonings";
 import {calendarDecorations} from "./CalendarDecorations";
+import {Reckoning} from "../reckoning/Reckoning";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
 
@@ -79,12 +80,12 @@ export class Tor2eCalendarView extends ItemView {
         }
 
         if (state.selectedDate) {
-            this.selectedDate = state.selectedDate
-            this.displayDate = state.selectedDate
+            this.selectedDate = this.repairReckoning(state.selectedDate)
+            this.displayDate = this.repairReckoning(state.selectedDate)
         }
 
         if (state.displayDate) {
-            this.displayDate = state.displayDate
+            this.displayDate = this.repairReckoning(state.displayDate)
         }
 
         await this.render()
@@ -92,6 +93,13 @@ export class Tor2eCalendarView extends ItemView {
         this.app.workspace.requestSaveLayout()
 
         return super.setState(state, result);
+    }
+
+    private repairReckoning(date: ReckoningDate<any>) {
+        if (date.reckoning instanceof Reckoning<any>) {
+            return date
+        }
+        return reckonings.getReckoning(date.reckoningName).newDate(date.year, date.month, date.day, date.language);
     }
 
     getState(): any {

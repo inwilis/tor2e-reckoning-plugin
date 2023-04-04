@@ -3,6 +3,7 @@ import {Reckoning} from "./Reckoning";
 import {YearData} from "./YearData";
 
 export abstract class ReckoningDate<M extends number | string> {
+    readonly reckoningName: string
     readonly language: string
 
     protected constructor(readonly reckoning: Reckoning<M>, readonly year: number, readonly month: M, readonly day: number, language?: string) {
@@ -24,6 +25,7 @@ export abstract class ReckoningDate<M extends number | string> {
         this.year = year;
         this.month = month;
         this.day = day;
+        this.reckoningName = reckoning.getName()
         this.language = language && reckoning.getSupportedLanguages().includes(language) ? language : reckoning.getDefaultLanguage()
     }
 
