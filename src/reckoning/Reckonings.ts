@@ -23,7 +23,7 @@ const reckoningAliases: Map<string, string> = new Map<string, string>([
 
 const conversionPossible: Map<string, (year: number) => boolean> = new Map<string, (year: number) => boolean>([
     ["stewards->stewards", () => true],
-    ["shire->shire", (y) => true],
+    ["shire->shire", () => true],
     ["bree->bree", () => true],
     ["stewards->shire", (year) => convertStewardsToShireYear(year) > 0],
     ["shire->stewards", () => true],
@@ -87,6 +87,14 @@ export const reckonings = {
             return conversion(year)
         } else {
             return false
+        }
+    },
+
+    convertIfPossible(targetReckoning: string, date: ReckoningDate<any>): ReckoningDate<any> | null {
+        if (this.isConversionPossible(date.reckoningName, targetReckoning, date.year)) {
+            return this.toReckoning(targetReckoning, date)
+        } else {
+            return null
         }
     },
 

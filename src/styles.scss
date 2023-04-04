@@ -6,6 +6,11 @@
     justify-content: center;
     row-gap: var(--size-2-1);
 
+    .reckoning {
+        font-size: var(--font-ui-large);
+        text-align: center;
+    }
+
     .hor-nav-pane {
         display: flex;
         justify-content: space-between;

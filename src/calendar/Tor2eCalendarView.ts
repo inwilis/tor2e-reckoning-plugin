@@ -126,8 +126,19 @@ export class Tor2eCalendarView extends ItemView {
 
         const root = container.createEl("div", {cls: CSS_CALENDAR_VIEW.ROOT})
 
-        const controlsPane = root.createEl("div", {cls: CSS_CALENDAR_VIEW.VIEW_CONTROLS.ROOT})
-        this.renderControlsPane(controlsPane)
+        const availableReckonings = this.getAvailableReckonings()
+        if (availableReckonings) {
+            new HorizontalNavigationPane({
+                classes: ["reckoning"],
+                text: calendarDecorations.getReckoningTitle(this.displayDate),
+                onPrevious: async () => await this.setState({
+                    displayDate: reckonings.toReckoning(availableReckonings[0][0], this.displayDate)
+                }, {}),
+                onNext: async () => await this.setState({
+                    displayDate: reckonings.toReckoning(availableReckonings[1][0], this.displayDate)
+                }, {})
+            }).render(root)
+        }
 
         new HorizontalNavigationPane({
             classes: ["year"],
@@ -152,53 +163,33 @@ export class Tor2eCalendarView extends ItemView {
 
     }
 
-    private renderControlsPane(controlsPane: HTMLElement) {
-        controlsPane.createEl("select", {cls: CSS_CALENDAR_VIEW.VIEW_CONTROLS.SELECT}, s => {
-            allReckonings.forEach((reckoning, name) => {
-                const attr: any = {"value": name}
-                if (this.displayDate.reckoning.getName() == name) {
-                    attr.selected = true
-                }
-                if (reckonings.isConversionPossible(this.displayDate.reckoning.getName(), reckoning.getName(), this.displayDate.year)) {
-                    s.createEl("option", {
-                        text: calendarDecorations.getReckoningTitle(reckonings.toReckoning(reckoning.getName(), this.displayDate)),
-                        attr: attr
-                    })
-                }
-            })
-
-            s.addEventListener("change", async (event) => {
-                const target: any = event.target
-
-                if (target?.value) {
-                    await this.setState({
-                        selectedDate: reckonings.toReckoning(target.value, this.selectedDate),
-                        displayDate: reckonings.toReckoning(target.value, this.displayDate)
-                    }, {})
-                }
-            })
+    private getAvailableReckonings(): [[string, string], [string, string]] | undefined {
+        const all: Array<[string, string]> = new Array<[string, string]>()
+        let current
+        allReckonings.forEach((reckoning, name) => {
+            if (this.displayDate.reckoning.getName() == name) {
+                all.push([name, calendarDecorations.getReckoningTitle(this.displayDate)])
+                current = all.length - 1
+            } else if (reckonings.isConversionPossible(this.displayDate.reckoning.getName(), reckoning.getName(), this.displayDate.year)) {
+                all.push([name, calendarDecorations.getReckoningTitle(reckonings.toReckoning(reckoning.getName(), this.displayDate))])
+            }
         })
 
-        controlsPane.createEl("select", {cls: CSS_CALENDAR_VIEW.VIEW_CONTROLS.SELECT}, s => {
-            this.selectedDate.reckoning.getSupportedLanguages().forEach(language => {
-                const attr: any = {"value": language}
-                if (this.displayDate.language == language) {
-                    attr.selected = true
-                }
-                s.createEl("option", {text: capitalize(language), attr: attr})
-            })
+        if (current == undefined) {
+            return undefined
+        }
 
-            s.addEventListener("change", async (event) => {
-                const target: any = event.target
+        if (all.length == 1) {
+            return [all[0], all[0]]
+        }
 
-                if (target?.value) {
-                    await this.setState({
-                        selectedDate: this.selectedDate.withLanguage(target.value),
-                        displayDate: this.displayDate.withLanguage(target.value)
-                    }, {})
-                }
-            })
-        })
+        if (current == 0) {
+            return [all[all.length - 1], all[1]]
+        } else if (current == all.length - 1) {
+            return [all[current - 1], all[0]]
+        } else {
+            return [all[current - 1], all[current + 1]]
+        }
     }
 
     private renderMonth(root: HTMLElement) {
@@ -212,6 +203,8 @@ export class Tor2eCalendarView extends ItemView {
             setIcon(span, icon)
         })
 
+        const convertedSelectedDate = reckonings.convertIfPossible(this.displayDate.reckoningName, this.selectedDate)
+
         for (let i = firstDay; i <= lastDay; i++) {
             const dateForCell = this.displayDate.reckoning.getDate(this.displayDate.year, i);
             const dayOfWeek = dateForCell.getDayOfWeek();
@@ -223,7 +216,7 @@ export class Tor2eCalendarView extends ItemView {
 
             const day = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.DAY})
             day.createEl("span", {text: dateForCell.day.toString()})
-            day.toggleClass(CSS_CALENDAR_VIEW.CALENDAR.SELECTED_DAY, dateForCell.isEqual(this.selectedDate))
+            day.toggleClass(CSS_CALENDAR_VIEW.CALENDAR.SELECTED_DAY, convertedSelectedDate != null && dateForCell.isEqual(convertedSelectedDate))
             day.addEventListener("click", async () => {
                 await this.selectDate(dateForCell)
             })
