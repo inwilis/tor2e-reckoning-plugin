@@ -6,6 +6,14 @@ export class StewardsLocalization {
         return MONTH_NAMES[month]
     }
 
+    static forMonthOfLanguage(month: StewardsMonth, language:string): string {
+        if (language == "sindarin") {
+            return MONTH_NAMES[month].sindarin
+        } else {
+            return MONTH_NAMES[month].quenya
+        }
+    }
+
     static forDayOfWeek(dayOfWeek: DayOfWeek) {
         return DAYS_OF_WEEK_NAMES[dayOfWeek]
     }

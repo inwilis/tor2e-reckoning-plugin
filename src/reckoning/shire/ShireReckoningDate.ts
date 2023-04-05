@@ -52,7 +52,17 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
         return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).shire
     }
 
-    toMonthString(language?: string | undefined): string {
+    toMonthString(language?: string): string {
         return ShireLocalization.forMonth(this.month).shire
+    }
+
+    toDayAndMonthString(language?: string): string {
+        const yearData = shireReckoning.getYearData(this.year);
+
+        if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
+            return `${this.day} ${ShireLocalization.forMonth(this.month).shire}`
+        } else {
+            return `${ShireLocalization.forMonth(this.month).shire}`
+        }
     }
 }

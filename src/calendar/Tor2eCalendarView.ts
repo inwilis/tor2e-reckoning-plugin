@@ -1,4 +1,4 @@
-import {App, ItemView, setIcon, ViewStateResult} from "obsidian";
+import {App, ItemView, ViewStateResult} from "obsidian";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
 import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 import {CSS_CALENDAR_VIEW} from "../constants";
@@ -6,6 +6,7 @@ import {allReckonings, reckonings} from "../reckoning/Reckonings";
 import {calendarDecorations} from "./CalendarDecorations";
 import {Reckoning} from "../reckoning/Reckoning";
 import {HorizontalNavigationPane} from "../components/HorizontalNavigationPane";
+import {MonthCalendar} from "../components/MonthCalendar";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
 
@@ -155,8 +156,11 @@ export class Tor2eCalendarView extends ItemView {
             onNext: async () => await this.viewDate(this.displayDate.plusMonths(1))
         }).render(root)
 
-        const monthContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.ROOT})
-        this.renderMonth(monthContainer)
+        new MonthCalendar({
+            selectedDate: this.selectedDate,
+            displayDate: this.displayDate,
+            onDayClick: async (d) => await this.selectDate(d)
+        }).render(root)
 
         const dayContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.ROOT})
         await this.renderDayDetails(dayContainer)
@@ -189,37 +193,6 @@ export class Tor2eCalendarView extends ItemView {
             return [all[current - 1], all[0]]
         } else {
             return [all[current - 1], all[current + 1]]
-        }
-    }
-
-    private renderMonth(root: HTMLElement) {
-        const yearData = this.displayDate.getYearData()
-        const firstDay = yearData.getFirstDay(this.displayDate.month)
-        const lastDay = yearData.getLastDay(this.displayDate.month)
-
-        calendarDecorations.getWeekDayIcons().forEach(icon => {
-            const dayOfWeek = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.DAY_OF_WEEK})
-            const span = dayOfWeek.createEl("span")
-            setIcon(span, icon)
-        })
-
-        const convertedSelectedDate = reckonings.convertIfPossible(this.displayDate.reckoningName, this.selectedDate)
-
-        for (let i = firstDay; i <= lastDay; i++) {
-            const dateForCell = this.displayDate.reckoning.getDate(this.displayDate.year, i);
-            const dayOfWeek = dateForCell.getDayOfWeek();
-            if (i == firstDay) {
-                for (let j = 0; j < dayOfWeek; j++) {
-                    root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.NOT_DAY})
-                }
-            }
-
-            const day = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.DAY})
-            day.createEl("span", {text: dateForCell.day.toString()})
-            day.toggleClass(CSS_CALENDAR_VIEW.CALENDAR.SELECTED_DAY, convertedSelectedDate != null && dateForCell.isEqual(convertedSelectedDate))
-            day.addEventListener("click", async () => {
-                await this.selectDate(dateForCell)
-            })
         }
     }
 

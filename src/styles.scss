@@ -62,48 +62,76 @@
     .hor-nav-pane.month.autumn .icon {
         color: darkgoldenrod;
     }
+
+    .calendar-pane {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        justify-content: center;
+        align-items: center;
+        container-type: inline-size;
+
+        > .day, > .not-day {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            align-content: center;
+            row-gap: var(--size-2-1);
+            margin: 2px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            transition-duration: var(--anim-duration-superfast);
+
+            span {
+                text-align: center;
+            }
+        }
+
+        > .day {
+            cursor: pointer;
+            word-break: break-all;
+            font-size: min(var(--font-ui-medium), 5cqi);
+        }
+
+        > .not-day {
+            font-size: min(var(--font-ui-smaller), 5cqi);
+            color: var(--color-base-40);
+            word-break: break-all;
+        }
+
+        >.long {
+            font-size: min(var(--font-ui-smaller), 2.5cqi);
+            word-break: break-all;
+        }
+
+        > .long.highlight-day span {
+            margin-left: 4px;
+            margin-right: 4px;
+        }
+
+        > .day-of-week {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+        }
+
+        > .day:hover {
+            background: var(--nav-item-background-hover);
+        }
+
+        > .highlight-day {
+            box-shadow: inset 0 0 0 2px var(--nav-item-color);
+            font-weight: var(--bold-weight);
+        }
+    }
 }
 
-/* old*/
 
 
-.tor2e-calendar-view-root .calendar-pane {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    justify-content: center;
-    align-items: center;
-}
 
-.tor2e-calendar-view-root .calendar-pane > .day,
-.tor2e-calendar-view-root .calendar-pane > .not-day,
-.tor2e-calendar-view-root .nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 2px;
-    aspect-ratio: 1;
-    cursor: pointer;
-    border-radius: 50%;
-    transition-duration: var(--anim-duration-superfast);
-}
 
-.tor2e-calendar-view-root .calendar-pane > .day-of-week {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 2px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-}
-
-.tor2e-calendar-view-root .calendar-pane > .day:hover,
-.tor2e-calendar-view-root .nav:hover {
-    background: var(--nav-item-background-hover);
-}
-
-.tor2e-calendar-view-root .calendar-pane > .day.highlight-day {
-    box-shadow: inset 0 0 0 2px var(--nav-item-color);
-    font-weight: var(--bold-weight);
-}
 
 

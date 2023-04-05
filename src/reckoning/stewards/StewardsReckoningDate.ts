@@ -15,46 +15,23 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
 
     getDayOfWeek(): DayOfWeek {
         const daysAfterReckoningStart = this.reckoning.getDaysBetween(this.reckoning.newDate(1, StewardsMonth.I1, 1), this);
-        return (daysAfterReckoningStart +3) % 7;
-    }
-
-    toQuenya(): string {
-        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
-            return `${this.day} ${StewardsLocalization.forMonth(this.month).quenya} ${this.year}`
-        } else {
-            return `${StewardsLocalization.forMonth(this.month).quenya} ${this.year}`
-        }
-    }
-
-    toSindarin(): string {
-        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
-            return `${this.day} ${StewardsLocalization.forMonth(this.month).sindarin} ${this.year}`
-        } else {
-            return `${StewardsLocalization.forMonth(this.month).sindarin} ${this.year}`
-        }
+        return (daysAfterReckoningStart + 3) % 7;
     }
 
     toString(language?: string): string {
-        const targetLanguage = language || this.language
+        const targetLanguage = (language || this.language).toLowerCase()
 
-        if (targetLanguage.toLowerCase() == "quenya") {
-            return this.toQuenya()
-
-        } else if (targetLanguage.toLowerCase() == "sindarin") {
-            return this.toSindarin()
-
+        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
+            return `${this.day} ${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)} ${this.year}`
         } else {
-            return this.toQuenya()
+            return `${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)} ${this.year}`
         }
     }
 
     toDayOfWeekString(language?: string): string {
-        const targetLanguage = language || this.language
+        const targetLanguage = (language || this.language).toLowerCase()
 
-        if (targetLanguage.toLowerCase() == "quenya") {
-            return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).quenya
-
-        } else if (targetLanguage.toLowerCase() == "sindarin") {
+        if (targetLanguage.toLowerCase() == "sindarin") {
             return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).sindarin
 
         } else {
@@ -63,16 +40,18 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
     }
 
     toMonthString(language?: string | undefined): string {
-        const targetLanguage = language || this.language
+        const targetLanguage = (language || this.language).toLowerCase()
 
-        if (targetLanguage.toLowerCase() == "quenya") {
-            return StewardsLocalization.forMonth(this.month).quenya
+        return StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)
+    }
 
-        } else if (targetLanguage.toLowerCase() == "sindarin") {
-            return StewardsLocalization.forMonth(this.month).sindarin
+    toDayAndMonthString(language?: string): string {
+        const targetLanguage = (language || this.language).toLowerCase()
 
+        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
+            return `${this.day} ${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)}`
         } else {
-            return StewardsLocalization.forMonth(this.month).quenya
+            return `${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)}`
         }
     }
 }

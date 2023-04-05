@@ -26,7 +26,7 @@ describe('testing StewardsReckoningDate.getDayOfYear', () => {
 
 })
 
-describe('testing StewardsReckoningDate.isBefore and isEqual', () => {
+describe('testing StewardsReckoningDate.isBefore, isAfter and isEqual', () => {
 
     test(`Days of regular year`, () => {
         for (let i = 1; i <= 364; i++) {
@@ -39,6 +39,10 @@ describe('testing StewardsReckoningDate.isBefore and isEqual', () => {
             expect(today.isEqual(tomorrow)).toBeFalsy()
             expect(today.isEqual(today)).toBeTruthy()
             expect(tomorrow.isEqual(today)).toBeFalsy()
+
+            expect(today.isAfter(tomorrow)).toBeFalsy()
+            expect(today.isAfter(today)).toBeFalsy()
+            expect(tomorrow.isAfter(today)).toBeTruthy()
         }
     })
 })
@@ -154,6 +158,9 @@ describe('testing StewardsReckoningDate.plusDays', () => {
 
     test("should roll a year when subtracting", () =>
         expect(stewardsReckoning.newDate(2443, StewardsMonth.M2, 1).plusDays(-365)).toEqual(stewardsReckoning.newDate(2442, StewardsMonth.M2, 1)))
+
+    test("should roll a year from I1 when subtracting", () =>
+        expect(stewardsReckoning.newDate(2972, StewardsMonth.I1, 1).plusDays(-1)).toEqual(stewardsReckoning.newDate(2971, StewardsMonth.I5, 1)))
 
     test("should roll a year and a leap year when subtracting", () =>
         expect(stewardsReckoning.newDate(2105, StewardsMonth.M2, 1).plusDays(-365-366)).toEqual(stewardsReckoning.newDate(2103, StewardsMonth.M2, 1)))

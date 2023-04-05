@@ -57,4 +57,14 @@ export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
     toMonthString(language?: string): string {
         return BreeLocalization.forMonth(this.month).bree
     }
+
+    toDayAndMonthString(language?: string): string {
+        const yearData = breeReckoning.getYearData(this.year);
+
+        if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
+            return `${this.day} ${BreeLocalization.forMonth(this.month).bree}`
+        } else {
+            return `${BreeLocalization.forMonth(this.month).bree}`
+        }
+    }
 }

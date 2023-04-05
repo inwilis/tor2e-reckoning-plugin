@@ -33,6 +33,10 @@ export abstract class ReckoningDate<M extends number | string> {
         return (this.year < other.year) || (this.year == other.year && this.getDayOfYear() < other.getDayOfYear())
     }
 
+    isAfter(other: typeof this) {
+        return (this.year > other.year) || (this.year == other.year && this.getDayOfYear() > other.getDayOfYear())
+    }
+
     isEqual(other: typeof this) {
         return this.reckoning.getName() == other.reckoning.getName() && this.year == other.year && this.month == other.month && this.day == other.day
     }
@@ -50,20 +54,44 @@ export abstract class ReckoningDate<M extends number | string> {
             return this
         }
 
-        const sign = Math.sign(days)
+        if (days < 0) {
+            return this.minusDays(Math.abs(days))
+        }
+
 
         let newDayOfYear = this.getDayOfYear() + days
         let newYear = this.year
 
         let yearData = this.reckoning.getYearData(newYear)
 
-        while (newDayOfYear > yearData.length || newDayOfYear < 1) {
-            newDayOfYear -= yearData.length * sign
-            newYear += sign
+        while (newDayOfYear > yearData.length) {
+            newDayOfYear -= yearData.length
+            newYear += 1
+            yearData = this.reckoning.getYearData(newYear);
+        }
+
+        return this.reckoning.getDate(newYear, newDayOfYear, this.language)
+    }
+
+    minusDays(days: number): ReckoningDate<M> {
+        if (days == 0) {
+            return this
+        }
+
+        if (days < 0) {
+            return this.minusDays(Math.abs(days))
+        }
+
+        let newDayOfYear = this.getDayOfYear() - days
+        let newYear = this.year
+
+        while (newDayOfYear < 1) {
+            newYear -= 1
             if (newYear < 1) {
                 return this
             }
-            yearData = this.reckoning.getYearData(newYear);
+            const yearData = this.reckoning.getYearData(newYear)
+            newDayOfYear += yearData.length
         }
 
         return this.reckoning.getDate(newYear, newDayOfYear, this.language)
@@ -74,32 +102,24 @@ export abstract class ReckoningDate<M extends number | string> {
             return this
         }
 
-        const sign = Math.sign(months)
+        if (months < 0) {
+            return this.minusMonths(Math.abs(months))
+        }
 
         let newYear = this.year
         let newMonth = this.month
         let yearData = this.reckoning.getYearData(newYear)
 
         for (let i = 0; i < Math.abs(months); i++) {
-            if (sign > 0 && newMonth == yearData.getLastMonth()) {
+            if (newMonth == yearData.getLastMonth()) {
                 // last month of year, moving forward
-                newYear += sign
+                newYear += 1
                 yearData = this.reckoning.getYearData(newYear)
                 newMonth = yearData.getFirstMonth()
 
-            } else if (sign < 0 && newMonth == yearData.getFirstMonth()) {
-                // first month of year, moving backwards
-                newYear += sign
-                yearData = this.reckoning.getYearData(newYear)
-                newMonth = yearData.getLastMonth()
-
             } else {
-                newMonth = yearData.monthSequence[yearData.monthSequence.indexOf(newMonth) + sign]
+                newMonth = yearData.monthSequence[yearData.monthSequence.indexOf(newMonth) + 1]
             }
-        }
-
-        if (newYear < 1) {
-            return this
         }
 
         let newDay = this.day
@@ -109,6 +129,46 @@ export abstract class ReckoningDate<M extends number | string> {
 
         return this.reckoning.newDate(newYear, newMonth, newDay, this.language)
     }
+
+    minusMonths(months: number): ReckoningDate<M> {
+        if (months == 0) {
+            return this
+        }
+
+        if (months < 0) {
+            return this.plusMonths(Math.abs(months))
+        }
+
+        let newYear = this.year
+        let newMonth = this.month
+        let yearData = this.reckoning.getYearData(newYear)
+
+        for (let i = 0; i < Math.abs(months); i++) {
+            if (newMonth == yearData.getFirstMonth()) {
+                // first month of year, moving backwards
+                newYear -= 1
+
+                if (newYear < 1) {
+                    return this
+                }
+
+                yearData = this.reckoning.getYearData(newYear)
+                newMonth = yearData.getLastMonth()
+
+            } else {
+                newMonth = yearData.monthSequence[yearData.monthSequence.indexOf(newMonth) - 1]
+            }
+        }
+
+
+        let newDay = this.day
+        if (newDay > yearData.getDaysInMonth(newMonth)) {
+            newDay = yearData.getDaysInMonth(newMonth)
+        }
+
+        return this.reckoning.newDate(newYear, newMonth, newDay, this.language)
+    }
+
 
     plusYears(years: number): ReckoningDate<M> {
         if (years == 0) {
@@ -132,8 +192,23 @@ export abstract class ReckoningDate<M extends number | string> {
 
     abstract toString(language?: string): string
 
-    abstract toMonthString(language?: string): string
-
     abstract toDayOfWeekString(language?: string): string
 
+    toDayString(language?: string) {
+        const yearData = this.reckoning.getYearData(this.year);
+
+        if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
+            return this.day.toString()
+        } else {
+            return this.toMonthString(language)
+        }
+    }
+
+    abstract toMonthString(language?: string): string
+
+    abstract toDayAndMonthString(language?: string): string
+
+    copy(): ReckoningDate<M> {
+        return this.reckoning.newDate(this.year, this.month, this.day, this.language)
+    }
 }

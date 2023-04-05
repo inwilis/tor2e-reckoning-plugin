@@ -26,7 +26,7 @@ describe('testing breeReckoningDate.getDayOfYear', () => {
 
 })
 
-describe('testing breeReckoningDate.isBefore and isEqual', () => {
+describe('testing breeReckoningDate.isBefore, isAfter and isEqual', () => {
 
     test(`Days of regular year`, () => {
         for (let i = 1; i <= 364; i++) {
@@ -39,6 +39,10 @@ describe('testing breeReckoningDate.isBefore and isEqual', () => {
             expect(today.isEqual(tomorrow)).toBeFalsy()
             expect(today.isEqual(today)).toBeTruthy()
             expect(tomorrow.isEqual(today)).toBeFalsy()
+
+            expect(today.isAfter(tomorrow)).toBeFalsy()
+            expect(today.isAfter(today)).toBeFalsy()
+            expect(tomorrow.isAfter(today)).toBeTruthy()
         }
     })
 })
