@@ -69,6 +69,7 @@
         justify-content: center;
         align-items: center;
         container-type: inline-size;
+        container-name: calendar-pane;
 
         > .day, > .not-day {
             display: flex;
@@ -81,6 +82,7 @@
             aspect-ratio: 1;
             border-radius: 50%;
             transition-duration: var(--anim-duration-superfast);
+            container-type: inline-size;
 
             span {
                 text-align: center;
@@ -99,7 +101,7 @@
             word-break: break-all;
         }
 
-        >.long {
+        > .long {
             font-size: min(var(--font-ui-smaller), 2.5cqi);
             word-break: break-all;
         }
@@ -126,12 +128,61 @@
             box-shadow: inset 0 0 0 2px var(--nav-item-color);
             font-weight: var(--bold-weight);
         }
+
+        .moon {
+            $moon-size: 20cqi;
+
+            border-radius: 100%;
+            width: $moon-size;
+            height: $moon-size;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 0 1px 1px var(--color-base-100);
+
+            .half {
+                width: 50%;
+                height: 100%;
+            }
+
+            .light {
+                background-color: var(--color-base-00);
+            }
+
+            .dark {
+                background-color: var(--color-base-100);
+            }
+
+            .curvature,
+            .curvature:after {
+                top: 0;
+                left: 0;
+                width: $moon-size;
+                height: $moon-size;
+                position: absolute;
+                border-radius: 100%;
+                transform-style: preserve-3d;
+                backface-visibility: hidden;
+            }
+
+            .curvature {
+                background-color: var(--color-base-00); /* Dark */
+            }
+
+            .curvature:after {
+                content: '';
+                background-color: var(--color-base-100); /* Light */
+                transform: rotateY(180deg);
+            }
+        }
     }
 }
 
-
-
-
-
+@container calendar-pane (width < 400px) {
+    .day span:has(.moon) {
+        display: none;
+    }
+}
 
 

@@ -214,8 +214,6 @@ export class Tor2eCalendarView extends ItemView {
             }
         })
     }
-
-
 }
 
 function capitalize(s: string) {

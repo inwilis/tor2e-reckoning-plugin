@@ -4,7 +4,7 @@ import {ReckoningDate} from "../reckoning/ReckoningDate";
 import {reckonings} from "../reckoning/Reckonings";
 import {MoonPhase} from "./MoonPhase";
 
-export const MOON_ANCHOR_DATE = shireReckoning.newDate(1419, ShireMonth.M3, 7)
+export const MOON_ANCHOR_DATE = reckonings.toReckoning("stewards", shireReckoning.newDate(1419, ShireMonth.M3, 7))
 
 const SYNODIC_PERIOD = 29.53059
 
@@ -19,7 +19,7 @@ class MoonCalendar {
             : daysToNewMoon % SYNODIC_PERIOD
     }
 
-    getMoonPhase(date: ReckoningDate<any>): MoonPhase {
+    getMoonDiskPercent(date: ReckoningDate<any>): [boolean, number] {
         const age = this.getMoonAge(date)
 
         const growing = age < SYNODIC_PERIOD / 2
@@ -28,6 +28,11 @@ class MoonCalendar {
             ? age * 200 / SYNODIC_PERIOD
             : (SYNODIC_PERIOD - age) * 200 / SYNODIC_PERIOD
 
+        return [growing, percent]
+    }
+
+    getMoonPhase(date: ReckoningDate<any>): MoonPhase {
+        const [growing, percent] = this.getMoonDiskPercent(date)
 
         if (growing) {
             if (percent < 3.4) {

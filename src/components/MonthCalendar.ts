@@ -120,6 +120,8 @@ export class MonthCalendar {
                         day.addEventListener("click", async () => {
                             await this.data.onDayClick(lastDate.date)
                         })
+
+                        calendarDecorations.renderMoonPhase(day.createEl("span"), lastDate.date)
                     }
                 }
             }

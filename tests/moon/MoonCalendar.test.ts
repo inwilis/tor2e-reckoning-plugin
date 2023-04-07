@@ -66,7 +66,7 @@ describe("testing moon phase calculation on known phases from LotR", () => {
         expect(moonCalendar.getMoonPhase(shireReckoning.newDate(1419, ShireMonth.M3, 1))).toBe(MoonPhase.WAXING_GIBBOUS)
     })
 
-    test("7 Rethe 1491 - full", () => {
+    test("7 Rethe 1419 - full", () => {
         expect(moonCalendar.getMoonPhase(shireReckoning.newDate(1419, ShireMonth.M3, 7))).toBe(MoonPhase.FULL)
     })
 

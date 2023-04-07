@@ -6,6 +6,7 @@ import {BreeMonth} from "../reckoning/bree/BreeMonth";
 
 
 import {STEWARDS_RECKONING_START} from "../reckoning/stewards/StewardsReckoning";
+import {moonCalendar} from "../moon/MoonCalendar";
 
 const WEEKDAY_ICONS = ["star", "sun", "moon", "tree-deciduous", "cloudy", "waves", "mountain"]
 
@@ -75,6 +76,36 @@ export const calendarDecorations = {
     getBreeMonthSeason(month: BreeMonth): string {
         return BREE_MONTH_SEASONS[month]
     },
+
+    renderMoonPhase(container: HTMLElement, date: ReckoningDate<any>) {
+        const [growing, percent] = moonCalendar.getMoonDiskPercent(date)
+
+        const fullMoon = percent > 97
+        const newMoon = percent < 3
+
+        const moon = container.createEl("div", {cls: "moon"})
+        const firstHalf = moon.createEl("div", {cls: ["half"]})
+        const secondHalf = moon.createEl("div", {cls: ["half"]})
+        const curvature = moon.createEl("div", {cls: "curvature"})
+
+        if (fullMoon) {
+            firstHalf.addClass("light")
+            secondHalf.addClass("light")
+        } else if (newMoon) {
+            firstHalf.addClass("dark")
+            secondHalf.addClass("dark")
+        } else if (growing) {
+            firstHalf.addClass("light")
+            secondHalf.addClass("dark")
+        } else {
+            firstHalf.addClass("dark")
+            secondHalf.addClass("light")
+        }
+
+        const deg = 180 - Math.floor((percent * 180) / 100)
+
+        curvature.style.transform = `rotate3d(0, 1, 0, ${deg}deg)`
+    }
 }
 
 const STEWARDS_MONTH_ICONS: Record<StewardsMonth, string> = {
