@@ -59,32 +59,6 @@ class MoonCalendar {
                 return MoonPhase.FULL
             }
         }
-
-        // if (growing) {
-        //     if (percent < 3.4) {
-        //         return MoonPhase.NEW
-        //     } else if (percent >= 3.4 && percent < 46.6) {
-        //         return MoonPhase.WAXING_CRESCENT
-        //     } else if (percent >= 46.6 && percent < 53.4) {
-        //         return MoonPhase.FIRST_QUARTER
-        //     } else if (percent >= 53.4 && percent <= 96.4) {
-        //         return MoonPhase.WAXING_GIBBOUS
-        //     } else {
-        //         return MoonPhase.FULL
-        //     }
-        // } else {
-        //     if (percent < 3.4) {
-        //         return MoonPhase.NEW
-        //     } else if (percent >= 3.4 && percent < 46.6) {
-        //         return MoonPhase.WANING_CRESCENT
-        //     } else if (percent >= 46.6 && percent < 53.4) {
-        //         return MoonPhase.LAST_QUARTER
-        //     } else if (percent >= 53.4 && percent <= 96.4) {
-        //         return MoonPhase.WANING_GIBBOUS
-        //     } else {
-        //         return MoonPhase.FULL
-        //     }
-        // }
     }
 }
 

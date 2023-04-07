@@ -5,6 +5,7 @@ import {DayOfWeek} from "../DayOfWeek";
 import {BreeLocalization} from "./BreeLocalization";
 import {breeReckoning, SHIRE_REFORM_YEAR_IN_BREE} from "./BreeReckoning";
 import {BREE_RECKONING_START_IN_STEWARDS, STEWARDS_RECKONING_START} from "../stewards/StewardsReckoning";
+import {YearType} from "../YearType";
 
 export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
 
@@ -66,5 +67,53 @@ export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
         } else {
             return `${BreeLocalization.forMonth(this.month).bree}`
         }
+    }
+
+    getSpecialEvent(): string {
+        if (this.month == BreeMonth.YULE2) {
+            return "New Year's day"
+        } else if (this.month == BreeMonth.M4 && this.day == 1) {
+            return "Mid-spring day"
+        } else if (this.month == BreeMonth.SUMMERDAYS) {
+            const yearData = this.getYearData()
+
+            if (yearData.type == YearType.REGULAR) {
+                if (this.day == 1) {
+                    return "Midsummer's Eve"
+                } else if (this.day == 2) {
+                    return "Midsummer day"
+                } else if (this.day == 3) {
+                    return "Day after Midsummer"
+                }
+            } else if (yearData.type == YearType.LEAP) {
+                if (this.day == 1) {
+                    return "Midsummer's Eve"
+                } else if (this.day == 2) {
+                    return "Midsummer day"
+                } else if (this.day == 3) {
+                    return "Leap day"
+                } else if (this.day == 4) {
+                    return "Day after Midsummer"
+                }
+            } else if (yearData.type == YearType.MILLENNIAL) {
+                if (this.day == 1) {
+                    return "Midsummer's Eve"
+                } else if (this.day == 3) {
+                    return "Leap day"
+                } else if (this.day == 3) {
+                    return "Midsummer day"
+                } else if (this.day == 4) {
+                    return "Leap day"
+                } else if (this.day == 5) {
+                    return "Day after Midsummer"
+                }
+            }
+
+        } else if (this.month == BreeMonth.M9 && this.day == 30) {
+            return "Mid-autumn day"
+        } else if (this.month == BreeMonth.YULE1) {
+            return "New Year's Eve"
+        }
+        return ""
     }
 }

@@ -4,6 +4,7 @@ import {setIcon} from "obsidian";
 import {reckonings} from "../reckoning/Reckonings";
 import {DayOfWeek} from "../reckoning/DayOfWeek";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
+import tippy, {createSingleton, Instance, roundArrow} from "tippy.js";
 
 export interface MonthCalendarData {
     displayDate: ReckoningDate<any>
@@ -100,6 +101,8 @@ export class MonthCalendar {
             currentDay = currentDay.plusDays(1)
         }
 
+        const tooltips: Instance[] = []
+
         daysToRender.forEach(dayToRender => {
             if (dayToRender.dates.length == 0) {
                 root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.NOT_DAY})
@@ -124,7 +127,17 @@ export class MonthCalendar {
                         calendarDecorations.renderMoonPhase(day.createEl("span"), lastDate.date)
                     }
                 }
+
+                tooltips.push(this.createDayTooltip(day, dayToRender))
             }
+        })
+
+        createSingleton(tooltips, {
+            allowHTML: true,
+            theme: "obsidian",
+            arrow: roundArrow,
+            // hideOnClick: false,
+            // trigger: 'click'
         })
     }
 
@@ -173,4 +186,33 @@ export class MonthCalendar {
 
         return date.toDayString()
     }
+
+    private createDayTooltip(parent: HTMLElement, day: DayToRender) {
+        const content = day.dates.map(d => {
+            const temp = document.createElement("div")
+            calendarDecorations.renderMoonPhase(temp, d.date)
+            const moonHtml = temp.innerHTML
+            temp.remove()
+
+            const specialEvent = d.date.getSpecialEvent()
+            const specialEventSpan = specialEvent ? `<span>${specialEvent}</span>` : ""
+
+            return `               
+                <div class="moon-container">
+                  ${moonHtml}
+                  <div class="moon-details">
+                    <span class="title"><b>${d.date.toString()}</b></span>
+                    ${specialEventSpan}
+                  </div>
+                </div>
+            `
+        }).join("")
+
+        return tippy(parent, {
+            content: content,
+            allowHTML: true,
+            theme: "obsidian"
+        })
+    }
+
 }

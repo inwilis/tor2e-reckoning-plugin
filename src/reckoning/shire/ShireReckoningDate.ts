@@ -65,4 +65,27 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
             return `${ShireLocalization.forMonth(this.month).shire}`
         }
     }
+
+    getSpecialEvent(): string {
+        if (this.month == ShireMonth.YULE2) {
+            return "New Year's day"
+        } else if (this.month == ShireMonth.M4 && this.day == 1) {
+            return "Mid-spring day"
+        } else if (this.month == ShireMonth.LITHE1) {
+            return "Midsummer's Eve"
+        } else if (this.month == ShireMonth.OVERLITHE_MILLENNIAL) {
+            return "Millennial Leap day"
+        } else if (this.month == ShireMonth.MIDYEAR) {
+            return "Midsummer day"
+        } else if (this.month == ShireMonth.OVERLITHE) {
+            return "Leap day"
+        } else if (this.month == ShireMonth.LITHE2) {
+            return "Day after Midsummer"
+        } else if (this.month == ShireMonth.M9 && this.day == 30) {
+            return "Mid-autumn day"
+        } else if (this.month == ShireMonth.YULE1) {
+            return "New Year's Eve"
+        }
+        return ""
+    }
 }

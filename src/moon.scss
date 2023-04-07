@@ -1,0 +1,41 @@
+.moon {
+    border-radius: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 0 1px 1px var(--color-base-100);
+
+    .half {
+        width: 50%;
+        height: 100%;
+    }
+
+    .light {
+        background-color: var(--color-base-00);
+    }
+
+    .dark {
+        background-color: var(--color-base-100);
+    }
+
+    .curvature,
+    .curvature:after {
+        top: 0;
+        left: 0;
+        position: absolute;
+        border-radius: 100%;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+    }
+
+    .curvature {
+        background-color: var(--color-base-00); /* Dark */
+    }
+
+    .curvature:after {
+        content: '';
+        background-color: var(--color-base-100); /* Light */
+        transform: rotateY(180deg);
+    }
+}

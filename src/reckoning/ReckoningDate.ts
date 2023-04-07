@@ -208,6 +208,8 @@ export abstract class ReckoningDate<M extends number | string> {
 
     abstract toDayAndMonthString(language?: string): string
 
+    abstract getSpecialEvent(): string
+
     copy(): ReckoningDate<M> {
         return this.reckoning.newDate(this.year, this.month, this.day, this.language)
     }

@@ -161,10 +161,6 @@ export class Tor2eCalendarView extends ItemView {
             displayDate: this.displayDate,
             onDayClick: async (d) => await this.selectDate(d)
         }).render(root)
-
-        const dayContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.ROOT})
-        await this.renderDayDetails(dayContainer)
-
     }
 
     private getAvailableReckonings(): [[string, string], [string, string]] | undefined {
@@ -196,27 +192,7 @@ export class Tor2eCalendarView extends ItemView {
         }
     }
 
-    private async renderDayDetails(root: HTMLElement) {
-        const dayReckoningsContainer = root.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.RECKONINGS})
-        allReckonings.forEach(reckoning => {
-            if (reckonings.isConversionPossible(this.selectedDate.reckoning.getName(), reckoning.getName(), this.selectedDate.year)) {
-                const reckoningDate = reckonings.toReckoning(reckoning.getName(), this.selectedDate)
-                dayReckoningsContainer.createEl("div", {
-                    text: `${calendarDecorations.getReckoningTitle(reckoningDate)}`,
-                    cls: CSS_CALENDAR_VIEW.DAY.RECKONING_TITLE
-                })
-                reckoning.getSupportedLanguages().forEach(language => {
-                    const dateString = reckoningDate.toString(language)
-                    const dateBlock = dayReckoningsContainer.createEl("div", {cls: CSS_CALENDAR_VIEW.DAY.DATE_BLOCK});
-                    dateBlock.createEl("span", {text: `${(capitalize(language))}: `, cls: CSS_CALENDAR_VIEW.DAY.LANGUAGE_TITLE})
-                    dateBlock.createEl("span", {text: `${dateString}`, cls: CSS_CALENDAR_VIEW.DAY.DATE_STRING})
-                })
-            }
-        })
-    }
+
 }
 
-function capitalize(s: string) {
-    return s.charAt(0).toUpperCase() + s.slice(1);
-}
 

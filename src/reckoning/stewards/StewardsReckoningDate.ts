@@ -3,6 +3,7 @@ import {StewardsMonth} from "./StewardsMonth";
 import {Reckoning} from "../Reckoning";
 import {DayOfWeek} from "../DayOfWeek";
 import {StewardsLocalization} from "./StewardsLocalization";
+import {STEWARDS_RECKONING_START} from "./StewardsReckoning";
 
 export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
     constructor(reckoning: Reckoning<StewardsMonth>, year: number, month: StewardsMonth, day: number, language?: string) {
@@ -53,5 +54,27 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
         } else {
             return `${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)}`
         }
+    }
+
+    getSpecialEvent(): string {
+        if (this.month == StewardsMonth.I1) {
+            return "New Year's day"
+        } else if (this.month == StewardsMonth.I2 || (this.year < STEWARDS_RECKONING_START && this.month == StewardsMonth.M4 && this.day == 1)) {
+            return "Mid-spring day"
+        } else if (this.month == StewardsMonth.I3) {
+            return "Midsummer day"
+        } else if (this.month == StewardsMonth.I3L) {
+            const yearData = this.getYearData()
+            if (this.day == yearData.getLastDay(this.month) - 1) {
+                return "Midsummer day"
+            } else {
+                return "Middle-day"
+            }
+        } else if (this.month == StewardsMonth.I4 || (this.year < STEWARDS_RECKONING_START && this.month == StewardsMonth.M9 && this.day == 30)) {
+            return "Mid-autumn day"
+        } else if (this.month == StewardsMonth.I5) {
+            return "New Year's Eve"
+        }
+        return ""
     }
 }
