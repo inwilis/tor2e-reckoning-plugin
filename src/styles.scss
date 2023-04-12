@@ -1,5 +1,11 @@
 @import 'moon.scss';
 
+$winter-color: #0000a6;
+$spring-color: #a25da4;
+$summer-color: green;
+$autumn-color: #b8620b;
+
+
 .tor2e-calendar-view-root {
     width: 100%;
     display: grid;
@@ -50,19 +56,19 @@
     }
 
     .hor-nav-pane.month.winter .icon {
-        color: blue;
+        color: $winter-color;
     }
 
     .hor-nav-pane.month.spring .icon {
-        color: green;
+        color: $spring-color;
     }
 
     .hor-nav-pane.month.summer .icon {
-        color: gold;
+        color: $summer-color;
     }
 
     .hor-nav-pane.month.autumn .icon {
-        color: darkgoldenrod;
+        color: $autumn-color;
     }
 
     .calendar-pane {
@@ -210,6 +216,52 @@
                 }
             }
         }
+
+        > .month-tooltip {
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-auto-rows: 1fr;
+            justify-items: start;
+
+            .text {
+                margin-left: 0.5em;
+            }
+
+            .winter {
+                color: $winter-color;
+            }
+
+            .spring {
+                color: $spring-color;
+            }
+
+            .summer {
+                color: $summer-color;
+            }
+
+            .autumn {
+                color: $autumn-color;
+            }
+
+            .intercalary {
+                font-style: italic;
+            }
+
+            .current {
+                font-weight: var(--bold-weight);
+                //text-decoration-line: underline;
+                //border: 1px solid var(--color-base-100);
+                //border-radius: 50%;
+            }
+
+            .text.current:after {
+                content: "•"
+            }
+            .text.current:before {
+                content: "•"
+            }
+        }
+
     }
 
     &[data-placement^=top] > .tippy-arrow:before {

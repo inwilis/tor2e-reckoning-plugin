@@ -1,4 +1,4 @@
-import {App, ItemView, ViewStateResult} from "obsidian";
+import {App, ItemView, setIcon, ViewStateResult} from "obsidian";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
 import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 import {CSS_CALENDAR_VIEW} from "../constants";
@@ -7,6 +7,7 @@ import {calendarDecorations} from "./CalendarDecorations";
 import {Reckoning} from "../reckoning/Reckoning";
 import {HorizontalNavigationPane} from "../components/HorizontalNavigationPane";
 import {MonthCalendar} from "../components/MonthCalendar";
+import tippy, {roundArrow} from "tippy.js";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
 
@@ -156,6 +157,8 @@ export class Tor2eCalendarView extends ItemView {
             onNext: async () => await this.viewDate(this.displayDate.plusMonths(1))
         }).render(root)
 
+        this.createMonthTooltip();
+
         new MonthCalendar({
             selectedDate: this.selectedDate,
             displayDate: this.displayDate,
@@ -190,6 +193,41 @@ export class Tor2eCalendarView extends ItemView {
         } else {
             return [all[current - 1], all[current + 1]]
         }
+    }
+
+    private createMonthTooltip() {
+        const yearData = this.displayDate.getYearData()
+
+        const tooltipRoot = document.createElement("div")
+        tooltipRoot.className = "month-tooltip"
+
+        let date = this.displayDate.reckoning.newDate(this.displayDate.year, yearData.getFirstMonth(), 1, this.displayDate.language)
+
+        while (date.year == this.displayDate.year) {
+            const current = date.month == this.displayDate.month
+            const intercalary = yearData.getDaysInMonth(date.month) < 30
+            const season = calendarDecorations.getSeason(date).toLowerCase();
+
+            const icon = tooltipRoot.createEl("span", {cls: ["icon", season]}, i => setIcon(i, calendarDecorations.getMonthIcon(date)));
+            const text = tooltipRoot.createEl("span", {cls: ["text"], text: date.toMonthString()});
+
+            icon.toggleClass("current", current)
+            icon.toggleClass("intercalary", intercalary)
+
+            text.toggleClass("current", current)
+            text.toggleClass("intercalary", intercalary)
+
+            date = date.plusMonths(1)
+        }
+
+
+        tippy(".hor-nav-pane.month .content", {
+            theme: "obsidian",
+            content: tooltipRoot,
+            arrow: roundArrow,
+            // hideOnClick: false,
+            // trigger: 'click'
+        })
     }
 
 

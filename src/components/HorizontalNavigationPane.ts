@@ -14,7 +14,7 @@ export class HorizontalNavigationPane {
     constructor(readonly data: HorizontalNavigationPaneData) {
     }
 
-    render(parent: HTMLElement) {
+    render(parent: HTMLElement): HTMLElement {
         const root = parent.createEl("div", {cls: (this.data.classes || []).concat(["hor-nav-pane"])})
         const previousButton = root.createEl("span", {cls: "nav-button previous"}, btn => setIcon(btn, "chevron-left"))
 
@@ -26,6 +26,8 @@ export class HorizontalNavigationPane {
 
         if (this.data.onPrevious) previousButton.addEventListener("click", this.data.onPrevious)
         if (this.data.onNext) nextButton.addEventListener("click", this.data.onNext)
+
+        return root
     }
 
 }
