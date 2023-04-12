@@ -155,10 +155,9 @@
 .tippy-box[data-theme~=obsidian] {
     background-color: var(--background-primary);
     color: var(--text-normal);
-    box-shadow:
-        0 0 20px 4px rgba(154, 161, 177, .15),
-        0 4px 80px -8px rgba(36, 40, 47, .25),
-        0 4px 4px -2px rgba(91, 94, 105, .15);
+    box-shadow: 0 0 20px 4px rgba(154, 161, 177, .15),
+    0 4px 80px -8px rgba(36, 40, 47, .25),
+    0 4px 4px -2px rgba(91, 94, 105, .15);
 
     > .tippy-backdrop {
         background-color: var(--background-primary);
@@ -178,34 +177,37 @@
         text-align: center;
         font-size: var(--font-ui-small);
 
-        .moon-container {
-            $moon-size: 2em;
-            display: flex;
+        > .day-tooltip {
 
-            align-content: center;
-            align-items: center;
+            .moon-container {
+                $moon-size: 2em;
+                display: flex;
 
-            .moon {
-                width: $moon-size;
-                height: $moon-size;
+                align-content: center;
+                align-items: center;
 
-                .curvature,
-                .curvature:after {
+                .moon {
                     width: $moon-size;
                     height: $moon-size;
+
+                    .curvature,
+                    .curvature:after {
+                        width: $moon-size;
+                        height: $moon-size;
+                    }
                 }
-            }
 
-            .moon-details {
-                flex: 1 1 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                margin-left: var(--size-4-2);
-            }
+                .moon-details {
+                    flex: 1 1 auto;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    margin-left: var(--size-4-2);
+                }
 
-             .title {
-                font-size: var(--font-ui-medium);
+                .title {
+                    font-size: var(--font-ui-medium);
+                }
             }
         }
     }
@@ -213,12 +215,15 @@
     &[data-placement^=top] > .tippy-arrow:before {
         border-top-color: var(--background-primary);
     }
+
     &[data-placement^=bottom] > .tippy-arrow:before {
         border-bottom-color: var(--background-primary);
     }
+
     &[data-placement^=left] > .tippy-arrow:before {
         border-left-color: var(--background-primary);
     }
+
     &[data-placement^=right] > .tippy-arrow:before {
         border-right-color: var(--background-primary);
     }
@@ -227,41 +232,50 @@
 .tippy-box[data-placement^=top] > .tippy-svg-arrow {
     bottom: 0;
 }
+
 .tippy-box[data-placement^=top] > .tippy-svg-arrow:after,
 .tippy-box[data-placement^=top] > .tippy-svg-arrow > svg {
     top: 16px;
     transform: rotate(180deg);
 }
+
 .tippy-box[data-placement^=bottom] > .tippy-svg-arrow {
     top: 0;
 }
+
 .tippy-box[data-placement^=bottom] > .tippy-svg-arrow > svg {
     bottom: 16px;
 }
+
 .tippy-box[data-placement^=left] > .tippy-svg-arrow {
     right: 0;
 }
+
 .tippy-box[data-placement^=left] > .tippy-svg-arrow:after,
 .tippy-box[data-placement^=left] > .tippy-svg-arrow > svg {
     transform: rotate(90deg);
     top: calc(50% - 3px);
     left: 11px;
 }
+
 .tippy-box[data-placement^=right] > .tippy-svg-arrow {
     left: 0;
 }
+
 .tippy-box[data-placement^=right] > .tippy-svg-arrow:after,
 .tippy-box[data-placement^=right] > .tippy-svg-arrow > svg {
     transform: rotate(-90deg);
     top: calc(50% - 3px);
     right: 11px;
 }
+
 .tippy-svg-arrow {
     width: 16px;
     height: 16px;
     fill: #333;
     text-align: initial;
 }
+
 .tippy-svg-arrow,
 .tippy-svg-arrow > svg {
     position: absolute;

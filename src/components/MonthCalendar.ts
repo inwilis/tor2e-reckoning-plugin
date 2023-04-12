@@ -5,6 +5,7 @@ import {reckonings} from "../reckoning/Reckonings";
 import {DayOfWeek} from "../reckoning/DayOfWeek";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
 import tippy, {createSingleton, Instance, roundArrow} from "tippy.js";
+import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 
 export interface MonthCalendarData {
     displayDate: ReckoningDate<any>
@@ -133,7 +134,6 @@ export class MonthCalendar {
         })
 
         createSingleton(tooltips, {
-            allowHTML: true,
             theme: "obsidian",
             arrow: roundArrow,
             // hideOnClick: false,
@@ -188,29 +188,36 @@ export class MonthCalendar {
     }
 
     private createDayTooltip(parent: HTMLElement, day: DayToRender) {
-        const content = day.dates.map(d => {
-            const temp = document.createElement("div")
-            calendarDecorations.renderMoonPhase(temp, d.date)
-            const moonHtml = temp.innerHTML
-            temp.remove()
+        const tooltipFragment = document.createElement("div" )
+        tooltipFragment.className = "day-tooltip"
 
-            const specialEvent = d.date.getSpecialEvent()
-            const specialEventSpan = specialEvent ? `<span>${specialEvent}</span>` : ""
+        day.dates.forEach(d => {
 
-            return `               
-                <div class="moon-container">
-                  ${moonHtml}
-                  <div class="moon-details">
-                    <span class="title"><b>${d.date.toString()}</b></span>
-                    ${specialEventSpan}
-                  </div>
-                </div>
-            `
-        }).join("")
+            tooltipFragment.createEl("div", {cls: "moon-container"}, moonContainer => {
+                calendarDecorations.renderMoonPhase(moonContainer, d.date)
+
+                moonContainer.createEl("div", {cls: "moon-details"}, moonDetails => {
+                    moonDetails.createEl("span", {cls: "title"}, title => {
+                        title.createEl("b", {text: d.date.toString()})
+                    })
+                    const specialEvent = d.date.getSpecialEvent()
+                    if (specialEvent) moonDetails.createEl("span", {text: specialEvent})
+
+                    const selected = reckonings.toReckoning("stewards", this.selectedDate)
+                    const current = reckonings.toReckoning("stewards", d.date)
+
+                    if (!selected.isEqual(current)) {
+                        const daysBetween = stewardsReckoning.getDaysBetween(selected, current).toString()
+                        const beforeOrAfter = current.isBefore(selected) ? "-" : "+"
+                        const sEnding = daysBetween.endsWith("1") ? "" : "s"
+                        moonDetails.createEl("span", {text: `${beforeOrAfter}${daysBetween} day${sEnding}`})
+                    }
+                })
+            })
+        })
 
         return tippy(parent, {
-            content: content,
-            allowHTML: true,
+            content: tooltipFragment,
             theme: "obsidian"
         })
     }
