@@ -89,9 +89,9 @@ describe('testing breeReckoningDate.constructor', () => {
     test("Should not allow 4 Summerdays in non-leap year", () => expect(() => breeReckoning.newDate(1, BreeMonth.SUMMERDAYS, 4)).toThrow(RangeError))
     test("Should not allow 5 Summerdays in non-leap year", () => expect(() => breeReckoning.newDate(1, BreeMonth.SUMMERDAYS, 5)).toThrow(RangeError))
 
-    test("Should not allow day 0", () => expect(() => breeReckoning.newDate(760, BreeMonth.M1, 0)).toThrow(RangeError))
-    test("Should not allow negative day", () => expect(() => breeReckoning.newDate(760, BreeMonth.M1, -1)).toThrow(RangeError))
-    test("Should not allow day 31 in a month", () => expect(() => breeReckoning.newDate(760, BreeMonth.M1, 31)).toThrow(RangeError))
+    test("Should not allow day 0", () => expect(() => breeReckoning.newDate(760, BreeMonth.FRERY, 0)).toThrow(RangeError))
+    test("Should not allow negative day", () => expect(() => breeReckoning.newDate(760, BreeMonth.FRERY, -1)).toThrow(RangeError))
+    test("Should not allow day 31 in a month", () => expect(() => breeReckoning.newDate(760, BreeMonth.FRERY, 31)).toThrow(RangeError))
 
     test("Should allow 4 Summerdays in leap year", () => expect(breeReckoning.newDate(5, BreeMonth.SUMMERDAYS, 4)).toBeTruthy())
     test("Should not allow 5 Summerdays in leap year", () => expect(() => breeReckoning.newDate(5, BreeMonth.SUMMERDAYS, 5)).toThrow(RangeError))
@@ -99,6 +99,40 @@ describe('testing breeReckoningDate.constructor', () => {
     test("Should allow 4 Summerdays in millennial year", () => expect(breeReckoning.newDate(1061, BreeMonth.SUMMERDAYS, 4)).toBeTruthy())
     test("Should allow 5 Summerdays in millennial year", () => expect(breeReckoning.newDate(1061, BreeMonth.SUMMERDAYS, 5)).toBeTruthy())
 
+})
+
+describe('testing breeReckoning.getDate.toBree', () => {
+
+    test("Day 1 of regular year", () => expect(breeReckoning.getDate(2100, 1).toString()).toBe("2 Yule 2100"))
+    test("Day 2 of regular year", () => expect(breeReckoning.getDate(2100, 2).toString()).toBe("1 Frery 2100"))
+    test("Day 31 of regular year", () => expect(breeReckoning.getDate(2100, 31).toString()).toBe("30 Frery 2100"))
+    test("Day 182 of regular year", () => expect(breeReckoning.getDate(2100, 182).toString()).toBe("1 Summerdays 2100"))
+    test("Day 183 of regular year", () => expect(breeReckoning.getDate(2100, 183).toString()).toBe("2 Summerdays 2100"))
+    test("Day 184 of regular year", () => expect(breeReckoning.getDate(2100, 184).toString()).toBe("3 Summerdays 2100"))
+    test("Day 320 of regular year", () => expect(breeReckoning.getDate(2100, 320).toString()).toBe("16 Blooting 2100"))
+    test("Day 365 of regular year", () => expect(breeReckoning.getDate(2100, 365).toString()).toBe("1 Yule 2100"))
+
+
+    test("Day 1 of leap year", () => expect(breeReckoning.getDate(5, 1).toString()).toBe("2 Yule 5"))
+    test("Day 2 of leap year", () => expect(breeReckoning.getDate(5, 2).toString()).toBe("1 Frery 5"))
+    test("Day 31 of leap year", () => expect(breeReckoning.getDate(5, 31).toString()).toBe("30 Frery 5"))
+    test("Day 182 of leap year", () => expect(breeReckoning.getDate(5, 182).toString()).toBe("1 Summerdays 5"))
+    test("Day 183 of leap year", () => expect(breeReckoning.getDate(5, 183).toString()).toBe("2 Summerdays 5"))
+    test("Day 184 of leap year", () => expect(breeReckoning.getDate(5, 184).toString()).toBe("3 Summerdays 5"))
+    test("Day 185 of leap year", () => expect(breeReckoning.getDate(5, 185).toString()).toBe("4 Summerdays 5"))
+    test("Day 320 of leap year", () => expect(breeReckoning.getDate(5, 320).toString()).toBe("15 Blooting 5"))
+    test("Day 366 of leap year", () => expect(breeReckoning.getDate(5, 366).toString()).toBe("1 Yule 5"))
+
+    test("Day 1 of millennial year", () => expect(breeReckoning.getDate(1061, 1).toString()).toBe("2 Yule 1061"))
+    test("Day 2 of millennial year", () => expect(breeReckoning.getDate(1061, 2).toString()).toBe("1 Frery 1061"))
+    test("Day 31 of millennial year", () => expect(breeReckoning.getDate(1061, 31).toString()).toBe("30 Frery 1061"))
+    test("Day 182 of millennial year", () => expect(breeReckoning.getDate(1061, 182).toString()).toBe("1 Summerdays 1061"))
+    test("Day 183 of millennial year", () => expect(breeReckoning.getDate(1061, 183).toString()).toBe("2 Summerdays 1061"))
+    test("Day 184 of millennial year", () => expect(breeReckoning.getDate(1061, 184).toString()).toBe("3 Summerdays 1061"))
+    test("Day 185 of millennial year", () => expect(breeReckoning.getDate(1061, 185).toString()).toBe("4 Summerdays 1061"))
+    test("Day 186 of millennial year", () => expect(breeReckoning.getDate(1061, 186).toString()).toBe("5 Summerdays 1061"))
+    test("Day 320 of millennial year", () => expect(breeReckoning.getDate(1061, 320).toString()).toBe("14 Blooting 1061"))
+    test("Day 367 of millennial year", () => expect(breeReckoning.getDate(1061, 367).toString()).toBe("1 Yule 1061"))
 })
 
 function testDayOfWeek(date: ReckoningDate<BreeMonth>, expected: number) {

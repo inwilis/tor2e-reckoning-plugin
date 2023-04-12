@@ -15,14 +15,14 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
     }
 
     getDayOfWeek(): DayOfWeek {
-        const daysAfterReckoningStart = this.reckoning.getDaysBetween(this.reckoning.newDate(1, StewardsMonth.I1, 1), this);
+        const daysAfterReckoningStart = this.reckoning.getDaysBetween(this.reckoning.newDate(1, StewardsMonth.YESTARE, 1), this);
         return (daysAfterReckoningStart + 3) % 7;
     }
 
     toString(language?: string): string {
         const targetLanguage = (language || this.language).toLowerCase()
 
-        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
+        if (this.getYearData().getDaysInMonth(this.month) > 1) {
             return `${this.day} ${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)} ${this.year}`
         } else {
             return `${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)} ${this.year}`
@@ -49,7 +49,7 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
     toDayAndMonthString(language?: string): string {
         const targetLanguage = (language || this.language).toLowerCase()
 
-        if (this.month.toString().startsWith("M") || this.month == StewardsMonth.I3L) {
+        if (this.getYearData().getDaysInMonth(this.month) > 1) {
             return `${this.day} ${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)}`
         } else {
             return `${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)}`
@@ -57,22 +57,22 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
     }
 
     getSpecialEvent(): string {
-        if (this.month == StewardsMonth.I1) {
+        if (this.month == StewardsMonth.YESTARE) {
             return "New Year's day"
-        } else if (this.month == StewardsMonth.I2 || (this.year < STEWARDS_RECKONING_START && this.month == StewardsMonth.M4 && this.day == 1)) {
+        } else if (this.month == StewardsMonth.TUILERE || (this.year < STEWARDS_RECKONING_START && this.month == StewardsMonth.VIRESSE && this.day == 1)) {
             return "Mid-spring day"
-        } else if (this.month == StewardsMonth.I3) {
+        } else if (this.month == StewardsMonth.LOENDE) {
             return "Midsummer day"
-        } else if (this.month == StewardsMonth.I3L) {
+        } else if (this.month == StewardsMonth.ENDERE) {
             const yearData = this.getYearData()
             if (this.day == yearData.getLastDay(this.month) - 1) {
                 return "Midsummer day"
             } else {
                 return "Middle-day"
             }
-        } else if (this.month == StewardsMonth.I4 || (this.year < STEWARDS_RECKONING_START && this.month == StewardsMonth.M9 && this.day == 30)) {
+        } else if (this.month == StewardsMonth.YAVIERE || (this.year < STEWARDS_RECKONING_START && this.month == StewardsMonth.YAVANNIE && this.day == 30)) {
             return "Mid-autumn day"
-        } else if (this.month == StewardsMonth.I5) {
+        } else if (this.month == StewardsMonth.METTARE) {
             return "New Year's Eve"
         }
         return ""

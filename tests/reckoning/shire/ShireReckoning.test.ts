@@ -22,14 +22,14 @@ describe('testing shireReckoning.daysInYear', () => {
 
 describe('testing shireReckoning.nextMonth for regular year', () => {
     [
-        [ShireMonth.YULE2, ShireMonth.M1],
-        [ShireMonth.M1, ShireMonth.M2], [ShireMonth.M2, ShireMonth.M3], [ShireMonth.M3, ShireMonth.M4],
-        [ShireMonth.M4, ShireMonth.M5], [ShireMonth.M5, ShireMonth.M6], [ShireMonth.M6, ShireMonth.LITHE1],
+        [ShireMonth.YULE2, ShireMonth.AFTERYULE],
+        [ShireMonth.AFTERYULE, ShireMonth.SOLMATH], [ShireMonth.SOLMATH, ShireMonth.RETHE], [ShireMonth.RETHE, ShireMonth.ASTRON],
+        [ShireMonth.ASTRON, ShireMonth.THRIMIDGE], [ShireMonth.THRIMIDGE, ShireMonth.FORELITHE], [ShireMonth.FORELITHE, ShireMonth.LITHE1],
         [ShireMonth.LITHE1, ShireMonth.MIDYEAR],
         [ShireMonth.MIDYEAR, ShireMonth.LITHE2],
-        [ShireMonth.LITHE2, ShireMonth.M7],
-        [ShireMonth.M7, ShireMonth.M8], [ShireMonth.M8, ShireMonth.M9], [ShireMonth.M9, ShireMonth.M10],
-        [ShireMonth.M10, ShireMonth.M11], [ShireMonth.M11, ShireMonth.M12], [ShireMonth.M12, ShireMonth.YULE1],
+        [ShireMonth.LITHE2, ShireMonth.AFTERLITHE],
+        [ShireMonth.AFTERLITHE, ShireMonth.WEDMATH], [ShireMonth.WEDMATH, ShireMonth.HALIMATH], [ShireMonth.HALIMATH, ShireMonth.WINTERFILTH],
+        [ShireMonth.WINTERFILTH, ShireMonth.BLOMATH], [ShireMonth.BLOMATH, ShireMonth.FOREYULE], [ShireMonth.FOREYULE, ShireMonth.YULE1],
         [ShireMonth.YULE1, ShireMonth.YULE2]
     ].forEach(tuple =>
         test(`${tuple[0]} is followed by ${tuple[1]}`, () => expect(shireReckoning.nextMonth(tuple[0], 2100)).toBe(tuple[1])))
@@ -37,15 +37,15 @@ describe('testing shireReckoning.nextMonth for regular year', () => {
 
 describe('testing shireReckoning.nextMonth for leap year', () => {
     [
-        [ShireMonth.YULE2, ShireMonth.M1],
-        [ShireMonth.M1, ShireMonth.M2], [ShireMonth.M2, ShireMonth.M3], [ShireMonth.M3, ShireMonth.M4],
-        [ShireMonth.M4, ShireMonth.M5], [ShireMonth.M5, ShireMonth.M6], [ShireMonth.M6, ShireMonth.LITHE1],
+        [ShireMonth.YULE2, ShireMonth.AFTERYULE],
+        [ShireMonth.AFTERYULE, ShireMonth.SOLMATH], [ShireMonth.SOLMATH, ShireMonth.RETHE], [ShireMonth.RETHE, ShireMonth.ASTRON],
+        [ShireMonth.ASTRON, ShireMonth.THRIMIDGE], [ShireMonth.THRIMIDGE, ShireMonth.FORELITHE], [ShireMonth.FORELITHE, ShireMonth.LITHE1],
         [ShireMonth.LITHE1, ShireMonth.MIDYEAR],
         [ShireMonth.MIDYEAR, ShireMonth.OVERLITHE],
         [ShireMonth.OVERLITHE, ShireMonth.LITHE2],
-        [ShireMonth.LITHE2, ShireMonth.M7],
-        [ShireMonth.M7, ShireMonth.M8], [ShireMonth.M8, ShireMonth.M9], [ShireMonth.M9, ShireMonth.M10],
-        [ShireMonth.M10, ShireMonth.M11], [ShireMonth.M11, ShireMonth.M12], [ShireMonth.M12, ShireMonth.YULE1],
+        [ShireMonth.LITHE2, ShireMonth.AFTERLITHE],
+        [ShireMonth.AFTERLITHE, ShireMonth.WEDMATH], [ShireMonth.WEDMATH, ShireMonth.HALIMATH], [ShireMonth.HALIMATH, ShireMonth.WINTERFILTH],
+        [ShireMonth.WINTERFILTH, ShireMonth.BLOMATH], [ShireMonth.BLOMATH, ShireMonth.FOREYULE], [ShireMonth.FOREYULE, ShireMonth.YULE1],
         [ShireMonth.YULE1, ShireMonth.YULE2]
     ].forEach(tuple =>
         test(`${tuple[0]} is followed by ${tuple[1]}`, () => expect(shireReckoning.nextMonth(tuple[0], 2104)).toBe(tuple[1])))
@@ -53,16 +53,16 @@ describe('testing shireReckoning.nextMonth for leap year', () => {
 
 describe('testing shireReckoning.nextMonth for millennial leap year', () => {
     [
-        [ShireMonth.YULE2, ShireMonth.M1],
-        [ShireMonth.M1, ShireMonth.M2], [ShireMonth.M2, ShireMonth.M3], [ShireMonth.M3, ShireMonth.M4],
-        [ShireMonth.M4, ShireMonth.M5], [ShireMonth.M5, ShireMonth.M6], [ShireMonth.M6, ShireMonth.LITHE1],
+        [ShireMonth.YULE2, ShireMonth.AFTERYULE],
+        [ShireMonth.AFTERYULE, ShireMonth.SOLMATH], [ShireMonth.SOLMATH, ShireMonth.RETHE], [ShireMonth.RETHE, ShireMonth.ASTRON],
+        [ShireMonth.ASTRON, ShireMonth.THRIMIDGE], [ShireMonth.THRIMIDGE, ShireMonth.FORELITHE], [ShireMonth.FORELITHE, ShireMonth.LITHE1],
         [ShireMonth.LITHE1, ShireMonth.OVERLITHE_MILLENNIAL],
         [ShireMonth.OVERLITHE_MILLENNIAL, ShireMonth.MIDYEAR],
         [ShireMonth.MIDYEAR, ShireMonth.OVERLITHE],
         [ShireMonth.OVERLITHE, ShireMonth.LITHE2],
-        [ShireMonth.LITHE2, ShireMonth.M7],
-        [ShireMonth.M7, ShireMonth.M8], [ShireMonth.M8, ShireMonth.M9], [ShireMonth.M9, ShireMonth.M10],
-        [ShireMonth.M10, ShireMonth.M11], [ShireMonth.M11, ShireMonth.M12], [ShireMonth.M12, ShireMonth.YULE1],
+        [ShireMonth.LITHE2, ShireMonth.AFTERLITHE],
+        [ShireMonth.AFTERLITHE, ShireMonth.WEDMATH], [ShireMonth.WEDMATH, ShireMonth.HALIMATH], [ShireMonth.HALIMATH, ShireMonth.WINTERFILTH],
+        [ShireMonth.WINTERFILTH, ShireMonth.BLOMATH], [ShireMonth.BLOMATH, ShireMonth.FOREYULE], [ShireMonth.FOREYULE, ShireMonth.YULE1],
         [ShireMonth.YULE1, ShireMonth.YULE2]
     ].forEach(tuple =>
         test(`${tuple[0]} is followed by ${tuple[1]}`, () => expect(shireReckoning.nextMonth(tuple[0], 760)).toBe(tuple[1])))
@@ -73,32 +73,32 @@ describe('testing shireReckoning.getDate', () => {
     test("Day 0 causes an error", () => expect(() => shireReckoning.getDate(2100, 0)).toThrow(RangeError))
 
     test("Day 1 of regular year", () => expect(shireReckoning.getDate(2100, 1)).toMatchObject({month: ShireMonth.YULE2, day: 1}))
-    test("Day 2 of regular year", () => expect(shireReckoning.getDate(2100, 2)).toMatchObject({month: ShireMonth.M1, day: 1}))
-    test("Day 31 of regular year", () => expect(shireReckoning.getDate(2100, 31)).toMatchObject({month: ShireMonth.M1, day: 30}))
+    test("Day 2 of regular year", () => expect(shireReckoning.getDate(2100, 2)).toMatchObject({month: ShireMonth.AFTERYULE, day: 1}))
+    test("Day 31 of regular year", () => expect(shireReckoning.getDate(2100, 31)).toMatchObject({month: ShireMonth.AFTERYULE, day: 30}))
     test("Day 183 of regular year", () => expect(shireReckoning.getDate(2100, 183)).toMatchObject({month: ShireMonth.MIDYEAR, day: 1}))
-    test("Day 320 of regular year", () => expect(shireReckoning.getDate(2100, 320)).toMatchObject({month: ShireMonth.M11, day: 16}))
+    test("Day 320 of regular year", () => expect(shireReckoning.getDate(2100, 320)).toMatchObject({month: ShireMonth.BLOMATH, day: 16}))
     test("Day 365 of regular year", () => expect(shireReckoning.getDate(2100, 365)).toMatchObject({month: ShireMonth.YULE1, day: 1}))
     test("Day 366 of regular year causes an error", () => expect(() => shireReckoning.getDate(2100, 366)).toThrow(RangeError))
 
 
     test("Day 1 of leap year", () => expect(shireReckoning.getDate(2104, 1)).toMatchObject({month: ShireMonth.YULE2, day: 1}))
-    test("Day 2 of leap year", () => expect(shireReckoning.getDate(2104, 2)).toMatchObject({month: ShireMonth.M1, day: 1}))
-    test("Day 31 of leap year", () => expect(shireReckoning.getDate(2104, 31)).toMatchObject({month: ShireMonth.M1, day: 30}))
+    test("Day 2 of leap year", () => expect(shireReckoning.getDate(2104, 2)).toMatchObject({month: ShireMonth.AFTERYULE, day: 1}))
+    test("Day 31 of leap year", () => expect(shireReckoning.getDate(2104, 31)).toMatchObject({month: ShireMonth.AFTERYULE, day: 30}))
     test("Day 183 of leap year", () => expect(shireReckoning.getDate(2104, 183)).toMatchObject({month: ShireMonth.MIDYEAR, day: 1}))
     test("Day 184 of leap year", () => expect(shireReckoning.getDate(2104, 184)).toMatchObject({month: ShireMonth.OVERLITHE, day: 1}))
-    test("Day 320 of leap year", () => expect(shireReckoning.getDate(2104, 320)).toMatchObject({month: ShireMonth.M11, day: 15}))
-    test("Day 365 of leap year", () => expect(shireReckoning.getDate(2104, 365)).toMatchObject({month: ShireMonth.M12, day: 30}))
+    test("Day 320 of leap year", () => expect(shireReckoning.getDate(2104, 320)).toMatchObject({month: ShireMonth.BLOMATH, day: 15}))
+    test("Day 365 of leap year", () => expect(shireReckoning.getDate(2104, 365)).toMatchObject({month: ShireMonth.FOREYULE, day: 30}))
     test("Day 366 of leap year", () => expect(shireReckoning.getDate(2104, 366)).toMatchObject({month: ShireMonth.YULE1, day: 1}))
     test("Day 367 of leap year causes an error", () => expect(() => shireReckoning.getDate(2104, 367)).toThrow(RangeError))
 
     test("Day 1 of millennial year", () => expect(shireReckoning.getDate(760, 1)).toMatchObject({month: ShireMonth.YULE2, day: 1}))
-    test("Day 2 of millennial year", () => expect(shireReckoning.getDate(760, 2)).toMatchObject({month: ShireMonth.M1, day: 1}))
-    test("Day 31 of millennial year", () => expect(shireReckoning.getDate(760, 31)).toMatchObject({month: ShireMonth.M1, day: 30}))
+    test("Day 2 of millennial year", () => expect(shireReckoning.getDate(760, 2)).toMatchObject({month: ShireMonth.AFTERYULE, day: 1}))
+    test("Day 31 of millennial year", () => expect(shireReckoning.getDate(760, 31)).toMatchObject({month: ShireMonth.AFTERYULE, day: 30}))
     test("Day 183 of millennial year", () => expect(shireReckoning.getDate(760, 183)).toMatchObject({month: ShireMonth.OVERLITHE_MILLENNIAL, day: 1}))
     test("Day 184 of millennial year", () => expect(shireReckoning.getDate(760, 184)).toMatchObject({month: ShireMonth.MIDYEAR, day: 1}))
     test("Day 185 of millennial year", () => expect(shireReckoning.getDate(760, 185)).toMatchObject({month: ShireMonth.OVERLITHE, day: 1}))
-    test("Day 320 of millennial year", () => expect(shireReckoning.getDate(760, 320)).toMatchObject({month: ShireMonth.M11, day: 14}))
-    test("Day 366 of millennial year", () => expect(shireReckoning.getDate(760, 366)).toMatchObject({month: ShireMonth.M12, day: 30}))
+    test("Day 320 of millennial year", () => expect(shireReckoning.getDate(760, 320)).toMatchObject({month: ShireMonth.BLOMATH, day: 14}))
+    test("Day 366 of millennial year", () => expect(shireReckoning.getDate(760, 366)).toMatchObject({month: ShireMonth.FOREYULE, day: 30}))
     test("Day 367 of millennial year", () => expect(shireReckoning.getDate(760, 367)).toMatchObject({month: ShireMonth.YULE1, day: 1}))
     test("Day 368 of millennial year causes an error", () => expect(() => shireReckoning.getDate(760, 368)).toThrow(RangeError))
 })
@@ -140,20 +140,20 @@ describe('testing shireReckoning.getDate.toShire', () => {
 describe('testing shireReckoning.getDaysBetween', () => {
 
     test("Days between 3M1 2365 and 15M2 3265", () => expect(shireReckoning.getDaysBetween(
-        shireReckoning.newDate(2365, ShireMonth.M1, 3),
-        shireReckoning.newDate(2365, ShireMonth.M2, 15))).toBe(42))
+        shireReckoning.newDate(2365, ShireMonth.AFTERYULE, 3),
+        shireReckoning.newDate(2365, ShireMonth.SOLMATH, 15))).toBe(42))
 
     test("Days between 3M1 2365 and 15M2 3266", () => expect(shireReckoning.getDaysBetween(
-        shireReckoning.newDate(2365, ShireMonth.M1, 3),
-        shireReckoning.newDate(2366, ShireMonth.M2, 15))).toBe(42 + 365))
+        shireReckoning.newDate(2365, ShireMonth.AFTERYULE, 3),
+        shireReckoning.newDate(2366, ShireMonth.SOLMATH, 15))).toBe(42 + 365))
 
     test("Days between 3M6 2365 and 15M7 2365", () => expect(shireReckoning.getDaysBetween(
-        shireReckoning.newDate(2365, ShireMonth.M6, 3),
-        shireReckoning.newDate(2365, ShireMonth.M7, 15))).toBe(45))
+        shireReckoning.newDate(2365, ShireMonth.FORELITHE, 3),
+        shireReckoning.newDate(2365, ShireMonth.AFTERLITHE, 15))).toBe(45))
 
     test("Days between 3M6 2364 and 15M7 2365", () => expect(shireReckoning.getDaysBetween(
-        shireReckoning.newDate(2364, ShireMonth.M6, 3),
-        shireReckoning.newDate(2365, ShireMonth.M7, 15))).toBe(45 + 366))
+        shireReckoning.newDate(2364, ShireMonth.FORELITHE, 3),
+        shireReckoning.newDate(2365, ShireMonth.AFTERLITHE, 15))).toBe(45 + 366))
 
 })
 
@@ -168,7 +168,7 @@ describe('testing shireReckoning.parseShireDate', () => {
     test("Should parse 2 Lithe 2100", () => expect(shireReckoning.parseDate("2 Lithe 2100")).toMatchObject({year: 2100, month: ShireMonth.LITHE2, day: 1}))
 
     test("Should not parse Rethe 2100", () => expect(()=>shireReckoning.parseDate("Rethe 2100")).toThrow(new Error("Unable to parse 'Rethe 2100' as date of Shire reckoning")))
-    test("Should parse 1 Rethe 2100", () => expect(shireReckoning.parseDate("1 Rethe 2100")).toMatchObject({year: 2100, month: ShireMonth.M3, day: 1}))
+    test("Should parse 1 Rethe 2100", () => expect(shireReckoning.parseDate("1 Rethe 2100")).toMatchObject({year: 2100, month: ShireMonth.RETHE, day: 1}))
 
     test("Should parse Mid-Year's Day 2100", () => expect(shireReckoning.parseDate("Mid-Year's Day 2100")).toMatchObject({year: 2100, month: ShireMonth.MIDYEAR, day: 1}))
 

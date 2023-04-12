@@ -4,7 +4,7 @@ import {ReckoningDate} from "../reckoning/ReckoningDate";
 import {reckonings} from "../reckoning/Reckonings";
 import {MoonPhase} from "./MoonPhase";
 
-export const MOON_ANCHOR_DATE = reckonings.toReckoning("stewards", shireReckoning.newDate(1419, ShireMonth.M3, 7))
+export const MOON_ANCHOR_DATE = reckonings.toReckoning("stewards", shireReckoning.newDate(1419, ShireMonth.RETHE, 7))
 
 const SYNODIC_PERIOD = 29.53059
 

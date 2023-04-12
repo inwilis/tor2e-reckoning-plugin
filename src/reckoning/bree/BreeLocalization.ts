@@ -16,21 +16,21 @@ export interface BreeLocalizationData {
 }
 
 export const MONTH_NAMES: Record<BreeMonth, BreeLocalizationData> = {
-    YULE2: {bree: "2 Yule"},
-    M1: {bree: "Frery"},
-    M2: {bree: "Solmath"},
-    M3: {bree: "Rethe"},
-    M4: {bree: "Chithing"},
-    M5: {bree: "Thrimidge"},
-    M6: {bree: "Lithe"},
-    SUMMERDAYS: {bree: "Summerdays"},
-    M7: {bree: "Mede"},
-    M8: {bree: "Wedmath"},
-    M9: {bree: "Harvestmath"},
-    M10: {bree: "Wintring"},
-    M11: {bree: "Blooting"},
-    M12: {bree: "Yulemath"},
-    YULE1: {bree: "1 Yule"}
+    [BreeMonth.YULE2]: {bree: "2 Yule"},
+    [BreeMonth.FRERY]: {bree: "Frery"},
+    [BreeMonth.SOLMATH]: {bree: "Solmath"},
+    [BreeMonth.RETHE]: {bree: "Rethe"},
+    [BreeMonth.CHITHING]: {bree: "Chithing"},
+    [BreeMonth.THRIMIDGE]: {bree: "Thrimidge"},
+    [BreeMonth.LITHE]: {bree: "Lithe"},
+    [BreeMonth.SUMMERDAYS]: {bree: "Summerdays"},
+    [BreeMonth.MEDE]: {bree: "Mede"},
+    [BreeMonth.WEDMATH]: {bree: "Wedmath"},
+    [BreeMonth.HARVESTMATH]: {bree: "Harvestmath"},
+    [BreeMonth.WINTRING]: {bree: "Wintring"},
+    [BreeMonth.BLOOTING]: {bree: "Blooting"},
+    [BreeMonth.YULEMATH]: {bree: "Yulemath"},
+    [BreeMonth.YULE1]: {bree: "1 Yule"}
 }
 
 export const DAYS_OF_WEEK_NAMES: Record<DayOfWeek, BreeLocalizationData> = {

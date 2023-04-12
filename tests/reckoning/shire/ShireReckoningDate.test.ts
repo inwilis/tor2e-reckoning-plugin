@@ -71,13 +71,13 @@ describe('testing ShireReckoningDate.getDayOwWeek', () => {
     testDayOfWeek(shireReckoning.newDate(1102, ShireMonth.YULE1, 1), DayOfWeek.D7)
 
     testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.YULE2, 1), DayOfWeek.D1)
-    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.M1, 1), DayOfWeek.D2)
-    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.M1, 2), DayOfWeek.D3)
-    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.M1, 3), DayOfWeek.D4)
-    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.M1, 4), DayOfWeek.D5)
-    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.M1, 5), DayOfWeek.D6)
-    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.M1, 6), DayOfWeek.D7)
-    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.M1, 7), DayOfWeek.D1)
+    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.AFTERYULE, 1), DayOfWeek.D2)
+    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.AFTERYULE, 2), DayOfWeek.D3)
+    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.AFTERYULE, 3), DayOfWeek.D4)
+    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.AFTERYULE, 4), DayOfWeek.D5)
+    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.AFTERYULE, 5), DayOfWeek.D6)
+    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.AFTERYULE, 6), DayOfWeek.D7)
+    testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.AFTERYULE, 7), DayOfWeek.D1)
 
     testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.LITHE1, 1), DayOfWeek.D7)
     testDayOfWeek(shireReckoning.newDate(1103, ShireMonth.MIDYEAR, 1), DayOfWeek.D7)
@@ -96,9 +96,9 @@ describe('testing ShireReckoningDate.constructor', () => {
     test("Should not allow Overlithe in non-leap year", () => expect(() => shireReckoning.newDate(2061, ShireMonth.OVERLITHE, 1)).toThrow(RangeError))
     test("Should not allow Millennial Overlithe in non-leap year", () => expect(() => shireReckoning.newDate(2061, ShireMonth.OVERLITHE_MILLENNIAL, 1)).toThrow(RangeError))
 
-    test("Should not allow day 0", () => expect(() => shireReckoning.newDate(760, ShireMonth.M1, 0)).toThrow(RangeError))
-    test("Should not allow negative day", () => expect(() => shireReckoning.newDate(760, ShireMonth.M1, -1)).toThrow(RangeError))
-    test("Should not allow day 31 in a month", () => expect(() => shireReckoning.newDate(760, ShireMonth.M1, 31)).toThrow(RangeError))
+    test("Should not allow day 0", () => expect(() => shireReckoning.newDate(760, ShireMonth.AFTERYULE, 0)).toThrow(RangeError))
+    test("Should not allow negative day", () => expect(() => shireReckoning.newDate(760, ShireMonth.AFTERYULE, -1)).toThrow(RangeError))
+    test("Should not allow day 31 in a month", () => expect(() => shireReckoning.newDate(760, ShireMonth.AFTERYULE, 31)).toThrow(RangeError))
 
     test("Should not allow day 2 in MIDYEAR in regular year", () => expect(() => shireReckoning.newDate(2063, ShireMonth.MIDYEAR, 2)).toThrow(RangeError))
 

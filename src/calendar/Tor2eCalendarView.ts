@@ -220,7 +220,6 @@ export class Tor2eCalendarView extends ItemView {
             date = date.plusMonths(1)
         }
 
-
         tippy(".hor-nav-pane.month .content", {
             theme: "obsidian",
             content: tooltipRoot,

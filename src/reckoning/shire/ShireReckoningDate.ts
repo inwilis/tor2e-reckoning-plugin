@@ -39,9 +39,7 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
     }
 
     toString(language?: string): string {
-        const yearData = shireReckoning.getYearData(this.year);
-
-        if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
+        if (this.getYearData().getDaysInMonth(this.month) > 1) {
             return `${this.day} ${ShireLocalization.forMonth(this.month).shire} ${this.year}`
         } else {
             return `${ShireLocalization.forMonth(this.month).shire} ${this.year}`
@@ -57,9 +55,7 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
     }
 
     toDayAndMonthString(language?: string): string {
-        const yearData = shireReckoning.getYearData(this.year);
-
-        if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
+        if (this.getYearData().getDaysInMonth(this.month) > 1) {
             return `${this.day} ${ShireLocalization.forMonth(this.month).shire}`
         } else {
             return `${ShireLocalization.forMonth(this.month).shire}`
@@ -69,7 +65,7 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
     getSpecialEvent(): string {
         if (this.month == ShireMonth.YULE2) {
             return "New Year's day"
-        } else if (this.month == ShireMonth.M4 && this.day == 1) {
+        } else if (this.month == ShireMonth.ASTRON && this.day == 1) {
             return "Mid-spring day"
         } else if (this.month == ShireMonth.LITHE1) {
             return "Midsummer's Eve"
@@ -81,7 +77,7 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
             return "Leap day"
         } else if (this.month == ShireMonth.LITHE2) {
             return "Day after Midsummer"
-        } else if (this.month == ShireMonth.M9 && this.day == 30) {
+        } else if (this.month == ShireMonth.HALIMATH && this.day == 30) {
             return "Mid-autumn day"
         } else if (this.month == ShireMonth.YULE1) {
             return "New Year's Eve"

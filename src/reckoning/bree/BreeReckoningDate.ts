@@ -42,9 +42,7 @@ export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
     }
 
     toString(language?: string): string {
-        const yearData = breeReckoning.getYearData(this.year);
-
-        if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
+        if (this.getYearData().getDaysInMonth(this.month) > 1) {
             return `${this.day} ${BreeLocalization.forMonth(this.month).bree} ${this.year}`
         } else {
             return `${BreeLocalization.forMonth(this.month).bree} ${this.year}`
@@ -60,9 +58,7 @@ export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
     }
 
     toDayAndMonthString(language?: string): string {
-        const yearData = breeReckoning.getYearData(this.year);
-
-        if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
+        if (this.getYearData().getDaysInMonth(this.month) > 1) {
             return `${this.day} ${BreeLocalization.forMonth(this.month).bree}`
         } else {
             return `${BreeLocalization.forMonth(this.month).bree}`
@@ -72,7 +68,7 @@ export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
     getSpecialEvent(): string {
         if (this.month == BreeMonth.YULE2) {
             return "New Year's day"
-        } else if (this.month == BreeMonth.M4 && this.day == 1) {
+        } else if (this.month == BreeMonth.CHITHING && this.day == 1) {
             return "Mid-spring day"
         } else if (this.month == BreeMonth.SUMMERDAYS) {
             const yearData = this.getYearData()
@@ -109,7 +105,7 @@ export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
                 }
             }
 
-        } else if (this.month == BreeMonth.M9 && this.day == 30) {
+        } else if (this.month == BreeMonth.HARVESTMATH && this.day == 30) {
             return "Mid-autumn day"
         } else if (this.month == BreeMonth.YULE1) {
             return "New Year's Eve"

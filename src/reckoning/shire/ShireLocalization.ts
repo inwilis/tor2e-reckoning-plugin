@@ -16,25 +16,25 @@ export interface ShireLocalizationData {
 }
 
 export const MONTH_NAMES: Record<ShireMonth, ShireLocalizationData> = {
-    YULE2: {shire: "2 Yule"},
-    M1: {shire: "Afteryule"},
-    M2: {shire: "Solmath"},
-    M3: {shire: "Rethe"},
-    M4: {shire: "Astron"},
-    M5: {shire: "Thrimidge"},
-    M6: {shire: "Forelithe"},
-    LITHE1: {shire: "1 Lithe"},
-    OVERLITHE_MILLENNIAL: {shire: "Leap Overlithe"},
-    MIDYEAR: {shire: "Mid-Year's Day"},
-    OVERLITHE: {shire: "Overlithe"},
-    LITHE2: {shire: "2 Lithe"},
-    M7: {shire: "Afterlithe"},
-    M8: {shire: "Wedmath"},
-    M9: {shire: "Halimath"},
-    M10: {shire: "Winterfilth"},
-    M11: {shire: "Blomath"},
-    M12: {shire: "Foreyule"},
-    YULE1: {shire: "1 Yule"}
+    [ShireMonth.YULE2]: {shire: "2 Yule"},
+    [ShireMonth.AFTERYULE]: {shire: "Afteryule"},
+    [ShireMonth.SOLMATH]: {shire: "Solmath"},
+    [ShireMonth.RETHE]: {shire: "Rethe"},
+    [ShireMonth.ASTRON]: {shire: "Astron"},
+    [ShireMonth.THRIMIDGE]: {shire: "Thrimidge"},
+    [ShireMonth.FORELITHE]: {shire: "Forelithe"},
+    [ShireMonth.LITHE1]: {shire: "1 Lithe"},
+    [ShireMonth.OVERLITHE_MILLENNIAL]: {shire: "Leap Overlithe"},
+    [ShireMonth.MIDYEAR]: {shire: "Mid-Year's Day"},
+    [ShireMonth.OVERLITHE]: {shire: "Overlithe"},
+    [ShireMonth.LITHE2]: {shire: "2 Lithe"},
+    [ShireMonth.AFTERLITHE]: {shire: "Afterlithe"},
+    [ShireMonth.WEDMATH]: {shire: "Wedmath"},
+    [ShireMonth.HALIMATH]: {shire: "Halimath"},
+    [ShireMonth.WINTERFILTH]: {shire: "Winterfilth"},
+    [ShireMonth.BLOMATH]: {shire: "Blomath"},
+    [ShireMonth.FOREYULE]: {shire: "Foreyule"},
+    [ShireMonth.YULE1]: {shire: "1 Yule"}
 }
 
 export const DAYS_OF_WEEK_NAMES: Record<DayOfWeek, ShireLocalizationData> = {

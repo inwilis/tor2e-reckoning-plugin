@@ -71,11 +71,11 @@ export const
     SINGLE_DAY_INTERCALARIES: MonthSuggestion[] = (() => {
         const result: MonthSuggestion[] = [];
 
-        result.push(new MonthSuggestion(MONTH_NAMES.I1, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.I2, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.I3, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.I4, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.I5, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.YESTARE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.TUILERE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.LOENDE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.YAVIERE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.METTARE, true, true))
 
         return result
     })()
@@ -84,19 +84,19 @@ export const
     MULTI_DAY_MONTHS: MonthSuggestion[] = (() => {
         const result: MonthSuggestion[] = [];
 
-        result.push(new MonthSuggestion(MONTH_NAMES.M1, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M2, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M3, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M4, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M5, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M6, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.I3L, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M7, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M8, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M9, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M10, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M11, true, true))
-        result.push(new MonthSuggestion(MONTH_NAMES.M12, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.NARVINYE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.NENIME, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.SULIME, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.VIRESSE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.LOTESSE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.NARIE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.ENDERE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.CERMIE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.URIME, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.YAVANNIE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.NARQUELIE, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.HISIME, true, true))
+        result.push(new MonthSuggestion(MONTH_NAMES.RINGARE, true, true))
 
         return result
     })()

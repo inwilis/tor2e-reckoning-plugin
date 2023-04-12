@@ -27,24 +27,24 @@ export interface StewardsLocalizationData {
 }
 
 export const MONTH_NAMES: Record<StewardsMonth, StewardsLocalizationData> = {
-    I1: {quenya: "Yestarë", quenyaSimplified: "Yestare", sindarin: "Iestor", sindarinSimplified: "Iestor"},
-    M1: {quenya: "Narvinyë", quenyaSimplified: "Narvinye", sindarin: "Narwain", sindarinSimplified: "Narwain"},
-    M2: {quenya: "Nénimë", quenyaSimplified: "Nenime", sindarin: "Nínui", sindarinSimplified: "Ninui"},
-    M3: {quenya: "Súlimë", quenyaSimplified: "Sulime", sindarin: "Gwaeron", sindarinSimplified: "Gwaeron"},
-    I2: {quenya: "Tuilérë", quenyaSimplified: "Tuilere", sindarin: "Ethuilor", sindarinSimplified: "Ethuilor"},
-    M4: {quenya: "Víressë", quenyaSimplified: "Viresse", sindarin: "Gwirith", sindarinSimplified: "Gwirith"},
-    M5: {quenya: "Lótessë", quenyaSimplified: "Lotesse", sindarin: "Lothron", sindarinSimplified: "Lothron"},
-    M6: {quenya: "Nárië", quenyaSimplified: "Narie", sindarin: "Nórui", sindarinSimplified: "Norui"},
-    I3: {quenya: "Loëndë", quenyaSimplified: "Loende", sindarin: "Lawenedh", sindarinSimplified: "Lawenedh"},
-    I3L: {quenya: "Enderë", quenyaSimplified: "Endere", sindarin: "Enedhor", sindarinSimplified: "Enedhor"},
-    M7: {quenya: "Cermië", quenyaSimplified: "Cermie", sindarin: "Cerveth", sindarinSimplified: "Cerveth"},
-    M8: {quenya: "Urimë", quenyaSimplified: "Urime", sindarin: "Urui", sindarinSimplified: "Urui"},
-    M9: {quenya: "Yavannië", quenyaSimplified: "Yavannie", sindarin: "Ivanneth", sindarinSimplified: "Ivanneth"},
-    I4: {quenya: "Yáviérë", quenyaSimplified: "Yaviere", sindarin: "Lavassor", sindarinSimplified: "Lavassor"},
-    M10: {quenya: "Narquelië", quenyaSimplified: "Narquelie", sindarin: "Narbeleth", sindarinSimplified: "Narbeleth"},
-    M11: {quenya: "Hísimë", quenyaSimplified: "Hisime", sindarin: "Hithui", sindarinSimplified: "Hithui"},
-    M12: {quenya: "Ringarë", quenyaSimplified: "Ringare", sindarin: "Girithron", sindarinSimplified: "Girithron"},
-    I5: {quenya: "Mettarë", quenyaSimplified: "Mettare", sindarin: "Methor", sindarinSimplified: "Methor"}
+    [StewardsMonth.YESTARE]: {quenya: "Yestarë", quenyaSimplified: "Yestare", sindarin: "Iestor", sindarinSimplified: "Iestor"},
+    [StewardsMonth.NARVINYE]: {quenya: "Narvinyë", quenyaSimplified: "Narvinye", sindarin: "Narwain", sindarinSimplified: "Narwain"},
+    [StewardsMonth.NENIME]: {quenya: "Nénimë", quenyaSimplified: "Nenime", sindarin: "Nínui", sindarinSimplified: "Ninui"},
+    [StewardsMonth.SULIME]: {quenya: "Súlimë", quenyaSimplified: "Sulime", sindarin: "Gwaeron", sindarinSimplified: "Gwaeron"},
+    [StewardsMonth.TUILERE]: {quenya: "Tuilérë", quenyaSimplified: "Tuilere", sindarin: "Ethuilor", sindarinSimplified: "Ethuilor"},
+    [StewardsMonth.VIRESSE]: {quenya: "Víressë", quenyaSimplified: "Viresse", sindarin: "Gwirith", sindarinSimplified: "Gwirith"},
+    [StewardsMonth.LOTESSE]: {quenya: "Lótessë", quenyaSimplified: "Lotesse", sindarin: "Lothron", sindarinSimplified: "Lothron"},
+    [StewardsMonth.NARIE]: {quenya: "Nárië", quenyaSimplified: "Narie", sindarin: "Nórui", sindarinSimplified: "Norui"},
+    [StewardsMonth.LOENDE]: {quenya: "Loëndë", quenyaSimplified: "Loende", sindarin: "Lawenedh", sindarinSimplified: "Lawenedh"},
+    [StewardsMonth.ENDERE]: {quenya: "Enderë", quenyaSimplified: "Endere", sindarin: "Enedhor", sindarinSimplified: "Enedhor"},
+    [StewardsMonth.CERMIE]: {quenya: "Cermië", quenyaSimplified: "Cermie", sindarin: "Cerveth", sindarinSimplified: "Cerveth"},
+    [StewardsMonth.URIME]: {quenya: "Urimë", quenyaSimplified: "Urime", sindarin: "Urui", sindarinSimplified: "Urui"},
+    [StewardsMonth.YAVANNIE]: {quenya: "Yavannië", quenyaSimplified: "Yavannie", sindarin: "Ivanneth", sindarinSimplified: "Ivanneth"},
+    [StewardsMonth.YAVIERE]: {quenya: "Yáviérë", quenyaSimplified: "Yaviere", sindarin: "Lavassor", sindarinSimplified: "Lavassor"},
+    [StewardsMonth.NARQUELIE]: {quenya: "Narquelië", quenyaSimplified: "Narquelie", sindarin: "Narbeleth", sindarinSimplified: "Narbeleth"},
+    [StewardsMonth.HISIME]: {quenya: "Hísimë", quenyaSimplified: "Hisime", sindarin: "Hithui", sindarinSimplified: "Hithui"},
+    [StewardsMonth.RINGARE]: {quenya: "Ringarë", quenyaSimplified: "Ringare", sindarin: "Girithron", sindarinSimplified: "Girithron"},
+    [StewardsMonth.METTARE]: {quenya: "Mettarë", quenyaSimplified: "Mettare", sindarin: "Methor", sindarinSimplified: "Methor"}
 }
 
 export const DAYS_OF_WEEK_NAMES: Record<DayOfWeek, StewardsLocalizationData> = {
