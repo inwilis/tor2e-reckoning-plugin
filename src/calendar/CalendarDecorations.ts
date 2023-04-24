@@ -109,64 +109,64 @@ export const calendarDecorations = {
 }
 
 const STEWARDS_MONTH_ICONS: Record<StewardsMonth, string> = {
-    [StewardsMonth.YESTARE]: "",
+    [StewardsMonth.YESTARE]: "sunrise",
     [StewardsMonth.NARVINYE]: "sunrise",
     [StewardsMonth.NENIME]: "cloud-rain",
     [StewardsMonth.SULIME]: "wind",
-    [StewardsMonth.TUILERE]: "",
+    [StewardsMonth.TUILERE]: "sprout",
     [StewardsMonth.VIRESSE]: "sprout",
     [StewardsMonth.LOTESSE]: "flower",
-    [StewardsMonth.NARIE]: "sun-dim",
-    [StewardsMonth.LOENDE]: "",
-    [StewardsMonth.ENDERE]: "",
+    [StewardsMonth.NARIE]: "sun",
+    [StewardsMonth.LOENDE]: "sun",
+    [StewardsMonth.ENDERE]: "sun",
     [StewardsMonth.CERMIE]: "wheat",
-    [StewardsMonth.URIME]: "sun",
+    [StewardsMonth.URIME]: "tree-deciduous",
     [StewardsMonth.YAVANNIE]: "apple",
-    [StewardsMonth.YAVIERE]: "",
+    [StewardsMonth.YAVIERE]: "apple",
     [StewardsMonth.NARQUELIE]: "leaf",
     [StewardsMonth.HISIME]: "cloud-fog",
     [StewardsMonth.RINGARE]: "snowflake",
-    [StewardsMonth.METTARE]: ""
+    [StewardsMonth.METTARE]: "snowflake"
 }
 
 const SHIRE_MONTH_ICONS: Record<ShireMonth, string> = {
-    [ShireMonth.YULE2]: "",
+    [ShireMonth.YULE2]: "sunrise",
     [ShireMonth.AFTERYULE]: "sunrise",
     [ShireMonth.SOLMATH]: "cloud-rain",
     [ShireMonth.RETHE]: "wind",
     [ShireMonth.ASTRON]: "sprout",
     [ShireMonth.THRIMIDGE]: "flower",
-    [ShireMonth.FORELITHE]: "sun-dim",
-    [ShireMonth.LITHE1]: "",
-    [ShireMonth.OVERLITHE_MILLENNIAL]: "",
-    [ShireMonth.MIDYEAR]: "",
-    [ShireMonth.OVERLITHE]: "",
-    [ShireMonth.LITHE2]: "",
+    [ShireMonth.FORELITHE]: "sun",
+    [ShireMonth.LITHE1]: "sun",
+    [ShireMonth.OVERLITHE_MILLENNIAL]: "sun",
+    [ShireMonth.MIDYEAR]: "sun",
+    [ShireMonth.OVERLITHE]: "sun",
+    [ShireMonth.LITHE2]: "sun",
     [ShireMonth.AFTERLITHE]: "wheat",
-    [ShireMonth.WEDMATH]: "sun",
+    [ShireMonth.WEDMATH]: "tree-deciduous",
     [ShireMonth.HALIMATH]: "apple",
     [ShireMonth.WINTERFILTH]: "leaf",
     [ShireMonth.BLOMATH]: "cloud-fog",
     [ShireMonth.FOREYULE]: "snowflake",
-    [ShireMonth.YULE1]: ""
+    [ShireMonth.YULE1]: "snowflake"
 }
 
 const BREE_MONTH_ICONS: Record<BreeMonth, string> = {
-    [BreeMonth.YULE2]: "",
+    [BreeMonth.YULE2]: "sunrise",
     [BreeMonth.FRERY]: "sunrise",
     [BreeMonth.SOLMATH]: "cloud-rain",
     [BreeMonth.RETHE]: "wind",
     [BreeMonth.CHITHING]: "sprout",
     [BreeMonth.THRIMIDGE]: "flower",
-    [BreeMonth.LITHE]: "sun-dim",
-    [BreeMonth.SUMMERDAYS]: "",
+    [BreeMonth.LITHE]: "sun",
+    [BreeMonth.SUMMERDAYS]: "sun",
     [BreeMonth.MEDE]: "wheat",
-    [BreeMonth.WEDMATH]: "sun",
+    [BreeMonth.WEDMATH]: "tree-deciduous",
     [BreeMonth.HARVESTMATH]: "apple",
     [BreeMonth.WINTRING]: "leaf",
     [BreeMonth.BLOOTING]: "cloud-fog",
     [BreeMonth.YULEMATH]: "snowflake",
-    [BreeMonth.YULE1]: ""
+    [BreeMonth.YULE1]: "snowflake"
 }
 
 
@@ -209,7 +209,7 @@ const SHIRE_MONTH_SEASONS: Record<ShireMonth, string> = {
     [ShireMonth.HALIMATH]: Season.AUTUMN,
     [ShireMonth.WINTERFILTH]: Season.AUTUMN,
     [ShireMonth.BLOMATH]: Season.AUTUMN,
-    [ShireMonth.FOREYULE]: Season.AUTUMN,
+    [ShireMonth.FOREYULE]: Season.WINTER,
     [ShireMonth.YULE1]: Season.WINTER
 }
 
@@ -227,6 +227,6 @@ const BREE_MONTH_SEASONS: Record<BreeMonth, string> = {
     [BreeMonth.HARVESTMATH]: Season.AUTUMN,
     [BreeMonth.WINTRING]: Season.AUTUMN,
     [BreeMonth.BLOOTING]: Season.AUTUMN,
-    [BreeMonth.YULEMATH]: Season.AUTUMN,
+    [BreeMonth.YULEMATH]: Season.WINTER,
     [BreeMonth.YULE1]: Season.WINTER
 }
