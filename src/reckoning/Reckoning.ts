@@ -1,6 +1,7 @@
 import {YearType} from "./YearType";
 import {YearData} from "./YearData";
 import {ReckoningDate} from "./ReckoningDate";
+import {DayOfWeek} from "./DayOfWeek";
 
 export abstract class Reckoning<M extends number | string> {
 
@@ -59,4 +60,6 @@ export abstract class Reckoning<M extends number | string> {
             return days
         }
     }
+
+    abstract getDayOfWeekString(dayOfWeek: DayOfWeek, language?: string):string
 }

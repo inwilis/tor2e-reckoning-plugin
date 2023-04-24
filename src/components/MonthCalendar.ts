@@ -37,21 +37,27 @@ export class MonthCalendar {
 
     render(parent: HTMLElement) {
         const root = parent.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.ROOT})
+        const tooltips: Instance[] = []
 
-        calendarDecorations.getWeekDayIcons().forEach(icon => {
+        for (let i = 0; i<7; i++) {
+            const title = this.displayDate.reckoning.getDayOfWeekString(i, this.displayDate.language)
+            const icon = calendarDecorations.getWeekDayIcons()[i]
             const dayOfWeek = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.DAY_OF_WEEK})
             const span = dayOfWeek.createEl("span")
             setIcon(span, icon)
-        })
+            tooltips.push(tippy(dayOfWeek, {
+                content: title,
+                theme: "obsidian"
+            }))
+        }
 
         const yearData = this.displayDate.getYearData()
-
         const firstDay = this.displayDate.reckoning.getDate(this.displayDate.year, yearData.getFirstDay(this.displayDate.month), this.displayDate.language)
+
         const firstDayToShow = this.rollBackToD1(firstDay)
-
         const lastDay = this.displayDate.reckoning.getDate(this.displayDate.year, yearData.getLastDay(this.displayDate.month), this.displayDate.language)
-        const lastDayToShow = this.rollForwardToD7(lastDay)
 
+        const lastDayToShow = this.rollForwardToD7(lastDay)
         const daysToRender: DayToRender[] = []
 
         if (firstDayToShow.getDayOfWeek() > DayOfWeek.D1) {
@@ -102,9 +108,6 @@ export class MonthCalendar {
             currentDay = currentDay.plusDays(1)
         }
 
-        const tooltips: Instance[] = []
-
-
 
         daysToRender.forEach(dayToRender => {
             if (dayToRender.dates.length == 0) {
@@ -138,15 +141,16 @@ export class MonthCalendar {
                 }
 
                 tooltips.push(this.createDayTooltip(day, dayToRender))
-
-
-
             }
         })
 
         createSingleton(tooltips, {
             theme: "obsidian",
             arrow: roundArrow,
+            delay: [200, 0],
+            animation: "fade",
+            moveTransition: 'transform 0.2s ease-out',
+
             // hideOnClick: false,
             // trigger: 'click'
         })
@@ -250,7 +254,7 @@ export class MonthCalendar {
 
         return tippy(parent, {
             content: tooltipFragment,
-            theme: "obsidian"
+            theme: "obsidian",
         })
     }
 

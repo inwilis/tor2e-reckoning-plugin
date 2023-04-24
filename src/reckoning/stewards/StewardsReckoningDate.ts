@@ -29,17 +29,6 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
         }
     }
 
-    toDayOfWeekString(language?: string): string {
-        const targetLanguage = (language || this.language).toLowerCase()
-
-        if (targetLanguage.toLowerCase() == "sindarin") {
-            return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).sindarin
-
-        } else {
-            return StewardsLocalization.forDayOfWeek(this.getDayOfWeek()).quenya
-        }
-    }
-
     toMonthString(language?: string | undefined): string {
         const targetLanguage = (language || this.language).toLowerCase()
 

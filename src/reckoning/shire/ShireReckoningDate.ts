@@ -46,10 +46,6 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
         }
     }
 
-    toDayOfWeekString(language?: string): string {
-        return ShireLocalization.forDayOfWeek(this.getDayOfWeek()).shire
-    }
-
     toMonthString(language?: string): string {
         return ShireLocalization.forMonth(this.month).shire
     }

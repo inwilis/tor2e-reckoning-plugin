@@ -49,10 +49,6 @@ export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
         }
     }
 
-    toDayOfWeekString(language?: string): string {
-        return BreeLocalization.forDayOfWeek(this.getDayOfWeek()).bree
-    }
-
     toMonthString(language?: string): string {
         return BreeLocalization.forMonth(this.month).bree
     }

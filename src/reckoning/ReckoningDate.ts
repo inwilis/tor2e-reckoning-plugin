@@ -192,7 +192,10 @@ export abstract class ReckoningDate<M extends number | string> {
 
     abstract toString(language?: string): string
 
-    abstract toDayOfWeekString(language?: string): string
+    toDayOfWeekString(language?: string): string {
+        const targetLanguage = (language || this.language).toLowerCase()
+        return this.reckoning.getDayOfWeekString(this.getDayOfWeek(), targetLanguage)
+    }
 
     toDayString(language?: string) {
         const yearData = this.reckoning.getYearData(this.year);
