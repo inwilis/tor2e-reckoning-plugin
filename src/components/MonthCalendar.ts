@@ -1,6 +1,6 @@
 import {CSS_CALENDAR_VIEW} from "../constants";
 import {calendarDecorations} from "../calendar/CalendarDecorations";
-import {setIcon} from "obsidian";
+import {Menu, setIcon} from "obsidian";
 import {reckonings} from "../reckoning/Reckonings";
 import {DayOfWeek} from "../reckoning/DayOfWeek";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
@@ -104,6 +104,8 @@ export class MonthCalendar {
 
         const tooltips: Instance[] = []
 
+
+
         daysToRender.forEach(dayToRender => {
             if (dayToRender.dates.length == 0) {
                 root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.NOT_DAY})
@@ -125,11 +127,20 @@ export class MonthCalendar {
                             await this.data.onDayClick(lastDate.date)
                         })
 
+
+                        day.addEventListener("contextmenu", async e => {
+                            const menu = this.createDayMenu(lastDate.date);
+                            menu.showAtMouseEvent(e)
+                        })
+
                         calendarDecorations.renderMoonPhase(day.createEl("span"), lastDate.date)
                     }
                 }
 
                 tooltips.push(this.createDayTooltip(day, dayToRender))
+
+
+
             }
         })
 
@@ -139,6 +150,27 @@ export class MonthCalendar {
             // hideOnClick: false,
             // trigger: 'click'
         })
+    }
+
+    private createDayMenu(date: ReckoningDate<any>) {
+        const menu = new Menu();
+        menu.addItem((item) => item
+            .setTitle("Copy")
+            .setIcon("documents")
+            .onClick(() => window.navigator.clipboard.writeText(date.toString())))
+
+        menu.addItem((item) => item
+            .setTitle("Copy as event")
+            .setIcon("documents")
+            .onClick(() => {
+
+                const reckoning = date.reckoningName == "stewards" ? "" : `reckoning: ${date.reckoningName}\n`
+                const text = `\`\`\`tor2e-event\ndate: ${date.toString()}\n${reckoning}text: \n\`\`\``
+
+                return window.navigator.clipboard.writeText(text)
+            }))
+
+        return menu;
     }
 
     private rollBackToD1(date: ReckoningDate<any>) {
