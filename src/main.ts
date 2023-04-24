@@ -12,18 +12,9 @@ export default class Tor2ePlugin extends Plugin {
 
         this.registerEditorSuggest(new EventEditorSuggest(this))
 
-        // this.registerEvent(this.app.vault.on("modify", updateFrontmatter(this.app.fileManager, this.app.metadataCache)))
-
-        this.registerView(
-            VIEW_TYPE_STEWARDS_CALENDAR,
+        this.registerView(VIEW_TYPE_STEWARDS_CALENDAR,
             (leaf) => new Tor2eCalendarView(leaf)
         )
-
-        this.addRibbonIcon("dice", "Print leaf types", () => {
-            this.app.workspace.iterateAllLeaves((leaf) => {
-                console.log(leaf.getViewState());
-            });
-        });
     }
 
     onunload() {
