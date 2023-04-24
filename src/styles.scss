@@ -5,6 +5,12 @@ $spring-color: #a25da4;
 $summer-color: green;
 $autumn-color: #b8620b;
 
+.tor2e-event {
+    .tor2e-date {
+        font-weight: var(--font-semibold);
+        cursor: pointer;
+    }
+}
 
 .tor2e-calendar-view-root {
     width: 100%;
