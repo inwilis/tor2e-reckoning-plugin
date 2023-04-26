@@ -4,7 +4,7 @@ import {Menu, setIcon} from "obsidian";
 import {reckonings} from "../reckoning/Reckonings";
 import {DayOfWeek} from "../reckoning/DayOfWeek";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
-import tippy, {createSingleton, Instance, roundArrow} from "tippy.js";
+import tippy, {createSingleton, Instance} from "tippy.js";
 import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 
 export interface MonthCalendarData {
@@ -146,9 +146,7 @@ export class MonthCalendar {
 
         createSingleton(tooltips, {
             theme: "obsidian",
-            arrow: roundArrow,
             delay: [200, 0],
-            animation: "fade",
             moveTransition: 'transform 0.2s ease-out',
 
             // hideOnClick: false,
