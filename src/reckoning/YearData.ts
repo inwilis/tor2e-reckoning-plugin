@@ -55,6 +55,16 @@ export class YearData<M extends number | string> {
         }
     }
 
+    getPreviousMonth(month: M): M {
+        const monthIndex = this.monthSequence.indexOf(month)
+
+        if (monthIndex == 0 ) {
+            return this.monthSequence[this.monthSequence.length - 1]
+        } else {
+            return this.monthSequence[monthIndex - 1]
+        }
+    }
+
     getMonthForDayOfYear(dayOfYear: number): M {
         for (let month of this.monthSequence) {
             if (this.monthDays[month][0] <= dayOfYear && dayOfYear <= this.monthDays[month][1]) {
@@ -63,5 +73,20 @@ export class YearData<M extends number | string> {
         }
 
         throw new RangeError(`Unable to find a correct month for day ${dayOfYear} of ${this.type} year`)
+    }
+
+    getNonIntercalaryMonthIndex(dayOfYear: number): number {
+        let result = -1;
+
+        for (let month of this.monthSequence) {
+            if (this.getDaysInMonth(month) > 10) {
+                result++;
+            }
+            if (this.monthDays[month][0] <= dayOfYear && dayOfYear <= this.monthDays[month][1]) {
+                return Math.max(0, result);
+            }
+        }
+
+        throw new RangeError(`Unable to find a correct non-intercalary month index for day ${dayOfYear} of ${this.type} year`)
     }
 }

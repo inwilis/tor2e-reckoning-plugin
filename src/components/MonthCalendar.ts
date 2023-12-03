@@ -6,6 +6,7 @@ import {DayOfWeek} from "../reckoning/DayOfWeek";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
 import tippy, {createSingleton, Instance} from "tippy.js";
 import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
+import {approximateGregorianYear} from "../reckoning/gregorian/ApproximateGregorianYear";
 
 export interface MonthCalendarData {
     displayDate: ReckoningDate<any>
@@ -39,7 +40,7 @@ export class MonthCalendar {
         const root = parent.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.ROOT})
         const tooltips: Instance[] = []
 
-        for (let i = 0; i<7; i++) {
+        for (let i = 0; i < 7; i++) {
             const title = this.displayDate.reckoning.getDayOfWeekString(i, this.displayDate.language)
             const icon = calendarDecorations.getWeekDayIcons()[i]
             const dayOfWeek = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.DAY_OF_WEEK})
@@ -222,7 +223,7 @@ export class MonthCalendar {
     }
 
     private createDayTooltip(parent: HTMLElement, day: DayToRender) {
-        const tooltipFragment = document.createElement("div" )
+        const tooltipFragment = document.createElement("div")
         tooltipFragment.className = "day-tooltip"
 
         day.dates.forEach(d => {
@@ -236,6 +237,9 @@ export class MonthCalendar {
                     })
                     const specialEvent = d.date.getSpecialEvent()
                     if (specialEvent) moonDetails.createEl("span", {text: specialEvent})
+
+                    const gregorianDateString = approximateGregorianYear.getDateString(d.date.getDayOfYear(), d.date.getYearData().type);
+                    moonDetails.createEl("span", {text: gregorianDateString})
 
                     const selected = reckonings.toReckoning("stewards", this.selectedDate)
                     const current = reckonings.toReckoning("stewards", d.date)

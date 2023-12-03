@@ -157,7 +157,7 @@ export class Tor2eCalendarView extends ItemView {
             onNext: async () => await this.viewDate(this.displayDate.plusMonths(1))
         }).render(root)
 
-        this.createMonthTooltip();
+        this.createMonthTooltip2();
 
         new MonthCalendar({
             selectedDate: this.selectedDate,
@@ -229,7 +229,30 @@ export class Tor2eCalendarView extends ItemView {
         })
     }
 
+    private createMonthTooltip2() {
+        const yearData = this.displayDate.getYearData()
 
+        const tooltipRoot = document.createElement("div")
+        tooltipRoot.className = "month-tooltip2"
+
+
+        const nonIntercalaryMonthIndex = yearData.getNonIntercalaryMonthIndex(this.displayDate.getDayOfYear());
+        const rotation = nonIntercalaryMonthIndex * 360 / 12;
+
+        const reckoningYearCircle = tooltipRoot.createEl('div', {cls: ['year-circle', 'reckoning-year-circle']})
+        const reckoningYearMask = reckoningYearCircle.createEl('div', {
+            cls: ['year-circle', 'reckoning-year-mask'],
+            attr: {style: `rotate: ${rotation}deg`}
+        });
+
+        tippy(".hor-nav-pane.month .content", {
+            theme: "obsidian",
+            content: tooltipRoot,
+            arrow: roundArrow,
+            // hideOnClick: false,
+            // trigger: 'click'
+        })
+    }
 }
 
 
