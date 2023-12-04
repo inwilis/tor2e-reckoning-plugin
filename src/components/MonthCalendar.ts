@@ -238,7 +238,7 @@ export class MonthCalendar {
                     const specialEvent = d.date.getSpecialEvent()
                     if (specialEvent) moonDetails.createEl("span", {text: specialEvent})
 
-                    const gregorianDateString = approximateGregorianYear.getDateString(d.date.getDayOfYear(), d.date.getYearData().type);
+                    const gregorianDateString = this.getGregorianDateString(d.date)
                     moonDetails.createEl("span", {text: gregorianDateString})
 
                     const selected = reckonings.toReckoning("stewards", this.selectedDate)
@@ -260,4 +260,13 @@ export class MonthCalendar {
         })
     }
 
+    private getGregorianDateString(date: ReckoningDate<any>): string {
+        const yearData = date.getYearData();
+
+        let gregorianDayOfYear = date.getDayOfYear() - 10; // 1st day of year - a winter solstice - is approximately 22 dec
+        if (gregorianDayOfYear < 1 ){
+            gregorianDayOfYear = yearData.length + gregorianDayOfYear;
+        }
+        return approximateGregorianYear.getDayOfMonth(gregorianDayOfYear, yearData.type) + " " + approximateGregorianYear.getMonthString(gregorianDayOfYear, yearData.type);
+    }
 }

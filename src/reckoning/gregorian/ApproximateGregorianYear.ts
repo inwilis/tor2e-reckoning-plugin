@@ -5,20 +5,15 @@ import {GregorianLocalization} from "./GregorianLocalization";
 
 class ApproximateGregorianYear {
 
-    getMonthString(dayOfYear: number, yearType: YearType): string {
+    getMonthString(gregorianDayOfYear: number, yearType: YearType): string {
         const yearData = YEAR_DATA[yearType];
-        return GregorianLocalization.forMonth(yearData.getMonthForDayOfYear(dayOfYear)).gregorian;
+        return GregorianLocalization.forMonth(yearData.getMonthForDayOfYear(gregorianDayOfYear)).gregorian;
     }
 
-    getDayOfMonth(dayOfYear: number, yearType: YearType): number {
+    getDayOfMonth(gregorianDayOfYear: number, yearType: YearType): number {
         const yearData = YEAR_DATA[yearType];
-        return dayOfYear - yearData.monthDays[yearData.getMonthForDayOfYear(dayOfYear)][0] + 1;
+        return gregorianDayOfYear - yearData.monthDays[yearData.getMonthForDayOfYear(gregorianDayOfYear)][0] + 1;
     }
-
-    getDateString(dayOfYear: number, yearType: YearType): string {
-        return this.getDayOfMonth(dayOfYear, yearType) + " " + this.getMonthString(dayOfYear, yearType);
-    }
-
 }
 
 export const approximateGregorianYear: ApproximateGregorianYear = new ApproximateGregorianYear();
@@ -77,7 +72,7 @@ const YEAR_DATA: Record<YearType, YearData<GregorianMonth>> = {
             [GregorianMonth.JANUARY]: [1, 31],
             [GregorianMonth.FEBRUARY]: [32, 59],
             [GregorianMonth.MARCH]: [60, 90],
-            [ GregorianMonth.APRIL]: [91, 120],
+            [GregorianMonth.APRIL]: [91, 120],
             [GregorianMonth.MAY]: [121, 151],
             [GregorianMonth.JUNE]: [152, 182],
             [GregorianMonth.JULY]: [183, 213],
@@ -109,7 +104,7 @@ const YEAR_DATA: Record<YearType, YearData<GregorianMonth>> = {
             [GregorianMonth.JANUARY]: [1, 31],
             [GregorianMonth.FEBRUARY]: [32, 59],
             [GregorianMonth.MARCH]: [60, 90],
-            [ GregorianMonth.APRIL]: [91, 120],
+            [GregorianMonth.APRIL]: [91, 120],
             [GregorianMonth.MAY]: [121, 151],
             [GregorianMonth.JUNE]: [152, 183],
             [GregorianMonth.JULY]: [184, 214],
