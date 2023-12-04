@@ -4,7 +4,6 @@ import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 import {CSS_CALENDAR_VIEW} from "../constants";
 import {allReckonings, reckonings} from "../reckoning/Reckonings";
 import {calendarDecorations} from "./CalendarDecorations";
-import {Reckoning} from "../reckoning/Reckoning";
 import {HorizontalNavigationPane} from "../components/HorizontalNavigationPane";
 import {MonthCalendar} from "../components/MonthCalendar";
 import tippy, {roundArrow} from "tippy.js";
@@ -99,7 +98,7 @@ export class Tor2eCalendarView extends ItemView {
     }
 
     private repairReckoning(date: ReckoningDate<any>) {
-        if (date.reckoning instanceof Reckoning<any>) {
+        if (date.reckoning != null) {
             return date
         }
         return reckonings.getReckoning(date.reckoningName).newDate(date.year, date.month, date.day, date.language);
@@ -115,11 +114,11 @@ export class Tor2eCalendarView extends ItemView {
     }
 
     async viewDate(date: ReckoningDate<any>) {
-        await this.setState({displayDate: date}, {})
+        await this.setState({displayDate: date}, {history: false})
     }
 
     async selectDate(date: ReckoningDate<any>) {
-        await this.setState({selectedDate: date}, {})
+        await this.setState({selectedDate: date}, {history: false})
     }
 
     async render() {
@@ -135,10 +134,10 @@ export class Tor2eCalendarView extends ItemView {
                 text: calendarDecorations.getReckoningTitle(this.displayDate),
                 onPrevious: async () => await this.setState({
                     displayDate: reckonings.toReckoning(availableReckonings[0][0], this.displayDate)
-                }, {}),
+                }, {history: false}),
                 onNext: async () => await this.setState({
                     displayDate: reckonings.toReckoning(availableReckonings[1][0], this.displayDate)
-                }, {})
+                }, {history: false})
             }).render(root)
         }
 
