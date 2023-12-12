@@ -8,7 +8,7 @@ import {HorizontalNavigationPane} from "../components/HorizontalNavigationPane";
 import {MonthCalendar} from "../components/MonthCalendar";
 import tippy, {roundArrow} from "tippy.js";
 import {Reckoning} from "../reckoning/Reckoning";
-import {ToolbarPane} from "../components/ToolbarPane";
+import {ToolbarPane, ToolbarPaneButton} from "../components/ToolbarPane";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
 
@@ -180,9 +180,25 @@ export class Tor2eCalendarView extends ItemView {
             onDayClick: async (d) => await this.selectDate(d)
         }).render(root)
 
-        new ToolbarPane({
-            buttons: [{icon: "home", hint: "Return to selected date", listener: async () => { await this.viewDate(this.selectedDate) }}]
-        }).render(root)
+        const toolbarButtons: ToolbarPaneButton[] = [
+            {
+                icon: "home", hint: "Return to selected date", listener: async () => {
+                    await this.viewDate(this.selectedDate)
+                }
+            }
+        ]
+
+        if (this.displayDate.reckoning.getSupportedLanguages().length > 1) {
+            this.displayDate.reckoning.getSupportedLanguages()
+                .filter(lang => lang != this.displayDate.language)
+                .forEach(lang => toolbarButtons.push({
+                    icon: "languages",
+                    hint: "Switch to " + lang,
+                    listener: () => this.viewDate(this.displayDate.withLanguage(lang))
+                }))
+        }
+
+        new ToolbarPane({buttons: toolbarButtons}).render(root)
     }
 
     private getAvailableReckonings(): [[string, string], [string, string]] | undefined {
