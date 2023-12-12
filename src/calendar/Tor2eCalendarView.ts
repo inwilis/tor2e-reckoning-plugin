@@ -8,6 +8,7 @@ import {HorizontalNavigationPane} from "../components/HorizontalNavigationPane";
 import {MonthCalendar} from "../components/MonthCalendar";
 import tippy, {roundArrow} from "tippy.js";
 import {Reckoning} from "../reckoning/Reckoning";
+import {ToolbarPane} from "../components/ToolbarPane";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
 
@@ -155,6 +156,7 @@ export class Tor2eCalendarView extends ItemView {
                     const diff = parseInt(newValue) - oldDate.year
                     await this.viewDate(this.displayDate.plusYears(diff))
                 } catch (e) {
+                    console.log(e)
                     await this.viewDate(oldDate)
                 }
 
@@ -176,6 +178,10 @@ export class Tor2eCalendarView extends ItemView {
             selectedDate: this.selectedDate,
             displayDate: this.displayDate,
             onDayClick: async (d) => await this.selectDate(d)
+        }).render(root)
+
+        new ToolbarPane({
+            buttons: [{icon: "home", hint: "Return to selected date", listener: async () => { await this.viewDate(this.selectedDate) }}]
         }).render(root)
     }
 
@@ -236,7 +242,7 @@ export class Tor2eCalendarView extends ItemView {
         tippy(".hor-nav-pane.month .content", {
             theme: "obsidian",
             content: tooltipRoot,
-            arrow: roundArrow,
+            // arrow: roundArrow,
             // hideOnClick: false,
             // trigger: 'click'
         })

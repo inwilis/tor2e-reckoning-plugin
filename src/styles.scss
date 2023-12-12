@@ -60,7 +60,9 @@ $colour-darken: 5%;
     }
 
     .hor-nav-pane.year .text {
+        text-align: center;
         font-size: var(--font-ui-large);
+        font-family: var(--font-default);
         padding: 0;
         background: none;
         border: none;
@@ -171,6 +173,28 @@ $colour-darken: 5%;
             }
         }
 
+    }
+
+    .toolbar-pane {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+            height: var(--input-height);
+            aspect-ratio: 1;
+            cursor: pointer;
+            border-radius: 50%;
+            transition-duration: var(--anim-duration-superfast);
+        }
+
+        .button:hover {
+            background: var(--nav-item-background-hover);
+        }
     }
 }
 
