@@ -7,6 +7,7 @@ import {calendarDecorations} from "./CalendarDecorations";
 import {HorizontalNavigationPane} from "../components/HorizontalNavigationPane";
 import {MonthCalendar} from "../components/MonthCalendar";
 import tippy, {roundArrow} from "tippy.js";
+import {Reckoning} from "../reckoning/Reckoning";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
 
@@ -98,7 +99,7 @@ export class Tor2eCalendarView extends ItemView {
     }
 
     private repairReckoning(date: ReckoningDate<any>) {
-        if (date.reckoning != null) {
+        if (date.reckoning instanceof Reckoning) {
             return date
         }
         return reckonings.getReckoning(date.reckoningName).newDate(date.year, date.month, date.day, date.language);
