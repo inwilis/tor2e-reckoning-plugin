@@ -145,8 +145,21 @@ export class Tor2eCalendarView extends ItemView {
         new HorizontalNavigationPane({
             classes: ["year"],
             text: this.displayDate.year.toString(),
+            editable: "number",
             onPrevious: async () => await this.viewDate(this.displayDate.plusYears(-1)),
-            onNext: async () => await this.viewDate(this.displayDate.plusYears(1))
+            onNext: async () => await this.viewDate(this.displayDate.plusYears(1)),
+            onEdit: async (newValue: string) => {
+                const oldDate = this.displayDate.copy()
+
+                try {
+                    const diff = parseInt(newValue) - oldDate.year
+                    await this.viewDate(this.displayDate.plusYears(diff))
+                } catch (e) {
+                    await this.viewDate(oldDate)
+                }
+
+                return this.displayDate.year.toString()
+            }
         }).render(root)
 
         new HorizontalNavigationPane({

@@ -60,7 +60,13 @@ $colour-darken: 5%;
     }
 
     .hor-nav-pane.year .text {
-        font-size: var(--font-ui-large)
+        font-size: var(--font-ui-large);
+        padding: 0;
+        background: none;
+        border: none;
+        border-radius: 0;
+        outline: none;
+        appearance: none;
     }
 
     .hor-nav-pane.month .text {
