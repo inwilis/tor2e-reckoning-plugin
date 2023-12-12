@@ -1,7 +1,7 @@
 {
 	"id": "tor2e-reckoning-plugin",
 	"name": "TOR2e Third Age calendar",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"minAppVersion": "1.0.0",
 	"description": "",
 	"author": "inwilis",
