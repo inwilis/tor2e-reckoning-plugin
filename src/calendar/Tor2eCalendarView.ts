@@ -199,7 +199,7 @@ export class Tor2eCalendarView extends ItemView {
             if (this.displayDate.reckoning.getName() == name) {
                 all.push([name, calendarDecorations.getReckoningTitle(this.displayDate)])
                 current = all.length - 1
-            } else if (reckonings.isConversionPossible(this.displayDate.reckoning.getName(), reckoning.getName(), this.displayDate.year)) {
+            } else if (reckonings.isDateConversionPossible(reckoning.getName(), this.displayDate)) {
                 all.push([name, calendarDecorations.getReckoningTitle(reckonings.toReckoning(reckoning.getName(), this.displayDate))])
             }
         })

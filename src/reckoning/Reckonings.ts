@@ -94,6 +94,10 @@ export const reckonings = {
         }
     },
 
+    isDateConversionPossible(targetReckoning: string, date: ReckoningDate<any>): boolean {
+        return this.isConversionPossible(date.reckoningName, targetReckoning, date.year)
+    },
+
     convertIfPossible(targetReckoning: string, date: ReckoningDate<any>): ReckoningDate<any> | null {
         if (this.isConversionPossible(date.reckoningName, targetReckoning, date.year)) {
             return this.toReckoning(targetReckoning, date)
