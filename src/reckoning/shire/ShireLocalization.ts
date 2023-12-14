@@ -1,15 +1,30 @@
 import {ShireMonth} from "./ShireMonth";
 import {DayOfWeek} from "../DayOfWeek";
+import {Localization} from "../Localization";
 
-export class ShireLocalization {
-    static forMonth(month: ShireMonth): ShireLocalizationData {
+export class ShireLocalization implements Localization<ShireMonth> {
+    dataForMonth(month: ShireMonth): ShireLocalizationData {
         return MONTH_NAMES[month]
     }
 
-    static forDayOfWeek(dayOfWeek: DayOfWeek) {
-        return DAYS_OF_WEEK_NAMES[dayOfWeek]
+    forMonth(month: ShireMonth): string {
+        return MONTH_NAMES[month].shire;
+    }
+
+    forMonthMeaning(month: ShireMonth): string {
+        return MONTH_NAMES_MEANING[month];
+    }
+
+    forDayOfWeek(dayOfWeek: DayOfWeek) {
+        return DAYS_OF_WEEK_NAMES[dayOfWeek].shire;
+    }
+
+    forDayOfWeekMeaning(dayOfWeek: DayOfWeek) {
+        return DAYS_OF_WEEK_NAMES_MEANING[dayOfWeek];
     }
 }
+
+export const shireLocalization = new ShireLocalization()
 
 export interface ShireLocalizationData {
     shire: string
@@ -47,3 +62,34 @@ export const DAYS_OF_WEEK_NAMES: Record<DayOfWeek, ShireLocalizationData> = {
     [DayOfWeek.D7]: {shire: "Highday"},
 }
 
+export const DAYS_OF_WEEK_NAMES_MEANING: Record<DayOfWeek, string> = {
+    [DayOfWeek.D1]: "Star Day",
+    [DayOfWeek.D2]: "Sun Day",
+    [DayOfWeek.D3]: "Moon Day",
+    [DayOfWeek.D4]: "Trees Day",
+    [DayOfWeek.D5]: "Heavens Day",
+    [DayOfWeek.D6]: "Sea Day",
+    [DayOfWeek.D7]: "High Day",
+}
+
+export const MONTH_NAMES_MEANING: Record<ShireMonth, string> = {
+    [ShireMonth.YULE2]: "New Year's Day",
+    [ShireMonth.AFTERYULE]: "Month after Yule",
+    [ShireMonth.SOLMATH]: "Muddy Month",
+    [ShireMonth.RETHE]: "Glory Month",
+    [ShireMonth.ASTRON]: "Easter Month",
+    [ShireMonth.THRIMIDGE]: "Month of Plenty",
+    [ShireMonth.FORELITHE]: "Month before Midsummer",
+    [ShireMonth.LITHE1]: "Midsummer's Eve",
+    [ShireMonth.OVERLITHE_MILLENNIAL]: "Millennial Summer Leap Day",
+    [ShireMonth.MIDYEAR]: "Midsummer Day",
+    [ShireMonth.OVERLITHE]: "Summer Leap Day",
+    [ShireMonth.LITHE2]: "Day after Midsummer",
+    [ShireMonth.AFTERLITHE]: "Month after Midsummer",
+    [ShireMonth.WEDMATH]: "Weed Month",
+    [ShireMonth.HALIMATH]: "Holy Month",
+    [ShireMonth.WINTERFILTH]: "Filling Month",
+    [ShireMonth.BLOMATH]: "Sacrifice Month",
+    [ShireMonth.FOREYULE]: "Month before Yule",
+    [ShireMonth.YULE1]: "New Year's Eve"
+}

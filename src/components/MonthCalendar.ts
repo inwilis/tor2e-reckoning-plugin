@@ -4,9 +4,9 @@ import {Menu, setIcon} from "obsidian";
 import {reckonings} from "../reckoning/Reckonings";
 import {DayOfWeek} from "../reckoning/DayOfWeek";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
-import tippy, {createSingleton, Instance} from "tippy.js";
-import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
-import {approximateGregorianYear} from "../reckoning/gregorian/ApproximateGregorianYear";
+import {createSingleton, Instance} from "tippy.js";
+import {MonthCalendarDayTooltip} from "./MonthCalendarDayTooltip";
+import {MonthCalendarDayOfWeekTooltip} from "./MonthCalendarDayOfWeekTooltip";
 
 export interface MonthCalendarData {
     displayDate: ReckoningDate<any>
@@ -14,12 +14,12 @@ export interface MonthCalendarData {
     onDayClick: (d: ReckoningDate<any>) => Promise<void>
 }
 
-interface DateToRender {
+export interface DateToRender {
     date: ReckoningDate<any>
     render: string
 }
 
-interface DayToRender {
+export interface DayToRender {
     dayOfWeek: DayOfWeek
     dates: DateToRender[]
     inMonth: boolean
@@ -39,17 +39,17 @@ export class MonthCalendar {
     render(parent: HTMLElement) {
         const root = parent.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.ROOT})
         const tooltips: Instance[] = []
+        const expandedTooltips: Instance[] = []
+
+        const monthCalendarDayOfWeekTooltip = new MonthCalendarDayOfWeekTooltip(this.displayDate);
 
         for (let i = 0; i < 7; i++) {
-            const title = this.displayDate.reckoning.getDayOfWeekString(i, this.displayDate.language)
             const icon = calendarDecorations.getWeekDayIcons()[i]
             const dayOfWeek = root.createEl("div", {cls: CSS_CALENDAR_VIEW.CALENDAR.DAY_OF_WEEK})
             const span = dayOfWeek.createEl("span")
             setIcon(span, icon)
-            tooltips.push(tippy(dayOfWeek, {
-                content: title,
-                theme: "obsidian"
-            }))
+            tooltips.push(monthCalendarDayOfWeekTooltip.createShort(dayOfWeek, i))
+            expandedTooltips.push(monthCalendarDayOfWeekTooltip.createExpanded(dayOfWeek, i))
         }
 
         const yearData = this.displayDate.getYearData()
@@ -109,6 +109,7 @@ export class MonthCalendar {
             currentDay = currentDay.plusDays(1)
         }
 
+        const monthCalendarDayTooltip = new MonthCalendarDayTooltip(this.selectedDate);
 
         daysToRender.forEach(dayToRender => {
             if (dayToRender.dates.length == 0) {
@@ -131,7 +132,6 @@ export class MonthCalendar {
                             await this.data.onDayClick(lastDate.date)
                         })
 
-
                         day.addEventListener("contextmenu", async e => {
                             const menu = this.createDayMenu(lastDate.date);
                             menu.showAtMouseEvent(e)
@@ -141,18 +141,28 @@ export class MonthCalendar {
                     }
                 }
 
-                tooltips.push(this.createDayTooltip(day, dayToRender))
+                tooltips.push(monthCalendarDayTooltip.createShort(day, dayToRender))
+                expandedTooltips.push(monthCalendarDayTooltip.createExpanded(day, dayToRender))
             }
         })
 
-        createSingleton(tooltips, {
+        const shortSingleton = createSingleton(tooltips, {
             theme: "obsidian",
-            delay: [200, 0],
+            delay: 200,
             moveTransition: 'transform 0.2s ease-out',
-
             // hideOnClick: false,
             // trigger: 'click'
-        })
+        });
+
+        createSingleton(expandedTooltips, {
+            theme: "obsidian",
+            delay: [1500, 200],
+            moveTransition: 'transform 0.2s ease-out',
+            onShow: () => shortSingleton.disable(),
+            onHide: () => shortSingleton.enable()
+            // hideOnClick: false,
+            // trigger: 'click'
+        });
     }
 
     private createDayMenu(date: ReckoningDate<any>) {
@@ -222,51 +232,5 @@ export class MonthCalendar {
         return date.toDayString()
     }
 
-    private createDayTooltip(parent: HTMLElement, day: DayToRender) {
-        const tooltipFragment = document.createElement("div")
-        tooltipFragment.className = "day-tooltip"
 
-        day.dates.forEach(d => {
-
-            tooltipFragment.createEl("div", {cls: "moon-container"}, moonContainer => {
-                calendarDecorations.renderMoonPhase(moonContainer, d.date)
-
-                moonContainer.createEl("div", {cls: "moon-details"}, moonDetails => {
-                    moonDetails.createEl("span", {cls: "title"}, title => {
-                        title.createEl("b", {text: d.date.toString()})
-                    })
-                    const specialEvent = d.date.getSpecialEvent()
-                    if (specialEvent) moonDetails.createEl("span", {text: specialEvent})
-
-                    const gregorianDateString = this.getGregorianDateString(d.date)
-                    moonDetails.createEl("span", {text: gregorianDateString})
-
-                    const selected = reckonings.toReckoning("stewards", this.selectedDate)
-                    const current = reckonings.toReckoning("stewards", d.date)
-
-                    if (!selected.isEqual(current)) {
-                        const daysBetween = stewardsReckoning.getDaysBetween(selected, current).toString()
-                        const beforeOrAfter = current.isBefore(selected) ? "-" : "+"
-                        const sEnding = daysBetween.endsWith("1") ? "" : "s"
-                        moonDetails.createEl("span", {text: `${beforeOrAfter}${daysBetween} day${sEnding}`})
-                    }
-                })
-            })
-        })
-
-        return tippy(parent, {
-            content: tooltipFragment,
-            theme: "obsidian",
-        })
-    }
-
-    private getGregorianDateString(date: ReckoningDate<any>): string {
-        const yearData = date.getYearData();
-
-        let gregorianDayOfYear = date.getDayOfYear() - 10; // 1st day of year - a winter solstice - is approximately 22 dec
-        if (gregorianDayOfYear < 1 ){
-            gregorianDayOfYear = yearData.length + gregorianDayOfYear;
-        }
-        return approximateGregorianYear.getDayOfMonth(gregorianDayOfYear, yearData.type) + " " + approximateGregorianYear.getMonthString(gregorianDayOfYear, yearData.type);
-    }
 }

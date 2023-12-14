@@ -2,7 +2,6 @@ import {ReckoningDate} from "../ReckoningDate";
 import {BreeMonth} from "./BreeMonth";
 import {Reckoning} from "../Reckoning";
 import {DayOfWeek} from "../DayOfWeek";
-import {BreeLocalization} from "./BreeLocalization";
 import {breeReckoning, SHIRE_REFORM_YEAR_IN_BREE} from "./BreeReckoning";
 import {BREE_RECKONING_START_IN_STEWARDS, STEWARDS_RECKONING_START} from "../stewards/StewardsReckoning";
 import {YearType} from "../YearType";
@@ -38,26 +37,6 @@ export class BreeReckoningDate extends ReckoningDate<BreeMonth> {
                 const lastSummerday = breeReckoning.getYearData(this.year).monthDays[BreeMonth.SUMMERDAYS][1];
                 return (dayOfYear - lastSummerday) % 7
             }
-        }
-    }
-
-    toString(language?: string): string {
-        if (this.getYearData().getDaysInMonth(this.month) > 1) {
-            return `${this.day} ${BreeLocalization.forMonth(this.month).bree} ${this.year}`
-        } else {
-            return `${BreeLocalization.forMonth(this.month).bree} ${this.year}`
-        }
-    }
-
-    toMonthString(language?: string): string {
-        return BreeLocalization.forMonth(this.month).bree
-    }
-
-    toDayAndMonthString(language?: string): string {
-        if (this.getYearData().getDaysInMonth(this.month) > 1) {
-            return `${this.day} ${BreeLocalization.forMonth(this.month).bree}`
-        } else {
-            return `${BreeLocalization.forMonth(this.month).bree}`
         }
     }
 

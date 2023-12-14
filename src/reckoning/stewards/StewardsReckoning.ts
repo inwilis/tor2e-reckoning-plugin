@@ -1,11 +1,11 @@
 import {YearType} from "../YearType";
 import {StewardsMonth} from "./StewardsMonth";
-import {MONTH_NAMES, StewardsLocalization} from "./StewardsLocalization";
+import {MONTH_NAMES, stewardsLocalization} from "./StewardsLocalization";
 import {YearData} from "../YearData";
 import {ReckoningDate} from "../ReckoningDate";
 import {Reckoning} from "../Reckoning";
 import {StewardsReckoningDate} from "./StewardsReckoningDate";
-import {DayOfWeek} from "../DayOfWeek";
+import {Language} from "../Languages";
 
 export const MARDILS_MILLENNIAL_YEAR = 2059
 export const HADORS_MILLENNIAL_YEAR = 2360
@@ -56,11 +56,15 @@ class StewardsReckoning extends Reckoning<StewardsMonth> {
     }
 
     getSupportedLanguages(): string[] {
-        return ["quenya", "sindarin"];
+        return [Language.QUENYA, Language.SINDARIN];
     }
 
     getDefaultLanguage(): string {
-        return "quenya";
+        return Language.QUENYA;
+    }
+
+    getLocalization() {
+        return stewardsLocalization;
     }
 
     parseDate(date: string, language?: string): ReckoningDate<StewardsMonth> {
@@ -115,14 +119,6 @@ class StewardsReckoning extends Reckoning<StewardsMonth> {
         }
 
         throw new Error(`Unable to parse '${date}' as date of Steward's reckoning`)
-    }
-
-    getDayOfWeekString(dayOfWeek: DayOfWeek, language?: string): string {
-        if (language == "sindarin") {
-            return StewardsLocalization.forDayOfWeek(dayOfWeek).sindarin
-        } else {
-            return StewardsLocalization.forDayOfWeek(dayOfWeek).quenya;
-        }
     }
 }
 

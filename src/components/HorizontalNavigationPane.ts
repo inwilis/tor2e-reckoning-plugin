@@ -1,4 +1,5 @@
 import {setIcon} from "obsidian";
+import tippy, {Props} from "tippy.js";
 
 export interface HorizontalNavigationPaneData {
     classes?: string[]
@@ -7,7 +8,9 @@ export interface HorizontalNavigationPaneData {
     editable?: string
     onPrevious?: () => void
     onNext?: () => void
-    onEdit?: (newValue: string) => Promise<string>
+    onEdit?: (newValue: string) => Promise<string>,
+    tooltip?: Partial<Props>,
+    expandedTooltip?: Partial<Props>,
 }
 
 export class HorizontalNavigationPane {
@@ -22,6 +25,27 @@ export class HorizontalNavigationPane {
 
         const content = root.createEl("span", {cls: "content"})
         content.createEl("span", {cls: "icon"}, i => setIcon(i, this.data.icon || ""))
+
+        if (this.data.tooltip) {
+
+            if (this.data.expandedTooltip) {
+                const shortTooltip = tippy(content, {
+                    ...this.data.tooltip,
+                    theme: "obsidian",
+                });
+
+                tippy(content, {
+                    ...this.data.expandedTooltip,
+                    delay: [1500, 200],
+                    onShow: () => shortTooltip.disable(),
+                    onHide: () => shortTooltip.enable(),
+                    theme: "obsidian",
+                });
+            } else {
+                tippy(content, {...this.data.tooltip, theme: "obsidian"})
+            }
+
+        }
 
         if (this.data.editable) {
             const editableType: string = this.data.editable

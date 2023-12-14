@@ -1,7 +1,7 @@
 import {YearType} from "./YearType";
 import {YearData} from "./YearData";
 import {ReckoningDate} from "./ReckoningDate";
-import {DayOfWeek} from "./DayOfWeek";
+import {Localization} from "./Localization";
 
 export abstract class Reckoning<M extends number | string> {
 
@@ -20,6 +20,8 @@ export abstract class Reckoning<M extends number | string> {
     getDefaultLanguage(): string {
         return this.getName()
     }
+
+    abstract getLocalization(): Localization<M>
 
     abstract parseDate(date: string, language?: string): ReckoningDate<M>
 
@@ -61,5 +63,4 @@ export abstract class Reckoning<M extends number | string> {
         }
     }
 
-    abstract getDayOfWeekString(dayOfWeek: DayOfWeek, language?: string):string
 }

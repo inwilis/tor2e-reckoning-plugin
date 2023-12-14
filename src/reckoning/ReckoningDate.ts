@@ -190,26 +190,47 @@ export abstract class ReckoningDate<M extends number | string> {
 
     abstract getDayOfWeek(): DayOfWeek
 
-    abstract toString(language?: string): string
+    toString(language?: string): string {
+        const targetLanguage = (language || this.language).toLowerCase();
+
+        if (this.getYearData().getDaysInMonth(this.month) > 1) {
+            return `${this.day} ${this.reckoning.getLocalization().forMonth(this.month, targetLanguage)} ${this.year}`
+        } else {
+            return `${this.reckoning.getLocalization().forMonth(this.month, targetLanguage)} ${this.year}`
+        }
+    }
 
     toDayOfWeekString(language?: string): string {
-        const targetLanguage = (language || this.language).toLowerCase()
-        return this.reckoning.getDayOfWeekString(this.getDayOfWeek(), targetLanguage)
+        const targetLanguage = (language || this.language).toLowerCase();
+        return this.reckoning.getLocalization().forDayOfWeek(this.getDayOfWeek(), targetLanguage)
     }
 
     toDayString(language?: string) {
         const yearData = this.reckoning.getYearData(this.year);
 
         if (yearData.monthDays[this.month][1] > yearData.monthDays[this.month][0]) {
+
             return this.day.toString()
         } else {
-            return this.toMonthString(language)
+            const targetLanguage = (language || this.language).toLowerCase()
+            return this.toMonthString(targetLanguage)
         }
     }
 
-    abstract toMonthString(language?: string): string
+    toMonthString(language?: string): string {
+        const targetLanguage = (language || this.language).toLowerCase()
+        return this.reckoning.getLocalization().forMonth(this.month, targetLanguage)
+    }
 
-    abstract toDayAndMonthString(language?: string): string
+    toDayAndMonthString(language?: string): string {
+        const targetLanguage = (language || this.language).toLowerCase();
+
+        if (this.getYearData().getDaysInMonth(this.month) > 1) {
+            return `${this.day} ${this.reckoning.getLocalization().forMonth(this.month, targetLanguage)}`
+        } else {
+            return `${this.reckoning.getLocalization().forMonth(this.month, targetLanguage)}`
+        }
+    }
 
     abstract getSpecialEvent(): string
 

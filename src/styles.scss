@@ -234,9 +234,8 @@ $colour-darken: 5%;
             .moon-container {
                 $moon-size: 2em;
                 display: flex;
-
-                align-content: center;
                 align-items: center;
+                margin-bottom: var(--size-2-2);
 
                 .moon {
                     width: $moon-size;
@@ -255,107 +254,63 @@ $colour-darken: 5%;
                     flex-direction: column;
                     justify-content: center;
                     margin-left: var(--size-4-2);
+
+                    .gregorian-date {
+
+                    }
                 }
 
                 .title {
                     font-size: var(--font-ui-medium);
                 }
             }
+
+            .other-details {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+
+                .special-event {
+                    margin-bottom: var(--size-2-2);
+                }
+
+                .other-locale {
+                    font-size: var(--font-small);
+                }
+
+                .days-between {
+                    margin-top: var(--size-2-2);
+                }
+            }
+        }
+
+        > .year-tooltip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         > .month-tooltip {
-            display: grid;
-            grid-template-columns: auto auto;
-            grid-auto-rows: 1fr;
-            justify-items: start;
-
-            .text {
-                margin-left: 0.5em;
-            }
-
-            .winter {
-                color: $winter-color;
-            }
-
-            .spring {
-                color: $spring-color;
-            }
-
-            .summer {
-                color: $summer-color;
-            }
-
-            .autumn {
-                color: $autumn-color;
-            }
-
-            .intercalary {
-                font-style: italic;
-            }
-
-            .current {
-                font-weight: var(--bold-weight);
-            }
-
-            .text.current:after {
-                content: "•"
-            }
-
-            .text.current:before {
-                content: "•"
-            }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        > .month-tooltip2 {
+        > .day-of-week-tooltip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
-            .year-circle {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border: 1px solid black;
-                width: 100px;
-                height: 100px;
+            :first-child {
+                margin-bottom: var(--size-2-2);
             }
 
-            .reckoning-year-circle {
-                background-image: repeating-conic-gradient(
-                        transparentize(black, 0.5) 0% 0.3%,
-                        transparentize(black, 1) 0.3% 8.33%
-                ), conic-gradient(
-                        $winter-color 0% 8.333%,
-                        $winter-color 8.333% 16.666%,
-                        $spring-color 16.666% 24.999%,
-                        $spring-color 24.999% 33.332%,
-                        $spring-color 33.332% 41.665%,
-                        $summer-color 41.665% 49.998%,
-                        $summer-color 49.998% 58.331%,
-                        $summer-color 58.331% 66.664%,
-                        $autumn-color 66.664% 74.997%,
-                        $autumn-color 74.997% 83.33%,
-                        $autumn-color 83.33% 91.663%,
-                        $winter-color 91.663% 99.996%
-                );
-                border-radius: 50%;
+            .other-locale {
+                font-size: var(--font-small);
             }
 
-            .reckoning-year-mask {
-                background-image: repeating-conic-gradient(
-                        transparentize(black, 0.5) 0% 0.3%,
-                        transparentize(black, 1) 0.3% 8.33%
-                ), conic-gradient(
-                        transparentize(white, 1) 0% 8.333%,
-                        transparentize(white, 0.5) 8.333% 100%
-                );
-                border-radius: 50%;
-            }
-
-            .reckoning-year-mask::after {
-                content: '';
-                width: 60%;
-                height: 60%;
-                border-radius: 50%;
-                background-color: var(--background-primary);
-                border: 1px solid black;
+            :last-child {
+                margin-top: var(--size-2-2);
             }
         }
 

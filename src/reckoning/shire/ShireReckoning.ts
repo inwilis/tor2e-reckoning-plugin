@@ -1,18 +1,17 @@
 import {ShireMonth} from "./ShireMonth";
 import {YearType} from "../YearType";
 import {reckonings} from "../Reckonings";
-import {MONTH_NAMES, ShireLocalization} from "./ShireLocalization";
+import {MONTH_NAMES, shireLocalization} from "./ShireLocalization";
 import {YearData} from "../YearData";
 import {ReckoningDate} from "../ReckoningDate";
 import {Reckoning} from "../Reckoning";
 import {ShireReckoningDate} from "./ShireReckoningDate";
 import {stewardsReckoning} from "../stewards/StewardsReckoning";
-import {DayOfWeek} from "../DayOfWeek";
+import {Localization} from "../Localization";
 
 export const SHIRE_REFORM_YEAR = 1103
 
 class ShireReckoning extends Reckoning<ShireMonth> {
-
     getName(): string {
         return "shire";
     }
@@ -29,6 +28,10 @@ class ShireReckoning extends Reckoning<ShireMonth> {
 
     getYearData(year: number): YearData<ShireMonth> {
         return YEAR_DATA[this.getYearType(year)]
+    }
+
+    getLocalization(): Localization<ShireMonth> {
+        return shireLocalization;
     }
 
     getDate(year: number, dayOfYear: number, language?: string): ReckoningDate<ShireMonth> {
@@ -103,10 +106,6 @@ class ShireReckoning extends Reckoning<ShireMonth> {
             }
         }
         return false
-    }
-
-    getDayOfWeekString(dayOfWeek: DayOfWeek, language?: string): string {
-        return ShireLocalization.forDayOfWeek(dayOfWeek).shire
     }
 }
 

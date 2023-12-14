@@ -2,7 +2,6 @@ import {ReckoningDate} from "../ReckoningDate";
 import {StewardsMonth} from "./StewardsMonth";
 import {Reckoning} from "../Reckoning";
 import {DayOfWeek} from "../DayOfWeek";
-import {StewardsLocalization} from "./StewardsLocalization";
 import {STEWARDS_RECKONING_START} from "./StewardsReckoning";
 
 export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
@@ -17,32 +16,6 @@ export class StewardsReckoningDate extends ReckoningDate<StewardsMonth> {
     getDayOfWeek(): DayOfWeek {
         const daysAfterReckoningStart = this.reckoning.getDaysBetween(this.reckoning.newDate(1, StewardsMonth.YESTARE, 1), this);
         return (daysAfterReckoningStart + 3) % 7;
-    }
-
-    toString(language?: string): string {
-        const targetLanguage = (language || this.language).toLowerCase()
-
-        if (this.getYearData().getDaysInMonth(this.month) > 1) {
-            return `${this.day} ${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)} ${this.year}`
-        } else {
-            return `${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)} ${this.year}`
-        }
-    }
-
-    toMonthString(language?: string | undefined): string {
-        const targetLanguage = (language || this.language).toLowerCase()
-
-        return StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)
-    }
-
-    toDayAndMonthString(language?: string): string {
-        const targetLanguage = (language || this.language).toLowerCase()
-
-        if (this.getYearData().getDaysInMonth(this.month) > 1) {
-            return `${this.day} ${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)}`
-        } else {
-            return `${StewardsLocalization.forMonthOfLanguage(this.month, targetLanguage)}`
-        }
     }
 
     getSpecialEvent(): string {

@@ -1,4 +1,8 @@
-import {BREE_RECKONING_START_IN_STEWARDS, SHIRE_RECKONING_START_IN_STEWARDS, stewardsReckoning} from "./stewards/StewardsReckoning";
+import {
+    BREE_RECKONING_START_IN_STEWARDS,
+    SHIRE_RECKONING_START_IN_STEWARDS,
+    stewardsReckoning
+} from "./stewards/StewardsReckoning";
 import {shireReckoning} from "./shire/ShireReckoning";
 import {ReckoningDate} from "./ReckoningDate";
 import {StewardsMonth} from "./stewards/StewardsMonth";
@@ -123,6 +127,30 @@ export const reckonings = {
         }
 
         return "stewards"
+    },
+
+    convertToEveryReckoningAndLanguagePossible(date: ReckoningDate<any>): ReckoningDate<any>[] {
+        const result: ReckoningDate<any>[] = [];
+
+        allReckonings.forEach((reckoning) => {
+            reckoning.getSupportedLanguages().forEach(lang => {
+                if (date.reckoningName != reckoning.getName() || date.language != lang) {
+
+                    if (reckonings.isConversionPossible(date.reckoningName, reckoning.getName(), date.year)) {
+                        result.push(reckonings.toReckoning(reckoning.getName(), date).withLanguage(lang));
+                    }
+                }
+            })
+        })
+
+        return result;
+    },
+
+    getOtherReckonings(date: ReckoningDate<any>) {
+        return [...allReckonings.values()]
+            .filter(value => value.getName() != date.reckoningName)
+            .filter(value => reckonings.isConversionPossible(date.reckoningName, value.getName(), date.year))
+            .map(value => reckonings.toReckoning(value.getName(), date))
     }
 }
 

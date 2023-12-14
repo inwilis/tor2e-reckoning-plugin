@@ -1,4 +1,4 @@
-import {App, ItemView, setIcon, ViewStateResult} from "obsidian";
+import {App, ItemView, ViewStateResult} from "obsidian";
 import {ReckoningDate} from "../reckoning/ReckoningDate";
 import {stewardsReckoning} from "../reckoning/stewards/StewardsReckoning";
 import {CSS_CALENDAR_VIEW} from "../constants";
@@ -6,9 +6,10 @@ import {allReckonings, reckonings} from "../reckoning/Reckonings";
 import {calendarDecorations} from "./CalendarDecorations";
 import {HorizontalNavigationPane} from "../components/HorizontalNavigationPane";
 import {MonthCalendar} from "../components/MonthCalendar";
-import tippy, {roundArrow} from "tippy.js";
 import {Reckoning} from "../reckoning/Reckoning";
 import {ToolbarPane, ToolbarPaneButton} from "../components/ToolbarPane";
+import {MonthTooltip} from "../components/MonthTooltip";
+import {YearTooltip} from "../components/YearTooltip";
 
 export const VIEW_TYPE_STEWARDS_CALENDAR = "tor2e-reckoning-plugin-stewards-calendar"
 
@@ -123,6 +124,20 @@ export class Tor2eCalendarView extends ItemView {
         await this.setState({selectedDate: date}, {history: false})
     }
 
+    async tryViewYear(newValue: string) {
+        const oldDate = this.displayDate.copy()
+
+        try {
+            const diff = parseInt(newValue) - oldDate.year
+            await this.viewDate(this.displayDate.plusYears(diff))
+        } catch (e) {
+            console.log(e)
+            await this.viewDate(oldDate)
+        }
+
+        return this.displayDate.year.toString()
+    }
+
     async render() {
         const container = this.containerEl.children[1]
         container.empty()
@@ -149,18 +164,9 @@ export class Tor2eCalendarView extends ItemView {
             editable: "number",
             onPrevious: async () => await this.viewDate(this.displayDate.plusYears(-1)),
             onNext: async () => await this.viewDate(this.displayDate.plusYears(1)),
-            onEdit: async (newValue: string) => {
-                const oldDate = this.displayDate.copy()
-
-                try {
-                    const diff = parseInt(newValue) - oldDate.year
-                    await this.viewDate(this.displayDate.plusYears(diff))
-                } catch (e) {
-                    console.log(e)
-                    await this.viewDate(oldDate)
-                }
-
-                return this.displayDate.year.toString()
+            onEdit: this.tryViewYear,
+            tooltip: {
+                content: new YearTooltip().create(this.displayDate),
             }
         }).render(root)
 
@@ -169,10 +175,13 @@ export class Tor2eCalendarView extends ItemView {
             text: this.displayDate.toMonthString(),
             icon: calendarDecorations.getMonthIcon(this.displayDate),
             onPrevious: async () => await this.viewDate(this.displayDate.plusMonths(-1)),
-            onNext: async () => await this.viewDate(this.displayDate.plusMonths(1))
+            onNext: async () => await this.viewDate(this.displayDate.plusMonths(1)),
+            tooltip: {
+                content: new MonthTooltip().create(this.displayDate)
+                // hideOnClick: false,
+                // trigger: 'click'
+            }
         }).render(root)
-
-        this.createMonthTooltip2();
 
         new MonthCalendar({
             selectedDate: this.selectedDate,
@@ -180,25 +189,7 @@ export class Tor2eCalendarView extends ItemView {
             onDayClick: async (d) => await this.selectDate(d)
         }).render(root)
 
-        const toolbarButtons: ToolbarPaneButton[] = [
-            {
-                icon: "home", hint: "Return to selected date", listener: async () => {
-                    await this.viewDate(this.selectedDate)
-                }
-            }
-        ]
-
-        if (this.displayDate.reckoning.getSupportedLanguages().length > 1) {
-            this.displayDate.reckoning.getSupportedLanguages()
-                .filter(lang => lang != this.displayDate.language)
-                .forEach(lang => toolbarButtons.push({
-                    icon: "languages",
-                    hint: "Switch to " + lang,
-                    listener: () => this.viewDate(this.displayDate.withLanguage(lang))
-                }))
-        }
-
-        new ToolbarPane({buttons: toolbarButtons}).render(root)
+        this.createToolbar(root);
     }
 
     private getAvailableReckonings(): [[string, string], [string, string]] | undefined {
@@ -230,63 +221,26 @@ export class Tor2eCalendarView extends ItemView {
         }
     }
 
-    private createMonthTooltip() {
-        const yearData = this.displayDate.getYearData()
+    private createToolbar(root: HTMLDivElement) {
+        const toolbarButtons: ToolbarPaneButton[] = [
+            {
+                icon: "home",
+                hint: "Return to selected date",
+                listener: async () => await this.viewDate(this.selectedDate)
+            }
+        ]
 
-        const tooltipRoot = document.createElement("div")
-        tooltipRoot.className = "month-tooltip"
-
-        let date = this.displayDate.reckoning.newDate(this.displayDate.year, yearData.getFirstMonth(), 1, this.displayDate.language)
-
-        while (date.year == this.displayDate.year) {
-            const current = date.month == this.displayDate.month
-            const intercalary = yearData.getDaysInMonth(date.month) < 30
-            const season = calendarDecorations.getSeason(date).toLowerCase();
-
-            const icon = tooltipRoot.createEl("span", {cls: ["icon", season]}, i => setIcon(i, calendarDecorations.getMonthIcon(date)));
-            const text = tooltipRoot.createEl("span", {cls: ["text"], text: date.toMonthString()});
-
-            icon.toggleClass("current", current)
-            icon.toggleClass("intercalary", intercalary)
-
-            text.toggleClass("current", current)
-            text.toggleClass("intercalary", intercalary)
-
-            date = date.plusMonths(1)
+        if (this.displayDate.reckoning.getSupportedLanguages().length > 1) {
+            this.displayDate.reckoning.getSupportedLanguages()
+                .filter(lang => lang != this.displayDate.language)
+                .forEach(lang => toolbarButtons.push({
+                    icon: "languages",
+                    hint: "Switch to " + lang,
+                    listener: () => this.viewDate(this.displayDate.withLanguage(lang))
+                }))
         }
 
-        tippy(".hor-nav-pane.month .content", {
-            theme: "obsidian",
-            content: tooltipRoot,
-            // arrow: roundArrow,
-            // hideOnClick: false,
-            // trigger: 'click'
-        })
-    }
-
-    private createMonthTooltip2() {
-        const yearData = this.displayDate.getYearData()
-
-        const tooltipRoot = document.createElement("div")
-        tooltipRoot.className = "month-tooltip2"
-
-
-        const nonIntercalaryMonthIndex = yearData.getNonIntercalaryMonthIndex(this.displayDate.getDayOfYear());
-        const rotation = nonIntercalaryMonthIndex * 360 / 12;
-
-        const reckoningYearCircle = tooltipRoot.createEl('div', {cls: ['year-circle', 'reckoning-year-circle']})
-        const reckoningYearMask = reckoningYearCircle.createEl('div', {
-            cls: ['year-circle', 'reckoning-year-mask'],
-            attr: {style: `rotate: ${rotation}deg`}
-        });
-
-        tippy(".hor-nav-pane.month .content", {
-            theme: "obsidian",
-            content: tooltipRoot,
-            arrow: roundArrow,
-            // hideOnClick: false,
-            // trigger: 'click'
-        })
+        new ToolbarPane({buttons: toolbarButtons}).render(root)
     }
 }
 

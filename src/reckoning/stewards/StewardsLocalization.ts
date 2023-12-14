@@ -1,23 +1,38 @@
 import {StewardsMonth} from "./StewardsMonth";
 import {DayOfWeek} from "../DayOfWeek";
+import {Language} from "../Languages";
+import {Localization} from "../Localization";
 
-export class StewardsLocalization {
-    static forMonth(month: StewardsMonth): StewardsLocalizationData {
+export class StewardsLocalization implements Localization<StewardsMonth> {
+    dataForMonth(month: StewardsMonth): StewardsLocalizationData {
         return MONTH_NAMES[month]
     }
-
-    static forMonthOfLanguage(month: StewardsMonth, language:string): string {
-        if (language == "sindarin") {
+    forMonth(month: StewardsMonth, language: string): string {
+        if (language == Language.SINDARIN) {
             return MONTH_NAMES[month].sindarin
         } else {
             return MONTH_NAMES[month].quenya
         }
     }
 
-    static forDayOfWeek(dayOfWeek: DayOfWeek) {
-        return DAYS_OF_WEEK_NAMES[dayOfWeek]
+    forMonthMeaning(month: StewardsMonth): string {
+        return MONTH_NAMES_MEANING[month];
+    }
+
+    forDayOfWeek(dayOfWeek: DayOfWeek, language: string): string {
+        if (language == Language.SINDARIN) {
+            return DAYS_OF_WEEK_NAMES[dayOfWeek].sindarin
+        } else {
+            return DAYS_OF_WEEK_NAMES[dayOfWeek].quenya
+        }
+    }
+
+    forDayOfWeekMeaning(dayOfWeek: DayOfWeek): string {
+        return DAYS_OF_WEEK_NAMES_MEANING[dayOfWeek]
     }
 }
+
+export const stewardsLocalization = new StewardsLocalization();
 
 export interface StewardsLocalizationData {
     quenya: string;
@@ -55,4 +70,35 @@ export const DAYS_OF_WEEK_NAMES: Record<DayOfWeek, StewardsLocalizationData> = {
     [DayOfWeek.D5]: {quenya: "Menelya", quenyaSimplified: "Menelya", sindarin: "Ormenel", sindarinSimplified: "Ormenel"},
     [DayOfWeek.D6]: {quenya: "Eärenya", quenyaSimplified: "Earenya", sindarin: "Oraearon", sindarinSimplified: "Oraearon"},
     [DayOfWeek.D7]: {quenya: "Valanya", quenyaSimplified: "Valanya", sindarin: "Orbelain", sindarinSimplified: "Orbelain"}
+}
+
+export const DAYS_OF_WEEK_NAMES_MEANING: Record<DayOfWeek, string> = {
+    [DayOfWeek.D1]: "Stars Day",
+    [DayOfWeek.D2]: "Sun Day",
+    [DayOfWeek.D3]: "Moon Day",
+    [DayOfWeek.D4]: "White Tree's Day",
+    [DayOfWeek.D5]: "Heavens Day",
+    [DayOfWeek.D6]: "Sea Day",
+    [DayOfWeek.D7]: "Valar Day",
+}
+
+export const MONTH_NAMES_MEANING: Record<StewardsMonth, string> = {
+    [StewardsMonth.YESTARE]: "First Day",
+    [StewardsMonth.NARVINYE]: "New Sun",
+    [StewardsMonth.NENIME]: "Wet Month",
+    [StewardsMonth.SULIME]: "Windy Month",
+    [StewardsMonth.TUILERE]: "Spring-day",
+    [StewardsMonth.VIRESSE]: "Budding Month",
+    [StewardsMonth.LOTESSE]: "Flower Month",
+    [StewardsMonth.NARIE]: "Sunny Month",
+    [StewardsMonth.LOENDE]: "Midyear's Day",
+    [StewardsMonth.ENDERE]: "Middle-days",
+    [StewardsMonth.CERMIE]: "Reaping Month",
+    [StewardsMonth.URIME]: "Hot Month",
+    [StewardsMonth.YAVANNIE]: "Fruit Giving Month",
+    [StewardsMonth.YAVIERE]: "Autumn-day",
+    [StewardsMonth.NARQUELIE]: "Sun Waning",
+    [StewardsMonth.HISIME]: "Misty Month",
+    [StewardsMonth.RINGARE]: "Cold Month",
+    [StewardsMonth.METTARE]: "Last Day"
 }

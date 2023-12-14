@@ -2,7 +2,6 @@ import {ReckoningDate} from "../ReckoningDate";
 import {ShireMonth} from "./ShireMonth";
 import {Reckoning} from "../Reckoning";
 import {DayOfWeek} from "../DayOfWeek";
-import {ShireLocalization} from "./ShireLocalization";
 import {SHIRE_REFORM_YEAR, shireReckoning} from "./ShireReckoning";
 import {SHIRE_RECKONING_START_IN_STEWARDS, STEWARDS_RECKONING_START} from "../stewards/StewardsReckoning";
 
@@ -35,26 +34,6 @@ export class ShireReckoningDate extends ReckoningDate<ShireMonth> {
                 const lithe2Day = shireReckoning.getYearData(this.year).monthDays[ShireMonth.LITHE2][0];
                 return (dayOfYear - lithe2Day) % 7
             }
-        }
-    }
-
-    toString(language?: string): string {
-        if (this.getYearData().getDaysInMonth(this.month) > 1) {
-            return `${this.day} ${ShireLocalization.forMonth(this.month).shire} ${this.year}`
-        } else {
-            return `${ShireLocalization.forMonth(this.month).shire} ${this.year}`
-        }
-    }
-
-    toMonthString(language?: string): string {
-        return ShireLocalization.forMonth(this.month).shire
-    }
-
-    toDayAndMonthString(language?: string): string {
-        if (this.getYearData().getDaysInMonth(this.month) > 1) {
-            return `${this.day} ${ShireLocalization.forMonth(this.month).shire}`
-        } else {
-            return `${ShireLocalization.forMonth(this.month).shire}`
         }
     }
 

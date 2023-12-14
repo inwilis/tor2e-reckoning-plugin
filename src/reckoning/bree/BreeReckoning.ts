@@ -1,7 +1,7 @@
 import {BreeMonth} from "./BreeMonth";
 import {YearType} from "../YearType";
 import {reckonings} from "../Reckonings";
-import {BreeLocalization, MONTH_NAMES} from "./BreeLocalization";
+import {breeLocalization, MONTH_NAMES} from "./BreeLocalization";
 import {YearData} from "../YearData";
 import {ReckoningDate} from "../ReckoningDate";
 import {Reckoning} from "../Reckoning";
@@ -12,12 +12,11 @@ import {
     SHIRE_RECKONING_START_IN_STEWARDS,
     stewardsReckoning
 } from "../stewards/StewardsReckoning";
-import {DayOfWeek} from "../DayOfWeek";
+import {Localization} from "../Localization";
 
 export const SHIRE_REFORM_YEAR_IN_BREE = SHIRE_REFORM_YEAR + SHIRE_RECKONING_START_IN_STEWARDS - BREE_RECKONING_START_IN_STEWARDS
 
 class BreeReckoning extends Reckoning<BreeMonth> {
-
     getName(): string {
         return "bree";
     }
@@ -34,6 +33,10 @@ class BreeReckoning extends Reckoning<BreeMonth> {
 
     getYearData(year: number): YearData<BreeMonth> {
         return YEAR_DATA[this.getYearType(year)]
+    }
+
+    getLocalization(): Localization<BreeMonth> {
+        return breeLocalization;
     }
 
     getDate(year: number, dayOfYear: number, language?: string): ReckoningDate<BreeMonth> {
@@ -113,10 +116,6 @@ class BreeReckoning extends Reckoning<BreeMonth> {
             }
         }
         return false
-    }
-
-    getDayOfWeekString(dayOfWeek: DayOfWeek, language?: string): string {
-        return BreeLocalization.forDayOfWeek(dayOfWeek).bree
     }
 }
 
