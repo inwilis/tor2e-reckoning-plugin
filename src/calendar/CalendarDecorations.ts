@@ -107,11 +107,11 @@ export const calendarDecorations = {
             firstHalf.addClass("dark")
             secondHalf.addClass("dark")
         } else if (growing) {
-            firstHalf.addClass("light")
-            secondHalf.addClass("dark")
-        } else {
             firstHalf.addClass("dark")
             secondHalf.addClass("light")
+        } else {
+            firstHalf.addClass("light")
+            secondHalf.addClass("dark")
         }
 
         const deg = 180 - Math.floor((percent * 180) / 100)

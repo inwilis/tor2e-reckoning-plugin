@@ -179,7 +179,7 @@ export class MonthCalendar {
 
                 const reckoning = date.reckoningName == "stewards" ? "" : `reckoning: ${date.reckoningName}\n`
                 const text = `\`\`\`tor2e-event\ndate: ${date.toString()}\n${reckoning}text: \n\`\`\``
-
+                // todo copy display language and reckoning
                 return window.navigator.clipboard.writeText(text)
             }))
 
