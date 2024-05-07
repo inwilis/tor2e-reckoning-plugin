@@ -18,6 +18,14 @@ $colour-darken: 5%;
     }
 }
 
+.tor2e-error {
+    border: 2px solid var(--failure-bg);
+    .tor2e-date {
+        font-weight: var(--font-semibold);
+        cursor: pointer;
+    }
+}
+
 .tor2e-calendar-view-root {
     width: 100%;
     display: grid;

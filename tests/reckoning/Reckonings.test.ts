@@ -224,16 +224,19 @@ describe("testing conversion from Bree-reckoning to Steward's reckoning", () => 
 })
 
 describe("testing reckoning detection", () => {
-    test("should return Steward's reckoning by unknown name", () => expect(reckonings.detectReckoning("", "unknown")).toBe("stewards"))
-    test("should return Steward's reckoning by missing name", () => expect(reckonings.detectReckoning("", undefined)).toBe("stewards"))
+    test("should return Steward's reckoning by unknown name", () => expect(reckonings.detectReckoning("", "unknown")).toStrictEqual([["stewards", "quenya"]]))
+    test("should return Steward's reckoning by missing name", () => expect(reckonings.detectReckoning("", undefined)).toStrictEqual([["stewards", "quenya"]]))
 
-    test("should detect Steward's reckoning by name", () => expect(reckonings.detectReckoning("", "stewards")).toBe("stewards"))
-    test("should detect Steward's reckoning by alias", () => expect(reckonings.detectReckoning("", "steward")).toBe("stewards"))
+    test("should detect Steward's reckoning by name", () => expect(reckonings.detectReckoning("", "stewards")).toStrictEqual([["stewards", "quenya"]]))
+    test("should detect Steward's reckoning by alias", () => expect(reckonings.detectReckoning("", "steward")).toStrictEqual([["stewards", "quenya"]]))
 
-    test("should detect Shire reckoning by name", () => expect(reckonings.detectReckoning("", "shire")).toBe("shire"))
+    test("should detect Shire reckoning by name", () => expect(reckonings.detectReckoning("", "shire")).toStrictEqual([["shire", "shire"]]))
 
-    test("should detect Steward's reckoning by quenya language", () => expect(reckonings.detectReckoning("", undefined, "quenya")).toBe("stewards"))
-    test("should detect Steward's reckoning by sindarin language", () => expect(reckonings.detectReckoning("", undefined, "sindarin")).toBe("stewards"))
+    test("should detect Steward's reckoning by quenya language", () => expect(reckonings.detectReckoning("", undefined, "quenya")).toStrictEqual([["stewards", "quenya"]]))
+    test("should detect Steward's reckoning by sindarin language", () => expect(reckonings.detectReckoning("", undefined, "sindarin")).toStrictEqual([["stewards", "sindarin"]]))
+
+    test("should detect Bree reckoning by month", () => expect(reckonings.detectReckoning("25 Wintring 1418", undefined, undefined)).toStrictEqual([["bree", "bree"]]))
+
 })
 
 describe("testing date conversion to all possible locales", () => {

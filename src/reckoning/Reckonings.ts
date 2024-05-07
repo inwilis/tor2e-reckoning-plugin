@@ -117,20 +117,40 @@ export const reckonings = {
         }
     },
 
-    detectReckoning(date: string, reckoning?: string, language?: string): string {
+    detectReckoning(date: string, reckoning?: string, language?: string) {
+
+        const result = new Array<[string, string]>();
+
         if (reckoning) {
-            return getReckoning(reckoning)?.getName() || "stewards"
+            const detectedName = getReckoning(reckoning)?.getName() || "stewards";
+            result.push([detectedName, language || getReckoning(detectedName)?.getDefaultLanguage() || ""])
         }
 
         if (language) {
             for (let reckoning of allReckonings.values()) {
                 if (reckoning.getSupportedLanguages().includes(language)) {
-                    return reckoning.getName()
+                    result.push([reckoning.getName(), language])
                 }
             }
         }
 
-        return "stewards"
+        allReckonings.forEach((reckoning, name) => {
+            reckoning.getSupportedLanguages().forEach(language => {
+                try {
+                    reckoning.parseDate(date, language);
+                    result.push([name, language]);
+                } catch (e) {
+                    // ignore
+                }
+            })
+
+        });
+
+        if (result.length == 0) {
+            result.push(["stewards", getReckoning("stewards")?.getDefaultLanguage() || ""])
+        }
+
+        return result;
     },
 
     convertToEveryReckoningAndLanguagePossible(date: ReckoningDate<any>): ReckoningDate<any>[] {
