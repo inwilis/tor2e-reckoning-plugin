@@ -5,10 +5,13 @@ import {EventBlockRenderer} from "./event/EventBlockRenderer";
 import {Tor2eCalendarView, VIEW_TYPE_STEWARDS_CALENDAR} from "./calendar/Tor2eCalendarView";
 import {Tor2ePluginSettingsTab} from "./settings/Tor2ePluginSettingsTab";
 import {DEFAULT_SETTINGS, Tor2ePluginSettings} from "./settings/Tor2ePluginSettings";
+import Tor2ePluginApi from "./Tor2ePluginApi";
 
 export default class Tor2ePlugin extends Plugin {
 
     settings: Tor2ePluginSettings;
+
+    api: Tor2ePluginApi;
 
     async onload() {
         await this.loadSettings();
@@ -22,6 +25,8 @@ export default class Tor2ePlugin extends Plugin {
         this.registerView(VIEW_TYPE_STEWARDS_CALENDAR,
             (leaf) => new Tor2eCalendarView(leaf)
         )
+
+        this.api = new Tor2ePluginApi(this);
     }
 
     onunload() {

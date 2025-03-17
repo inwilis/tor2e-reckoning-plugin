@@ -59,6 +59,19 @@ export class Tor2eCalendarView extends ItemView {
         }
     }
 
+    public static getDefaultView(app: App) {
+        const views = app.workspace.getLeavesOfType(VIEW_TYPE_STEWARDS_CALENDAR)
+
+        if (views && views.length > 0) {
+            const defaultView = views.find(v => {
+                return v.getViewState().state.defaultView == true;
+            });
+            if (defaultView) {
+                return defaultView;
+            }
+        }
+    }
+
     getDisplayText(): string {
         return "TOR2e Calendar"
     }
