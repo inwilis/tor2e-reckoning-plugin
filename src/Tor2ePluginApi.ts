@@ -25,15 +25,15 @@ export default class Tor2ePluginApi {
         const defaultView = Tor2eCalendarView.getDefaultView(this.plugin.app);
 
         if (defaultView) {
-            return defaultView.getViewState().state.selectedDate;
+            return defaultView.getViewState()?.state?.selectedDate;
         }
     }
 
     public getSelectedDateInReckoning(reckoning: string) {
         const defaultView = Tor2eCalendarView.getDefaultView(this.plugin.app);
-        const date: ReckoningDate<any> = defaultView?.getViewState()?.state?.selectedDate;
+        const date = defaultView?.getViewState()?.state?.selectedDate;
 
-        if (date) {
+        if (date instanceof ReckoningDate) {
             return reckonings.toReckoning(reckoning, date);
         }
     }

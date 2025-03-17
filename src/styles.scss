@@ -1,7 +1,7 @@
 @use 'sass:color';
 
-@import "tippy.js/dist/tippy.css";
-@import 'moon.scss';
+@use "tippy.js/dist/tippy.css";
+@use 'moon.scss';
 
 
 $winter-color: #0000a6;

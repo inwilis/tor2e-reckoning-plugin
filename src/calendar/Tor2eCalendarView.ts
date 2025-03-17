@@ -23,7 +23,7 @@ export class Tor2eCalendarView extends ItemView {
     private displayDate: ReckoningDate<any> = stewardsReckoning.getDate(2965, 1)
 
     public static createDefaultView(app: App, selectedDate: ReckoningDate<any>) {
-        app.workspace.getRightLeaf(false).setViewState({
+        app?.workspace?.getRightLeaf(false)?.setViewState({
             type: VIEW_TYPE_STEWARDS_CALENDAR,
             active: true,
             state: {
@@ -41,7 +41,7 @@ export class Tor2eCalendarView extends ItemView {
 
         if (views && views.length > 0) {
             const defaultView = views.find(v => {
-                return v.getViewState().state.defaultView == true;
+                return v?.getViewState()?.state?.defaultView == true;
             });
             if (defaultView) {
 
@@ -64,7 +64,7 @@ export class Tor2eCalendarView extends ItemView {
 
         if (views && views.length > 0) {
             const defaultView = views.find(v => {
-                return v.getViewState().state.defaultView == true;
+                return v?.getViewState()?.state?.defaultView == true;
             });
             if (defaultView) {
                 return defaultView;
